@@ -1,5 +1,5 @@
 # AoC
-Advent of Code Solutions
+**Advent of Code Solutions**
 
 The purpose of this repo is to provide a tutorial of sorts for each and every puzzle.  Initially I'll just be supplying Python, C and C++ solutions but more may be added in time.
 
