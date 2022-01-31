@@ -1,4 +1,4 @@
-**Day 1**
+# Day 1
 
 https://adventofcode.com/2015/day/1
 
@@ -14,4 +14,4 @@ This is a variation of Part 1.  If you solved Part 1 by adding 1 to a counter ea
 
 **Python vs C++ vs C**
 
-The solutions themselves are nearly identical.  The main difference is that Python/C++ solve part 1 by subtracting the number of ")" from the number of "(", the C solution, to save on all the boiler plate code needed to buffer the whole file, solves Parts 1/2 in the same way, by constantly adding/subtracting to a single counter as each instance of "(" and ")" is found respectively.
+The solutions themselves are nearly identical.  The main difference is that Python/C++ solve part 1 by subtracting the number of ")" from the number of "(", the C solution, to save on all the boiler plate code needed to buffer the whole file, solves Parts 1/2 in the same way, by constantly adding/subtracting to a single counter as each instance of "(" and ")" is found respectively, whereas for C++, it's far more trivial to read the file in a similar fashion to Python.
