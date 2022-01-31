@@ -26,3 +26,5 @@ https://stackoverflow.com/questions/653509/breaking-out-of-nested-loops
 When we get to C++ we see what the Python script is really doing with list comprehension, otherwise it's essentially the Python solution.
 
 And when we get to C, we see a destructive, yet relatively efficient way of splitting a string.  From a starting position of a single string containing every line within the file, running strtok effectively destroys the string as it goes, by overwriting key points in the string with NUL terminators.  It has the neat advantage of allowing the code to iterate over the string without any copying, but it does render the original string completely unuseable.
+
+This also does hammer home something some may not be aware of, C does *NOT* have a boolean type.  All if statements in C/C++ are actually 0 (false) or non-zero (true).  C++ added the bool type as a convenience, whereas in C a very typical bodge is to just use an unsigned type and use 1/0 (defined as constants) for True/False respectively.
