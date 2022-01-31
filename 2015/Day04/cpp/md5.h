@@ -1,3 +1,12 @@
+/* Note: I've modified this to use stdint instead of
+ *       the reference code, which relies upon:
+ *       unsigned short int = 2 bytes
+ *       unsigned long int  = 4 bytes
+ *       On my setup unsigned long int is actually 8 bytes, but stdint
+ *       does all the hard work for making a portable means of baking the
+ *       size into the type.
+ */
+
 #include <stdint.h>
 
 /* MD5
