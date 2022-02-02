@@ -51,6 +51,7 @@ def main() :
                 # Skip Commands we've already handled
                 if gateCommand[2] in signals : continue
 
+                # Skip any Commands for which any of the inputs are not yet available
                 valid = True
                 for input in gateCommand[1] :
                     if type(input) != int :
@@ -60,9 +61,9 @@ def main() :
                         #end
                     #end
                 #end
-
                 if valid is False : continue
 
+                # Process the Command
                 if gateCommand[0] == "SET" :
                     signals[gateCommand[2]] = getSignalOrLiteral(gateCommand[1][0], signals)
                 elif gateCommand[0] == "NOT" :
