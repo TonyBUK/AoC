@@ -17,3 +17,9 @@ It's going to take a while to fully populate this, as whilst I have solved all (
 One thing to be wary of, the solutions I've uploaded work for my particular environment with my inputs.  This may not be true for you.  I'll be interested to see if there's any issues along the lines of:
 - My input works for you, but yours does not, which implies my solution is incomplete.
 - My input doesn't work for you, which implies my solution is not portable.
+
+**General comments on C/C++**
+
+For better or worse, the standards of each language I'm targetting are C '89/'90 and C++ '98.  The main reason is this gives the greatest portability for anyone who wants to build the code.  My day job primarily involves writing low level C code for embedded platforms using certified compilers, this typically forces me to the oldest standard of the compiler due to the prohibitive cost of certifying compilers for various uses.  Part of the aim of these solutions is to provide portable solutions with minimal dependencies, and unfortunately that typically means lowest common denominator.
+
+If a more recent version of the language provides a significantly better solution, I may provide that as well, however if it just means I can't use auto (actually painful for iterators), or preventing me from scoping variables to their actual usage, then that's something I can live with, since if someone does wish to "upgrade" the C/C++ version, it's a relatively trivial process to do so.
