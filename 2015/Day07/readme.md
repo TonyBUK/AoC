@@ -28,4 +28,6 @@ Using the solved value of "a", clear all solved signals, and repeat with signal 
 
 Python sort of trivialised this a bit, with all the inputs being refactored into: OPERATOR, INPUTS, OUTPUT, which greatly simplifies subsequent processing.
 
-C++/C : TBD
+C++ follows the Python approach pretty closely, albeit it's a tad more verbose, but STL does a very good job of maintaining feature parity with Python for an out of the box solution.
+
+C : TBD
