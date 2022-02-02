@@ -28,3 +28,10 @@ For once Python actually had something of a disadvantage here.  The default Pyth
 C++ follows the Python approach pretty closely, but shows off the more versatile loops, in that I can skip multiple cycles without any convolutions.
 
 C wasn't disadvantaged for once, aside from the usual convolutions with regards to memory allocation / buffer tokenization, the only other slight quirk was that the output buffers from encoded/decoded data had to be predicted, with some noddy testing to see if it needs resizing.  The throughput could be improved slightly if an aggressively large buffer was allocated up front, since this would prevent multiple re-allocations.
+
+One slight, but legal bodge is C isn't overly sympathetic to appending chars, as most string operations expect to deal with strings.  The bodge to append a char (i.e. a single character without a NUL terminator) was to use strncat with a num field of 1, which neatly means the NUL terminator will never be needed for the string being appended.  Otherwise it'd either be buffering the data into a NUL terminated string first or some hot garbage like:
+
+kString[strlen(kString)    ] = '\0';
+kString[strlen(kString) - 1] = C;
+
+Blech...
