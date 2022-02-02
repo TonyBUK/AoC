@@ -87,6 +87,11 @@ def main() :
         #end
     #end
 
+    # Debug Only Code : Verify the Outputs are actually unique
+    # If they're not, then processCommands primary loop function will never terminate!
+    outputs = [gateCommand[2] for gateCommand in gateCommands]
+    assert(len(outputs) == len(set(outputs)))
+
     signals = {}
     processCommands(gateCommands, signals)
     print(f"Part 1: {signals['a']}")
