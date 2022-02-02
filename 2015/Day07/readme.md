@@ -12,6 +12,10 @@ One approach I could have taken was to build a dependency tree, or recursively w
 
 Instead, I chose to just iterate over the commands again and again until all the outputs are solved.  This does assume that every output is unique, which on my puzzle input they were, I suspect this is true of everyones.  If it isn't, then this becomes potentially alot more complex... but let's face it, day 7, they're going to be unique!
 
+Also since the input data is starting to get more complex, one of the things I've started doing is more liberal use of debug assertions.  These effectively crash the program if the statement inside evaluates to False/0.  Typically assertions are used to flush out any point in the code where if someone isn't true, then it means somethings gone horribly wrong somewhere.  This can be very useful later on as the challenges get more complex, as invariably the code will be written/tested against example data before being thrown at the real puzzle data.  Often that ends up disproving a core assumption.
+
+One important thing to note, debug assertions are not error handling.  If an error can naturally occur, this should be handled with logic/exceptions etc., the point of debug assertions is you enable them during development to trap things that shouldn't occur, then when you release the code, the debug assertions all get automatically stripped out of the code.
+
 **Part 1**
 
 Starting with no solved signals, keep solving until the value of signal "a" is known.
