@@ -72,9 +72,12 @@ If you've ever searched for Python on youtube, you'll have invariably come acros
 
 bestScores would *only* be an empty dictionary the *first* time I call findRoute.  i.e.
 
-findRoute(places, routes, True) # will work
-findRoute(places, routes, True) # won't work as bestScores is now populated, meaning we'll always have our processing halted by step 4) of my guidance above (the optimisation to eliminate unnecessary steps).
-findRoute(places, routes, False) # Still won't work
+    findRoute(places, routes, True) # will work
+    findRoute(places, routes, True) # won't work as bestScores is now populated,
+                                    # meaning we'll always have our processing
+                                    # halted by step 4) of my guidance above (the
+                                    # optimisation to eliminate unnecessary steps).
+    findRoute(places, routes, False) # Still won't work
 
 **C++**
 **C**
