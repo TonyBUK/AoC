@@ -68,7 +68,7 @@ As per part 1, but now set to use the longest route.  This time instead of setti
 
 If you've ever searched for Python on youtube, you'll have invariably come across things like Top 10 Don'ts, and this has one of those.  Functions which have default values to parameters should never be lists, sets or dictionaries.  Instead these should be initialised to None as a parameter, and initialised inside the function.  The reason being, the parameter initialisation is a compile time construct, not a runtime, meaning if I were to have the function written as:
 
-    findRoute(places, routes, findShortest, currentScore = 0, bestScore = None, bestScores = {}, visitedMask = 0, completeMask = 0, currentPlace = None)
+    def findRoute(places, routes, findShortest, currentScore = 0, bestScore = None, bestScores = {}, visitedMask = 0, completeMask = 0, currentPlace = None) :
 
 bestScores would *only* be an empty dictionary the *first* time I call findRoute.  i.e.
 
