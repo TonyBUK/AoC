@@ -10,7 +10,7 @@ So this one can be solved in a number of ways.  Arguably this is a route finding
 
 My solution does this recursively, as one thing recursion is very good at doing is handling exhaustive permutations.  The psueo code would be something like:
 
-  RECURSIVE FUNCTION
+    RECURSIVE FUNCTION
 
     IF this is the first pass
 
@@ -42,7 +42,7 @@ My solution does this recursively, as one thing recursion is very good at doing 
 
     END
 
-  RETURN the Shortest/Longest total route
+    RETURN the Shortest/Longest total route
 
 In a nutshell, when writing a recursive solution you need to:
 1) Ensure that the Recursive Function will eventually end... In this case this is achieved by keeping track of places already visited when selecting a new target location.
@@ -68,7 +68,7 @@ As per part 1, but now set to use the longest route.  This time instead of setti
 
 If you've ever searched for Python on youtube, you'll have invariably come across things like Top 10 Don'ts, and this has one of those.  Functions which have default values to parameters should never be lists, sets or dictionaries.  Instead these should be initialised to None as a parameter, and initialised inside the function.  The reason being, the parameter initialisation is a compile time construct, not a runtime, meaning if I were to have the function written as:
 
-findRoute(places, routes, findShortest, currentScore = 0, bestScore = None, ***bestScores = {}***, visitedMask = 0, completeMask = 0, currentPlace = None)
+    findRoute(places, routes, findShortest, currentScore = 0, bestScore = None, ***bestScores = {}***, visitedMask = 0, completeMask = 0, currentPlace = None)
 
 bestScores would *only* be an empty dictionary the *first* time I call findRoute.  i.e.
 
