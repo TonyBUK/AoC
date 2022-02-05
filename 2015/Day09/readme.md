@@ -80,4 +80,9 @@ bestScores would *only* be an empty dictionary the *first* time I call findRoute
     findRoute(places, routes, False) # Still won't work
 
 **C++**
+
+This essentially follows the Python algorithm, but with the C++ boiler plate code added.  In some ways I find the C++ code a tad clearer, as whilst you can type parameters in a Python function, it's typically not to the detail of a language like C/C++, and even affords nicities such as const correctness, whereby I can now far more easily distinguish between data that's changed up/down the stack, versus data that will remain constant.
+
+One decision some may find odd is the data buffer for the best scores is passed by pointer, not reference.  One weakness of call by reference is the inability to pass NULL, which on the one hand guarentees there's actually going to be an instance of something when passed in to the function, but in this instance, we want to force it to start from an initial state.  By pointer passing, the first call to findRoute creates the best scores buffer, and neatly keeps the scope inside the recursive function only.  The alternative would be to declare the best scores buffer outside of this scope which would be more annowing.
+
 **C**
