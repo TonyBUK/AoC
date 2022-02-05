@@ -14,34 +14,36 @@ def main() :
             assert(tokens[3] == "=")
             assert(tokens[4].isnumeric())
 
-            return tuple(sorted([tokens[0], tokens[2]])), int(tokens[4])
+            return [[tuple(sorted([tokens[0], tokens[2]], reverse=False)), int(tokens[4])],
+                    [tuple(sorted([tokens[0], tokens[2]], reverse=True )), int(tokens[4])]]
 
         #end
 
         rawStrings = [line.strip() for line in inputFile.readlines()]
         places = list(set([place.split(" ")[0] for place in rawStrings] +
                           [place.split(" ")[2] for place in rawStrings]))
-        routes = {k: v for k,v in (extractRoute(line.split(" ")) for line in rawStrings)}
+        routes = {k: v for line in rawStrings for k,v in extractRoute(line.split(" "))}
+
     #end
 
-    def findRoute(places, routes, findShortest, currentScore = 0, bestScore = None, bestScores = None, visitedMask = 0, completeMask = 0, currentPlace = None) :
+    def findRoute(PLACES, ROUTES, FIND_SHORTEST, currentScore = 0, bestScore = None, bestScores = None, visitedMask = 0, completeMask = 0, CURRENT_PLACE = None) :
 
         if None == bestScore :
-            if findShortest : bestScore = math.inf
-            else            : bestScore = 0
+            if FIND_SHORTEST : bestScore = math.inf
+            else             : bestScore = 0
             bestScores   = {}
-            completeMask = (1 << len(places)) - 1
+            completeMask = (1 << len(PLACES)) - 1
 
             # The first call doesn't have a fixed start position...
-            for place in places :
-                visitedMask = 1 << places.index(place)
-                for targetPlace in places :
+            for place in PLACES :
+                visitedMask = 1 << PLACES.index(place)
+                for targetPlace in PLACES :
                     if place != targetPlace :
                         # Test this is a Valid Route
-                        route = tuple(sorted([place, targetPlace]))
-                        if route in routes :
-                            targetMask = 1 << places.index(targetPlace)
-                            bestScore = findRoute(places, routes, findShortest, currentScore + routes[route], bestScore, bestScores, visitedMask | targetMask, completeMask, targetPlace)
+                        route = tuple([place, targetPlace])
+                        if route in ROUTES :
+                            targetMask = 1 << PLACES.index(targetPlace)
+                            bestScore = findRoute(PLACES, ROUTES, FIND_SHORTEST, currentScore + ROUTES[route], bestScore, bestScores, visitedMask | targetMask, completeMask, targetPlace)
                         #end
                     #end
                 #end
@@ -51,7 +53,7 @@ def main() :
 
             # If the Task has been completed... return our best score
             if visitedMask == completeMask :
-                if findShortest :
+                if FIND_SHORTEST :
                     if currentScore < bestScore :
                         bestScore = currentScore
                     #end
@@ -65,11 +67,11 @@ def main() :
 
             # Determine if this is a duplicate state, if so, only proceed
             # *IF* we've got a better score
-            currentState = tuple([currentPlace, visitedMask])
+            currentState = tuple([CURRENT_PLACE, visitedMask])
             if currentState not in bestScores :
                 bestScores[currentState] = currentScore
             else :
-                if findShortest :
+                if FIND_SHORTEST :
                     if currentScore >= bestScores[currentState] :
                         return bestScore
                     #end
@@ -81,15 +83,15 @@ def main() :
             #end
 
             # All subsequent calls have a fixed start position
-            for targetPlace in places :
+            for targetPlace in PLACES :
 
                 # Make sure this isn't a place we've already visited...
-                targetMask = 1 << places.index(targetPlace)
+                targetMask = 1 << PLACES.index(targetPlace)
                 if (targetMask & visitedMask) == 0 :
                     # Test this is a Valid Route
-                    route = tuple(sorted([currentPlace, targetPlace]))
-                    if route in routes :
-                        bestScore = findRoute(places, routes, findShortest, currentScore + routes[route], bestScore, bestScores, visitedMask | targetMask, completeMask, targetPlace)
+                    route = tuple([CURRENT_PLACE, targetPlace])
+                    if route in ROUTES :
+                        bestScore = findRoute(PLACES, ROUTES, FIND_SHORTEST, currentScore + ROUTES[route], bestScore, bestScores, visitedMask | targetMask, completeMask, targetPlace)
                     #end
                 #end
             #end
