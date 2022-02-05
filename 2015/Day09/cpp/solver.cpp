@@ -7,8 +7,6 @@
 #include <assert.h>
 
 #define addUniqueElementToVector(v, e) if (v.end() == std::find(v.begin(), v.end(), e)) v.push_back(e);
-#define createMapAndPairType(base) typedef std::map <base##KeyType, base##ValueType> base##MapType; \
-                                   typedef std::pair<base##KeyType, base##ValueType> base##PairType;
 
 // Places Type
 typedef std::vector<std::string> placesType;
@@ -16,7 +14,7 @@ typedef std::vector<std::string> placesType;
 // Route Type
 typedef std::vector<std::string> routeKeyType;
 typedef unsigned long routeValueType;
-createMapAndPairType(route);
+typedef std::map<routeKeyType, routeValueType> routeMapType;
 
 // Visited Type
 struct bestKeyType
@@ -38,7 +36,7 @@ struct bestKeyType
     }
 };
 typedef unsigned long bestValueType;
-createMapAndPairType(best);
+typedef std::map<bestKeyType, bestValueType> bestMapType;
 
 std::vector<std::string> split(const std::string& s, char seperator)
 {
@@ -210,11 +208,11 @@ int main(int argc, char** argv)
 
             // Sort Forwards
             std::sort(kRoute.begin(), kRoute.end());
-            kRoutes.insert(routePairType (kRoute, nDistance));
+            kRoutes[kRoute] = nDistance;
 
             // Sort Backwards
             std::sort(kRoute.rbegin(), kRoute.rend());
-            kRoutes.insert(routePairType (kRoute, nDistance));
+            kRoutes[kRoute] = nDistance;
         }
 
         std::cout << "Part 1: " << findRoute(kPlaces, kRoutes, true)  << std::endl;
