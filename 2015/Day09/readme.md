@@ -86,3 +86,10 @@ This essentially follows the Python algorithm, but with the C++ boiler plate cod
 One decision some may find odd is the data buffer for the best scores is passed by pointer, not reference.  One weakness of call by reference is the inability to pass NULL, which on the one hand guarentees there's actually going to be an instance of something when passed in to the function, but in this instance, we want to force it to start from an initial state.  By pointer passing, the first call to findRoute creates the best scores buffer, and neatly keeps the scope inside the recursive function only.  The alternative would be to declare the best scores buffer outside of this scope which would be more annowing.
 
 **C**
+
+C showing a few more signs of age.  This example really needs two hash maps.  One to index routes, and one to keep track of previous states.  The issue with the code is two-fold:
+
+- The tree hash map itself is never cleaned up, it really needs to walk the nodes and delete all leafs, as the library selected irksomely doesn't support deleting the root node.
+- The hash map itself buffers pointers to an array which stores the data itself.  This is fine when the size of the hash map is known in advance, if not, we get to this very annoying scenario whereby traditionally, you'd allocate more memory, and copy over the data deleting the old buffer, this is fine for the array, but the hash map would then point to destroyed data.  What this means is what I've been sort of dreading, the library hash maps won't cut it.  So moving forwards, I'm going to have to roll my own, as whilst for this task, it's not necessary, for future tasks, it's impossible without it.
+
+Note: I may re-open prior tasks with have used search.h, as I've suspicions as to how portable this is, so if I do end up rolling my own, then back porting it would probably make sense.
