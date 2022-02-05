@@ -1,113 +1,231 @@
-import time
-import math
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <assert.h>
 
-def main() :
+#define addUniqueElementToVector(v, e) if (v.end() == std::find(v.begin(), v.end(), e)) v.push_back(e);
 
-    # Read/Clean the Input File and extract places/routes
-    places = []
-    routes = {}
-    with open("../input.txt", "r") as inputFile:
+// Places Type
+typedef std::vector<std::string> placesType;
 
-        def extractRoute(tokens) :
-            assert(len(tokens) == 5)
-            assert(tokens[1] == "to")
-            assert(tokens[3] == "=")
-            assert(tokens[4].isnumeric())
+// Route Type
+typedef std::vector<std::string> routeKeyType;
+typedef unsigned long routeValueType;
+typedef std::map<routeKeyType, routeValueType> routeMapType;
 
-            return [[tuple(sorted([tokens[0], tokens[2]], reverse=False)), int(tokens[4])],
-                    [tuple(sorted([tokens[0], tokens[2]], reverse=True )), int(tokens[4])]]
+// Visited Type
+struct bestKeyType
+{
+    std::string   kPlace;
+    unsigned long nVisitedMask;
 
-        #end
+    bool const operator< (const bestKeyType& x) const
+    {
+       if (kPlace < x.kPlace)
+       {
+           return true;
+       }
+       else if (kPlace == x.kPlace)
+       {
+           return nVisitedMask < x.nVisitedMask;
+       }
+       return false;
+    }
+};
+typedef unsigned long bestValueType;
+typedef std::map<bestKeyType, bestValueType> bestMapType;
 
-        rawStrings = [line.strip() for line in inputFile.readlines()]
-        places = list(set([place.split(" ")[0] for place in rawStrings] +
-                          [place.split(" ")[2] for place in rawStrings]))
-        routes = {k: v for line in rawStrings for k,v in extractRoute(line.split(" "))}
+std::vector<std::string> split(const std::string& s, char seperator)
+{
+    std::vector<std::string> output;
+    std::string::size_type prev_pos = 0, pos = 0;
 
-    #end
+    while((pos = s.find(seperator, pos)) != std::string::npos)
+    {
+        std::string substring( s.substr(prev_pos, pos-prev_pos) );
+        output.push_back(substring);
+        prev_pos = ++pos;
+    }
+    output.push_back(s.substr(prev_pos, pos-prev_pos)); // Last word
+    return output;
+}
 
-    def findRoute(PLACES, ROUTES, FIND_SHORTEST, currentScore = 0, bestScore = None, bestScores = None, visitedMask = 0, completeMask = 0, CURRENT_PLACE = None) :
+std::size_t getIndex(const placesType& kPlaces, const std::string& kPlace)
+{
+    return std::find(kPlaces.cbegin(), kPlaces.cend(), kPlace) - kPlaces.cbegin();
+}
 
-        if None == bestScore :
-            if FIND_SHORTEST : bestScore = math.inf
-            else             : bestScore = 0
-            bestScores   = {}
-            completeMask = (1 << len(PLACES)) - 1
+unsigned long findRoute(const placesType& kPlaces, const routeMapType& kRoutes, const bool bFindShortest,
+                        const unsigned long nCurrentScore = 0, const unsigned long nBestScore = 0,
+                        bestMapType* kBestScores = NULL,
+                        const unsigned long nVisitedMask = 0, const unsigned long nCompleteMask = 0, const std::string& kCurrentPlace = "")
+{
+    unsigned long nLocalBestScore = nBestScore;
 
-            # The first call doesn't have a fixed start position...
-            for place in PLACES :
-                visitedMask = 1 << PLACES.index(place)
-                for targetPlace in PLACES :
-                    if place != targetPlace :
-                        # Test this is a Valid Route
-                        route = tuple([place, targetPlace])
-                        if route in ROUTES :
-                            targetMask = 1 << PLACES.index(targetPlace)
-                            bestScore = findRoute(PLACES, ROUTES, FIND_SHORTEST, currentScore + ROUTES[route], bestScore, bestScores, visitedMask | targetMask, completeMask, targetPlace)
-                        #end
-                    #end
-                #end
-            #end
+    if (NULL == kBestScores)
+    {
+        nLocalBestScore = bFindShortest ? (unsigned long)-1 : 0;
+        bestMapType         kBestScoresBuffer;
+        const unsigned long nCompleteMaskTarget = (1 << kPlaces.size()) - 1;
 
-        else :
+        for (placesType::const_iterator it1 = kPlaces.cbegin(); it1 != kPlaces.cend(); ++it1)
+        {
+            const std::string& kPlace = *it1;
+            const unsigned long nPlaceMask = 1 << getIndex(kPlaces, kPlace);
+            for (placesType::const_iterator it2 = kPlaces.cbegin(); it2 != kPlaces.cend(); ++it2)
+            {
+                const std::string& kTargetPlace = *it2;
+                if (kPlace != kTargetPlace)
+                {
+                    routeKeyType kRoute;
+                    kRoute.push_back(kPlace);
+                    kRoute.push_back(kTargetPlace);
 
-            # If the Task has been completed... return our best score
-            if visitedMask == completeMask :
-                if FIND_SHORTEST :
-                    if currentScore < bestScore :
-                        bestScore = currentScore
-                    #end
-                else :
-                    if currentScore > bestScore :
-                        bestScore = currentScore
-                    #end
-                #end
-                return bestScore
-            #end
+                    // Make sure the Route Exists                    
+                    if (kRoutes.cend() != kRoutes.find(kRoute))
+                    {
+                        const unsigned long nTargetMask = 1 << getIndex(kPlaces, kTargetPlace);
+                        nLocalBestScore = findRoute(kPlaces, kRoutes, bFindShortest,
+                                                    nCurrentScore + kRoutes.at(kRoute), nLocalBestScore,
+                                                    &kBestScoresBuffer,
+                                                    nVisitedMask | nPlaceMask | nTargetMask, nCompleteMaskTarget,
+                                                    kTargetPlace);
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        // If the Task has been completed... return our best score
+        if (nVisitedMask == nCompleteMask)
+        {
+            if (bFindShortest)
+            {
+                if (nCurrentScore < nLocalBestScore)
+                {
+                    nLocalBestScore = nCurrentScore;
+                }
+            }
+            else
+            {
+                if (nCurrentScore > nLocalBestScore)
+                {
+                    nLocalBestScore = nCurrentScore;
+                }
+            }
+            return nLocalBestScore;
+        }
 
-            # Determine if this is a duplicate state, if so, only proceed
-            # *IF* we've got a better score
-            currentState = tuple([CURRENT_PLACE, visitedMask])
-            if currentState not in bestScores :
-                bestScores[currentState] = currentScore
-            else :
-                if FIND_SHORTEST :
-                    if currentScore >= bestScores[currentState] :
-                        return bestScore
-                    #end
-                else :
-                    if currentScore <= bestScores[currentState] :
-                        return bestScore
-                    #end
-                #end
-            #end
+        // Determine if this is a duplicate state, if so, only proceed
+        // *IF* we've got a better score
+        const bestKeyType kCurrentState = {kCurrentPlace, nVisitedMask};
+        if (kBestScores->end() == kBestScores->find(kCurrentState))
+        {
+            (*kBestScores)[kCurrentState] = nCurrentScore;
+        }
+        else
+        {
+            if (bFindShortest)
+            {
+                if (nCurrentScore >= kBestScores->at(kCurrentState))
+                {
+                    return nLocalBestScore;
+                }
+                else
+                {
+                    (*kBestScores)[kCurrentState] = nCurrentScore;
+                }
+            }
+            else
+            {
+                if (nCurrentScore <= kBestScores->at(kCurrentState))
+                {
+                    return nLocalBestScore;
+                }
+                else
+                {
+                    (*kBestScores)[kCurrentState] = nCurrentScore;
+                }
+            }
+        }
 
-            # All subsequent calls have a fixed start position
-            for targetPlace in PLACES :
+        // All subsequent calls have a fixed start position
+        for (placesType::const_iterator it = kPlaces.cbegin(); it != kPlaces.cend(); ++it)
+        {
+            const std::string kTargetPlace = *it;
 
-                # Make sure this isn't a place we've already visited...
-                targetMask = 1 << PLACES.index(targetPlace)
-                if (targetMask & visitedMask) == 0 :
-                    # Test this is a Valid Route
-                    route = tuple([CURRENT_PLACE, targetPlace])
-                    if route in ROUTES :
-                        bestScore = findRoute(PLACES, ROUTES, FIND_SHORTEST, currentScore + ROUTES[route], bestScore, bestScores, visitedMask | targetMask, completeMask, targetPlace)
-                    #end
-                #end
-            #end
-        #end
+            // Make sure this isn't a place we've already visited...
+            const unsigned long nTargetMask = 1 << getIndex(kPlaces, kTargetPlace);
+            if ((nTargetMask & nVisitedMask) == 0)
+            {
+                // Test this is a Valid Route
+                routeKeyType kRoute;
+                kRoute.push_back(kCurrentPlace);
+                kRoute.push_back(kTargetPlace);
+                if (kRoutes.cend() != kRoutes.find(kRoute))
+                {
+                    nLocalBestScore = findRoute(kPlaces, kRoutes, bFindShortest,
+                                                nCurrentScore + kRoutes.at(kRoute), nLocalBestScore,
+                                                kBestScores,
+                                                nVisitedMask | nTargetMask, nCompleteMask,
+                                                kTargetPlace);
+                }
+            }
+        }
+    }
 
-        return bestScore
+    return nLocalBestScore;
+}
 
-    #end
+int main(int argc, char** argv)
+{
+    std::ifstream kFile;
+    kFile.open("../input.txt");
+    if (kFile.is_open())
+    {
+        placesType   kPlaces;
+        routeMapType kRoutes;
 
-    print(f"Part 1: {findRoute(places, routes, True)}")
-    print(f"Part 2: {findRoute(places, routes, False)}")
+        while (!kFile.eof())
+        {
+            // Get the Current Line from the File
+            std::string kLine;
+            std::getline(kFile, kLine);
 
-#end
+            // Split the Input Line into Tokens for Parsing
+            const std::vector<std::string> kTokens = split(kLine, ' ');
+            assert(kTokens.size() == 5);
 
-if __name__ == "__main__" :
-    startTime      = time.perf_counter()
-    main()
-    print(f"{(time.perf_counter() - startTime)}s")
-#end
+            // Buffer each unique place Santa has to visit
+            addUniqueElementToVector(kPlaces, kTokens.at(0));
+            addUniqueElementToVector(kPlaces, kTokens.at(2));
+
+            // Buffer each route
+
+            // Store the pair of places for the route
+            std::vector<std::string> kRoute;
+            kRoute.push_back(kTokens.at(0));
+            kRoute.push_back(kTokens.at(2));
+
+            // Decode the Distance
+            const unsigned long nDistance = std::stoul(kTokens.at(4));
+
+            // Sort Forwards
+            std::sort(kRoute.begin(), kRoute.end());
+            kRoutes[kRoute] = nDistance;
+
+            // Sort Backwards
+            std::sort(kRoute.rbegin(), kRoute.rend());
+            kRoutes[kRoute] = nDistance;
+        }
+
+        std::cout << "Part 1: " << findRoute(kPlaces, kRoutes, true)  << std::endl;
+        std::cout << "Part 2: " << findRoute(kPlaces, kRoutes, false) << std::endl;
+    }
+
+    return 0;
+}
