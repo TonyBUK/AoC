@@ -135,12 +135,20 @@ unsigned long findRoute(const placesType& kPlaces, const routeMapType& kRoutes, 
                 {
                     return nLocalBestScore;
                 }
+                else
+                {
+                    (*kBestScores)[kCurrentState] = nCurrentScore;
+                }
             }
             else
             {
                 if (nCurrentScore <= kBestScores->at(kCurrentState))
                 {
                     return nLocalBestScore;
+                }
+                else
+                {
+                    (*kBestScores)[kCurrentState] = nCurrentScore;
                 }
             }
         }
