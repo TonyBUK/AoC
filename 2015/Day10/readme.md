@@ -79,6 +79,9 @@ with:
 
 **C++**
 
+Same as Python, albeit shallow copying is really an opt-in thing, or more specifically, dependent upon class implementation etc.  In this instance, pointers have been used to ensure the copies of the arrays are always shallow.
+
+Additionally, support for large repetitions is handled at compile time with a single define.  For the CPP version, I've left this enabled as the overhead of this is actually quite negligible.  My main grip is that the mathmatically correct solution requires floating point.  It's absolutely possible to produce an integer only variant, but it's something to keep in mind.  One thing that *VERY* rarely comes up in AoC challeneges in general is floating point.
 
 **C**
 
