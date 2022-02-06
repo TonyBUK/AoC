@@ -103,7 +103,7 @@ int main(int argc, char** argv)
                 /* Store the Current Repetition */
                 storeSeeSay(nRepetitionDigit, nRepetitionCount, kNewSeeSay, &nSeeSaySize);
 
-                if (x == 40)
+                if (40 == x)
                 {
                     printf("Part 1: %lu\n", nSeeSaySize);
                 }
