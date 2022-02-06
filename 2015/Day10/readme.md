@@ -65,6 +65,18 @@ This essentially makes currentSeeSay overlay newSeeSay, meaning any changes to c
 
 Most of the time shallow copies are fine, and have the benefit of being much faster compared to a deep copy, but understanding when to use each is something I'd strongly urge getting to grips with.
 
+Note: To enable the code base to handle repetitions >= 10, swap the following instances of code (occurs twice):
+
+    # storeSeeSay(repetitionDigit, repetitionCount, newSeeSay)
+    newSeeSay.append(repetitionCount)
+    newSeeSay.append(repetitionDigit)
+
+with:
+
+    storeSeeSay(repetitionDigit, repetitionCount, newSeeSay)
+    #newSeeSay.append(repetitionCount)
+    #newSeeSay.append(repetitionDigit)
+
 **C++**
 
 
