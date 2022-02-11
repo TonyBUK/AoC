@@ -60,6 +60,35 @@ However, at least with my inputs, it's a subsecond solve on my aging hardware fo
 
 One thing that you may have noticed is that Rule 1 includes the removed letters in the ascending rule, meaning hij are considered valid for rule 1 (even if rule 2 discards them).  Problem is by moving to base 23 and discarding these, hjk are now considered ascending, which is very clearly wrong.  The trivial, but non-ideal fix here is to convert the number from base 23 -> base 26 prior to considering whether they're consecutive or not.  Albeit for my original solution to this way back, I didn't notice this and it still got the correct answer, your mileage may vary.
 
+And finally, how to actually do addition.  The answer, add and carry: https://en.wikipedia.org/wiki/Carry_(arithmetic)
+
+In much the same way you'd solve 12 + 9, which is:
+
+25 +
+ 9
+==
+ 4 (Carry the 1 to the tens column)
+==
+34
+
+In the same way:
+
+1,2,3,4  + 1 = 1,2,3,5
+1,2,3,22 + 1 = 1,2,4,0 (carry the 1 to the next column)
+
+Algorithmically this is (for adding 1):
+
+    FOR each column starting with the units column...
+        column value = column value + 1
+        IF column value < 23
+            STOP
+        ELSE
+            column value = 0
+        END
+    NEXT
+
+In other words, from the initial addition of a 1, it keeps carrying the 1 until the column no longer overflows the base of the number (base 23).
+
 **Part 1**
 
 Feeds the puzzle starting point into the system, the input supplied is deliberately one that has the next password being very close in terms of how many letters are actually changed.
