@@ -41,7 +41,7 @@ So this now leads to the main algorithm, which is:
     Increment the Password by 1
 
     WHILE either rules 1 or 3 are not met:
-      Incrment the Password by 1
+      Increment the Password by 1
     WEND
 
 That's it really.  The major optimisation this is missing is instead of always incrementing by 1, determining what the first password that meets the currently failing rule is, and jump to that one instead.
