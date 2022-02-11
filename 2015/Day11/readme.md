@@ -73,8 +73,8 @@ In much the same way you'd solve 12 + 9, which is:
 
 In the same way:
 
-1,2,3,4  + 1 = 1,2,3,5
-1,2,3,22 + 1 = 1,2,4,0 (carry the 1 to the next column)
+    1,2,3,4  + 1 = 1,2,3,5
+    1,2,3,22 + 1 = 1,2,4,0 (carry the 1 to the next column)
 
 Algorithmically this is (for adding 1):
 
