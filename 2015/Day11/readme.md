@@ -21,12 +21,12 @@ So for this puzzle, we can think of the condensed alphabet as our values, a,b,c,
 
 Or to put it another way:
 
-a = 0
-b = 1
-...
-x = 20
-y = 21
-z = 22
+    a = 0
+    b = 1
+    ...
+    x = 20
+    y = 21
+    z = 22
 
 There's 23 possible values, hence we can consider this to be a variant of base 23.  What this means is that instead of storing and processing the password as: a,b,y,z
 
