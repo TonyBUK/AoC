@@ -64,12 +64,12 @@ And finally, how to actually do addition.  The answer, add and carry: https://en
 
 In much the same way you'd solve 12 + 9, which is:
 
-25 +
- 9
-==
- 4 (Carry the 1 to the tens column)
-==
-34
+    25 +
+     9
+    ==
+     4 (Carry the 1 to the tens column)
+    ==
+    34
 
 In the same way:
 
