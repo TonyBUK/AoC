@@ -2,7 +2,7 @@ import time
 
 def main() :
 
-    # Read/Clean the Input File and extract places/routes
+    # Read/Clean the Input File and convert to an array of integers for processing
     seeSays = []
     with open("../input.txt", "r") as inputFile:
         seeSays = [[int(x) for x in line.strip()] for line in inputFile.readlines()]
