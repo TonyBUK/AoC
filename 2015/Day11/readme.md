@@ -10,8 +10,8 @@ Much like Day 10, this is partly a scaleability issue, where Part 1 will solve r
 
 This one can be solved a number of ways, I chose to solve it by treating the password as a base 23 number.  For those not familiar, most people are familiar with 1 or 2 number bases.  I've picked two I'm hoping you're aware of.
 
-Base 10: This is what you use every day, where you count 0 - 9, 10 - 19, 20 - 29 and so on.
-Base 16: Same as above, but now it's 0 - F, 10 - 1F, 20 - 2F and so on.
+    Base 10: This is what you use every day, where you count 0 - 9, 10 - 19, 20 - 29 and so on.
+    Base 16: Same as above, but now it's 0 - F, 10 - 1F, 20 - 2F and so on.
 
 All the base really means is how many units are there before you have to move to the next column, i.e. in base 10, there's a sequence of 10 values (0,1,2,3,4,5,6,7,8,9) that can be expressed before moving onto the tens column.
 
