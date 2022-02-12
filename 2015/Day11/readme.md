@@ -105,6 +105,7 @@ The zip function combined with array slicing does alot of the heavy lifting for 
 
 **C++**
 
+This is essentially a straight port of the Python code.  There are a few things to be wary of, for example, the solvePassword function deliberately returns std::string by copy since kResult is destroyed once solvePassword completes.  Otherwise the only real irksome aspect is base C++/STL being a bit naff at initialising the contents at the point of declaration, which means there's a couple of points the code isn't technically const correct.  It's solveable with a bit of thought, but not worth the effort.
 
 **C**
 
