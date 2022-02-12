@@ -42,9 +42,9 @@ bool rule1(const std::vector<std::size_t>& kPassword, const std::vector<std::siz
 {
     for (std::size_t i = 2; i < kPassword.size(); ++i)
     {
-        const size_t a = kBase26Mappings.at(kPassword.at(i-2));
-        const size_t b = kBase26Mappings.at(kPassword.at(i-1));
-        const size_t c = kBase26Mappings.at(kPassword.at(i));
+        const std::size_t a = kBase26Mappings.at(kPassword.at(i-2));
+        const std::size_t b = kBase26Mappings.at(kPassword.at(i-1));
+        const std::size_t c = kBase26Mappings.at(kPassword.at(i));
         if ((a == (b-1)) && (b == (c-1)))
         {
             return true;
@@ -65,8 +65,8 @@ bool rule3(const std::vector<std::size_t>& kPassword)
     std::vector<std::size_t> kUniquePairs;
     for (std::size_t i = 1; i < kPassword.size(); ++i)
     {
-        const size_t a = kPassword.at(i-1);
-        const size_t b = kPassword.at(i);
+        const std::size_t a = kPassword.at(i-1);
+        const std::size_t b = kPassword.at(i);
         if (a == b)
         {
             if (std::find(kUniquePairs.begin(), kUniquePairs.end(), a) == kUniquePairs.end())
