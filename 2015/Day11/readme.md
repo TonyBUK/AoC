@@ -109,3 +109,32 @@ This is essentially a straight port of the Python code.  There are a few things 
 
 **C**
 
+So here's where we start pulling back the curtain a bit.  Python abstracts away what letters really are, numbers.  In Python you'd need to use chr/ord to go betwen them, and to a certain extent, C++ can be used in such a way where it's non-obvious as to what strings/characters really are.  In C, there's absolutely no getting around it, a string is just an array, and a character is just a number, meaning the whole notion of converting from/to base 23 is really just an extra set of array lookups to enable arithmetic.
+
+And if we embrace the fact we're only ever adding 1 to the password value at a time, what we're really doing is just working our way through a sequence, which we can pre-compute.
+
+Instead of
+
+    a = 0
+    b = 1
+    ...
+    y = 21
+    z = 22
+
+and adding 1 each time...
+
+What if we had an array where:
+
+    [a] = b
+    [b] = c
+    ...
+    [y] = z
+    [z] = a
+
+Now I just need to do:
+
+    next = lookup[current]
+
+Plus I can make h point to j (skipping i) and still get all that goodness, plus the relationship between sequences such as ijk are preserved.  In other words the C solution removes a whole level of repeated conversions.
+
+Now this can absolutely still be done in Python (dictionaries) or C++ (maps/vectors/arrays), but the point is that the abstraction they provide would often take you down the arguably more legible route, whereas C kind of guides you to the jankier but faster route.  So as usual, the C solution to this ends up being faster, but also due to the removal of the abstraction layer, isn't that far off in terms of code size either.
