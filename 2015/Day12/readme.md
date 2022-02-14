@@ -57,3 +57,13 @@ Plus there's no escape sequences, inline spaces or anything overly complex/annoy
 
 **C**
 
+Much like alot of the previous days... take all the work we've established before and basically scrap it.  Instead, we'll solve the data in parse phase itself.  One strategy often used in C style parses is actually to use a callback (normally defined as a callback function the user defines, but in this case I've just made it a normal function).  A good example of this would be the XML parser expat.
+
+https://libexpat.github.io
+
+Basically the parser itself doesn't attempt to store the heirarchy etc., it just calls back with enough data/structural information to allow something else to create a structure, but again as per C++, I'm not trying to write a JSON parser, I'm trying to write something "good enough" to solve this puzzle.  So really all this does is two things:
+
+1.  Any time it encounters an integer, increment a global counter.
+2.  Any time it finds an object with a value of red, notify the parent instance of the parser so that it can rollback the value.
+
+So it's basically the same recursive function, except now parsing/processing is combined.  This also has the added benefit of an absurdly low footprint compared to all the other solutions, as it's really just the buffer for the data, the buffer for scratch data, and how ever many recursive calls were made to the Parse function which can be inferred from the max depth of the input data.
