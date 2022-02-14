@@ -43,6 +43,17 @@ Note: For the purposes of this puzzle/JSON, in Python, Arrays are referred to as
 
 **C++**
 
+Whilst libraries are readily downloadable, I wanted to show that it's not always amazingly complex to roll your own.  Absolutely would not recommend using mine as a basis for any real JSON parser though.  Following the basic spec here:
+
+https://www.json.org/json-en.html
+
+I really only have to deal with four types:
+-   Objects
+-   Arrays
+-   Strings
+-   Numbers (ints)
+
+Plus there's no escape sequences, inline spaces or anything overly complex/annoying in the input data.  It's very much an incomplete parser, but it's "good enough" to process the puzzle.  So really the puzzle itself is solved in the exact same method as the Python method.  I've cheated a bit with the objects type in that I force all keys to be strings, but that's more laziness that complexity.
 
 **C**
 
