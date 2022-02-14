@@ -10,11 +10,6 @@ typedef unsigned BOOL;
 #define FALSE 0
 #endif
 
-void JSONValue(const char* kValue, int64_t* pValue)
-{
-    *pValue += strtol(kValue, NULL, 10);
-}
-
 const char* Parse(const char* pJSONText, char* pScratch, const char* pFilter, int64_t* pValue, BOOL* bFiltered)
 {
     const char*   p              = pJSONText;
@@ -95,7 +90,7 @@ const char* Parse(const char* pJSONText, char* pScratch, const char* pFilter, in
             ++p;
         }
 
-        JSONValue(pScratch, pValue);
+        *pValue += strtol(pScratch, NULL, 10);
     }
 
     return p;
