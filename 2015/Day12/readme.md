@@ -57,11 +57,11 @@ Plus there's no escape sequences, inline spaces or anything overly complex/annoy
 
 **C**
 
-Much like alot of the previous days... take all the work we've established before and basically scrap it.  Instead, we'll solve the data in parse phase itself.  One strategy often used in C style parses is actually to use a callback (normally defined as a callback function the user defines, but in this case I've just made it a normal function).  A good example of this would be the XML parser expat.
+Much like alot of the previous days... take all the work we've established before and basically scrap it.  Instead, we'll solve the data in parse phase itself.  One strategy often used in C style parses is actually to use a callback function to resolve how the parsed data is used/represented in memory (normally defined as a callback function the user defines, but in this case I've just made it a normal function).  A good example of this would be the XML parser expat.
 
 https://libexpat.github.io
 
-Basically the parser itself doesn't attempt to store the heirarchy etc., it just calls back with enough data/structural information to allow something else to create a structure, but again as per C++, I'm not trying to write a JSON parser, I'm trying to write something "good enough" to solve this puzzle.  So really all this does is two things:
+Basically the parser itself doesn't attempt to store the heirarchy etc., it just calls back with enough data/structural information extracted from the source data to allow something else to create a structure, but again as per C++, I'm not trying to write a JSON parser, I'm trying to write something "good enough" to solve this puzzle.  So really all this does is two things:
 
 1.  Any time it encounters an integer, increment a global counter.
 2.  Any time it finds an object with a value of red, notify the parent instance of the parser so that it can rollback the value.
