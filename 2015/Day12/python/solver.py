@@ -40,6 +40,7 @@ def main() :
         #end
         
         return total
+
     #end
 
     for jsonRoot in parsedJSON :
