@@ -48,6 +48,7 @@ Plus there's one cheat I can do to the Left seat.  The whole purpose of the modu
 
 **C++**
 
+To show it actually can happen, this is actually slower than the Python solution.  The primary culprit is the excessive copying, when performing the recursive walking of the permutations.
 
 **C**
 
