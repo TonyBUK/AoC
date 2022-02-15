@@ -7,6 +7,8 @@ This introduces:
 
 So this is one where it's really a case of the have's and the have nots much like Day 4.  Either you're using a language which readily has a simple JSON parser built into the default library set, or you don't, meaning you either have to find one, or make your own.
 
+It's actually kind of telling that in subsequent years, the puzzles never really tended to repeat this sort of dependency.  Personally I don't see anything particuarly wrong with this sort of puzzle, in that if you're truly interested in competing then you'll need to have selected a suitable language in the first place that helps remove all the "busy work", and if not, it's a good way to get exposed to the realities of using a selected language.
+
 The actual puzzle once you get the data parsed is a relatively simple recursive puzzle, which goes something like:
 
     Recursive Function:
