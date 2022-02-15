@@ -25,7 +25,7 @@ std::vector<std::string> split(const std::string& s, char seperator)
 typedef std::map<std::string, int64_t>       happinessType;
 typedef std::map<std::string, happinessType> peopleRulesType;
 
-int64_t calculateHighestHappiness(const peopleRulesType& kPeople, const std::vector<std::string>& kSeatingPlan, std::vector<std::size_t> kCurrentSeatingPlan, const std::size_t nMask, const std::size_t nCompletedMask, const int64_t nScore = 0)
+int64_t calculateHighestHappiness(const peopleRulesType& kPeople, const std::vector<std::string>& kSeatingPlan, std::vector<std::size_t>& kCurrentSeatingPlan, const std::size_t nMask, const std::size_t nCompletedMask, const int64_t nScore = 0)
 {
     int64_t nLocalScore = nScore;
 
@@ -63,9 +63,9 @@ int64_t calculateHighestHappiness(const peopleRulesType& kPeople, const std::vec
             const std::size_t nCurrentMask = 1 << i;
             if (0 == (nCurrentMask & nMask))
             {
-                std::vector<std::size_t> kNewSeatingPlan = kCurrentSeatingPlan;
-                kNewSeatingPlan.push_back(i);
-                nLocalScore = calculateHighestHappiness(kPeople, kSeatingPlan, kNewSeatingPlan, nMask | nCurrentMask, nCompletedMask, nLocalScore);
+                kCurrentSeatingPlan.push_back(i);
+                nLocalScore = calculateHighestHappiness(kPeople, kSeatingPlan, kCurrentSeatingPlan, nMask | nCurrentMask, nCompletedMask, nLocalScore);
+                kCurrentSeatingPlan.pop_back();
             }
         }
     }
