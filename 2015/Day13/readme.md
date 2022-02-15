@@ -52,3 +52,4 @@ To show it actually can happen, this is actually slower than the Python solution
 
 **C**
 
+Whereas C with a much more bare metal approach to memory management again takes the speed crown.  This is effectively the C++ algorithm but without the dynamic array growth/shrinkage (instead, just a separate variable indicating the size increments/decrements) to show just how much overhead that can add.
