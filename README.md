@@ -1,7 +1,9 @@
-# AoC
+# AoC (Unofficial)
 **Advent of Code Solutions**
 
-The purpose of this repo is to provide a tutorial of sorts for each and every puzzle.  Initially I'll just be supplying Python, C and C++ solutions but more may be added in time.
+https://adventofcode.com
+
+The purpose of this repo is to provide a personal tutorial of sorts for each and every puzzle.  Initially I'll just be supplying Python, C and C++ solutions but more may be added in time.  Hopefully this is obvious but to explicitly spell it out, this repo is in no way officially representitive of the AoC challenge, it's merely my solutions and musings on each challenge as a long term pet project.
 
 The core idea is to not only show at least one way of solving each given problem, but also the trade-offs of each given language in doing this.
 
