@@ -40,8 +40,6 @@ If you're looking for different approaches for any given solution, I would recom
 - Or more likely googling: Advent of Code [Day] [Year]
   - And then visiting the Reddit thread this brings up.  This also has the benefit of providing a huge range of solutions, especially in the "overachieving" category, i.e. fastest solution, smallest solution, solution written in the most esoteric language and so on, and of course you can always ask questions!
 
-Also as a trigger warning, I *despise* Python's indentation scoping rule, so get used to seeing "#end" all over the place to make me at least think it bookends scope.  Also my background is more procedural programming than object orientation, so my code will reflect that (my day job is typically embedded C).  Typically I only use classes to encapsulate a thing, especially if I think it would benefit from RAII/resource ownership, but my go-to isn't make all things classes.
-
 It's going to take a while to fully populate this, as whilst I have solved all (as of writing) 350 stars, I do want to take some time on each to re-factor.  Also, the majority of the code is in Python/Ruby/Other, so some effort is going to be needed (post cleanup) to port to C and C++.
 
 Also not everything will be a straight port.  What I'm going for is writing the solutions for each challenge that is the most natural way (to me) of implementing a solution for the language at hand.  This will mean Python/C++ will mostly follow each other, but occasionally C will diverge.  That's not to say the C methods couldn't be used in Python/C++, more that it'd be weird to go that route.  As I said, I'm certainly not trying to bias any language, but likewise I don't want to write unrealistic implementations for the sake of feature parity/lowest common denominator coding across languages.
@@ -54,8 +52,25 @@ One thing to be wary of, the solutions I've uploaded work for my particular envi
 
 The Python version targetted is in the 3.x range.  The aim isn't to constantly refresh to the latest and greatest, but acknowledgement that the fragmentation issues with Python versions utterly pales to that of C/C++ compiler versions (see below).  If anyone does find compatability issues with my Python code and some widely used variant of Python 3.X, I'd be happy to take a look to try and resolve it.  For example, how's MicroPython compatability?
 
+Also as a trigger warning, I *despise* Python's indentation scoping rule, so get used to seeing "#end" all over the place to make me at least think it bookends scope.  Also my background is more procedural programming than object orientation, so my code will reflect that (my day job is typically embedded C).  Typically I only use classes to encapsulate a thing, especially if I think it would benefit from RAII/resource ownership, but my go-to isn't make all things classes.
+
 **General comments on C/C++**
 
 For better or worse, the standards of each language I'm targetting are C '89/'90 and C++ '98.  The main reason is this gives the greatest portability for anyone who wants to build the code.  My day job primarily involves writing low level C code for embedded platforms using certified compilers, this typically forces me to the oldest standard of the compiler due to the prohibitive cost of certifying compilers for various uses.  Part of the aim of these solutions is to provide portable solutions with minimal dependencies, and unfortunately that typically means some newer language features are off limits.
 
 If a more recent version of the language provides a significantly better solution, I may provide that as well, however if it just means I can't use auto (actually painful for iterators), or prevents me from scoping variables to their actual usage, then that's something I can live with, since if someone does wish to "upgrade" the C/C++ version, it's a relatively trivial process to do so.
+
+And again, trigger warning time, I like my braces to line up horizontally, meaning, I always put my open braces on the next line, meaning you'll *never* see:
+
+        if (am I a bad person) {
+            Yes!
+        }
+
+But you will see:
+
+        if (am I being deliberately provocative
+        {
+            Who knows!
+        }
+
+Plus unless it's a hyper specific case, such as a whole bunch of return tests or something of that ilk, I always use braces, even if it's only to guard a single line of code.  I'm not a fan of potential ambiguity for the sake of terseness.
