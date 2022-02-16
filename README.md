@@ -74,7 +74,7 @@ And again, trigger warning time, I like my braces to line up horizontally, meani
 
 But you will see:
 
-        if (am I being deliberately provocative
+        if (am I being deliberately provocative)
         {
             Who knows!
         }
