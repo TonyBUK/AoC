@@ -12,6 +12,34 @@ The core idea is to not only show at least one way of solving each given problem
 - C++    : A feature rich low level language, especially when paired with STL, which can often maintain near parity with Python in terms of features available out of the box.
 - C      : A very low level language that doesn't have out of the box parity with Python/C++ especially when it comes to dynamic arrays / hash maps, instead requiring either custom code or third party code.  This does however come with a much lower/more obvious memory footprint, and typically, when written correctly, should produce the quickest code.  But it does often come at the expense of requiring much more user written code to achieve feature parity...
 
+This isn't meant to be a "best" solution either, merely the solution I arrived at (typically as long as the solution is measurable in milliseconds or seconds, that's good enough for me).  Typically when you see solutions, they fall into one of two camps:
+
+- Algorithmic solutions
+- Mathematical solutions
+
+The latter tend to be faster, but are often only useful if you understand the core principles behind it.  As a simple example, consider writing a general solution to: N + (N-1) + (N-2) + ... + 5 + 4 + 3 + 2 + 1 (hint, this will actually come up!)
+
+If you were writing this algorithmically you would go with something like:
+
+    TOTAL = 0
+    WHILE N > 0
+      TOTAL = TOTAL + N
+      N     = N - 1
+    WEND
+
+So you would understand that as N gets larger, the amount of time required to reach a solution also increases (in Big O notation, this would be O(N), i.e. a linear increase as the size of the input increases).  The mathematical approach would be recognising the pattern as a series, specifically a Triangle Number: https://en.wikipedia.org/wiki/Triangular_number#Formula
+
+Where you could replace the *whole* thing with:
+
+    TOTAL = (N * (N+1)) / 2
+
+i.e. the value of N is no longer important, it will always take the same amount of time to solve (in Big O notation, this would be O(1), i.e. the time to process remains constant).  Personally I tend to bias toways the Algorithmic solutions *unless* the Mathematical one is relatively common or if I've been forced down that route due to the Algorithmic approach being impractical.  As a bench mark for me, yes, I'll typically spot applications of triangle numbers, no, I won't typically spot applications of Chinese Remainder Theorem.
+
+If you're looking for different approaches for any given solution, I would recommend either:
+- Going to: https://www.reddit.com/r/adventofcode/
+- Or more likely googling: Advent of Code [Day] [Year]
+  - And then visiting the Reddit thread this brings up.  This also has the benefit of providing a huge range of solutions, especially in the "overachieving" category, i.e. fastest solution, smallest solution, solution written in the most esoteric language and so on, and of course you can always ask questions!
+
 Also as a trigger warning, I *despise* Python's indentation scoping rule, so get used to seeing "#end" all over the place to make me at least think it bookends scope.  Also my background is more procedural programming than object orientation, so my code will reflect that (my day job is typically embedded C).  Typically I only use classes to encapsulate a thing, especially if I think it would benefit from RAII/resource ownership, but my go-to isn't make all things classes.
 
 It's going to take a while to fully populate this, as whilst I have solved all (as of writing) 350 stars, I do want to take some time on each to re-factor.  Also, the majority of the code is in Python/Ruby/Other, so some effort is going to be needed (post cleanup) to port to C and C++.
