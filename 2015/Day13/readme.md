@@ -42,14 +42,14 @@ As per Part 1, but we now add a dummy entry into the seating plan.  Only who can
 
 **Python**
 
-I cut Python quite a bit of slack here and used itertools to calculate the permutations, rather than solving it as a Depth First recursive solution.  What's nice is that this is returned as an iterable object, meaning Python isn't actually calculating the permutations up front, but rather interleaving one set of permutations each iteration of the seating plan loop.
+I cut Python quite a bit of slack here and used itertools to calculate the permutations, rather than solving it as a Depth First recursive solution.  What's nice is that this is returned as an iterable object, meaning Python isn't actually calculating the permutations up front, but rather interleaving one set of permutations each iteration of the seating plan loop, meaning it's only when the loop *asks* for the next permutation that it actually calculates it.
 
 Plus there's one cheat I can do to the Left seat.  The whole purpose of the modulo arithmetic was to stop the index going negative, except in Python land, array[-1] is that last element, i.e. exactly what we wanted, so we only need to worry about the overflow for the right seat.
 
 **C++**
 
-To show it actually can happen, this is actually slower than the Python solution.  The primary culprit is the excessive copying, when performing the recursive walking of the permutations.
+To show it actually can happen, this is actually slower than the Python solution.  The primary culprit is the excessive copying/resizing, when performing the recursive walking of the permutations.
 
 **C**
 
-Whereas C with a much more bare metal approach to memory management again takes the speed crown.  This is effectively the C++ algorithm but without the dynamic array growth/shrinkage (instead, just a separate variable indicating the size increments/decrements) to show just how much overhead that can add.
+Whereas C with a much more bare metal approach to memory management again takes the speed crown.  This is effectively the C++ algorithm but without the dynamic array growth/shrinkage/copying (instead, just a separate variable indicating the size increments/decrements) to show just how much overhead that can add.
