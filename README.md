@@ -37,6 +37,8 @@ Where you could replace the *whole* thing with:
 
 i.e. the value of N is no longer important, it will always take the same amount of time to solve (in Big O notation, this would be O(1), i.e. the time to process remains constant).  Personally I tend to bias towards the Algorithmic solutions *unless* the Mathematical one is relatively common or if I've been forced down that route due to the Algorithmic approach being impractical.  As a bench mark for me, yes, I'll typically spot applications of triangle numbers, no, I won't typically spot applications of Chinese Remainder Theorem.
 
+If I'm aware that there was a super maths'y solution to a puzzle that I missed, I'll link it for each day I'm aware of, but this won't be exhaustive, and will typically only be for 2020/2021 since that's when I started actively participating in AoC, whereas 2015-2019 was me solving these way after the fact, meaning I wasn't *as* interested in other peoples solutions.
+
 If you're looking for different approaches for any given solution, I would recommend either:
 - Going to: https://www.reddit.com/r/adventofcode/
 - Or more likely googling: Advent of Code [Day] [Year]
