@@ -27,7 +27,9 @@ If you were writing this algorithmically you would go with something like:
       N     = N - 1
     WEND
 
-So you would understand that as N gets larger, the amount of time required to reach a solution also increases (in Big O notation, this would be O(N), i.e. a linear increase as the size of the input increases).  The mathematical approach would be recognising the pattern as a series, specifically a Triangle Number: https://en.wikipedia.org/wiki/Triangular_number#Formula
+So you would understand that as N gets larger, the amount of time required to reach a solution also increases (in Big O notation, this would be O(N), i.e. a linear increase as the size of the input increases).
+
+The mathematical approach would be recognising the pattern as a series, specifically a Triangle Number: https://en.wikipedia.org/wiki/Triangular_number#Formula
 
 Where you could replace the *whole* thing with:
 
