@@ -35,7 +35,7 @@ Where you could replace the *whole* thing with:
 
     TOTAL = (N * (N+1)) / 2
 
-i.e. the value of N is no longer important, it will always take the same amount of time to solve (in Big O notation, this would be O(1), i.e. the time to process remains constant).  Personally I tend to bias toways the Algorithmic solutions *unless* the Mathematical one is relatively common or if I've been forced down that route due to the Algorithmic approach being impractical.  As a bench mark for me, yes, I'll typically spot applications of triangle numbers, no, I won't typically spot applications of Chinese Remainder Theorem.
+i.e. the value of N is no longer important, it will always take the same amount of time to solve (in Big O notation, this would be O(1), i.e. the time to process remains constant).  Personally I tend to bias towards the Algorithmic solutions *unless* the Mathematical one is relatively common or if I've been forced down that route due to the Algorithmic approach being impractical.  As a bench mark for me, yes, I'll typically spot applications of triangle numbers, no, I won't typically spot applications of Chinese Remainder Theorem.
 
 If you're looking for different approaches for any given solution, I would recommend either:
 - Going to: https://www.reddit.com/r/adventofcode/
