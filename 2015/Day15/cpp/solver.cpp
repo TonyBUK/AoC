@@ -83,6 +83,9 @@ cookieScore calculateCookieScore(const std::vector<ingredientProperties>& kIngre
 // Recursive Function to find the best cookie score, and the best diet cookie score (cookie score when the calorie count = 500)
 void calculateBestCookieScore(std::vector<ingredientProperties>& kIngredients, int64_t nTargetCalories, bestCookieScore& kBestScore, std::vector<std::size_t> kIngredientList = std::vector<std::size_t>())
 {
+    std::size_t nLoopStart = 0;
+    std::size_t nLoopEnd   = 100;
+
     // Initialise the Scores on first entry...
     if (kIngredientList.size() == 0)
     {
@@ -90,8 +93,13 @@ void calculateBestCookieScore(std::vector<ingredientProperties>& kIngredients, i
         kBestScore.nBestDietScore = 0;
         kIngredientList.push_back(0);
     }
+    else if (kIngredientList.size() == kIngredients.size())
+    {
+        nLoopStart = static_cast<std::size_t>(100 - std::accumulate(kIngredientList.begin(), kIngredientList.end(), 0ll));
+        nLoopEnd   = nLoopStart;
+    }
 
-    for (std::size_t i = 0; i <= 100; ++i)
+    for (std::size_t i = nLoopStart; i <= nLoopEnd; ++i)
     {
         kIngredientList.back() = i;
 
