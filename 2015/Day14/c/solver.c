@@ -211,8 +211,8 @@ int main(int argc, char** argv)
         free(kBuffer);
         free(kLines);
 
-        printf("Part 1: %zu\n", winningDistance(kReindeerProfiles, nReindeerCount, 2503));
-        printf("Part 2: %zu\n", winningPoints  (kReindeerStates,   nReindeerCount, 2503));
+        printf("Part 1: %u\n", (uint32_t)winningDistance(kReindeerProfiles, nReindeerCount, 2503));
+        printf("Part 2: %u\n", (uint32_t)winningPoints  (kReindeerStates,   nReindeerCount, 2503));
 
         /* Free the Reindeer Data */
         free(kReindeerProfiles);
