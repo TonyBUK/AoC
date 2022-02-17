@@ -72,4 +72,8 @@ Split the data more than I would like.  Probably should have kept it bundled and
 
 A bit more verbose but essentially the Python solution.  The code could be a tad faster for calculating points if I passed by reference rather than const reference, as this would prevent me having to create a copy within the winningPoints function for manipulation, but I typically favour functions that can use const inputs where possible as it typically increases the versatility of the usage (i.e. better to be non-destructive where possible).  Plus it's not a race!
 
+The cast from std::size_t to int64_t incidently is to allow the while loop to go negative, otherwise I'd need guards on ensuring I don't underflow an unsigned type when subtracting duration/rest time.
+
 **C**
+
+Follows the C++ solution closely.  This time the calls are destructive to the data being processed, as copying the data in C is more of a pain compared to C++, as I'd need to allocate the space, perform the copy, and de-allocate.  Plus since some of the data is actually a pointer to another structure anyway, whilst safe in this instance, it could be more of a pain if that too needed to be destructive.
