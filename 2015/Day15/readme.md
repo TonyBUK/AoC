@@ -98,3 +98,4 @@ No real difference from the Python code, albeit with a nice speed boost as a nat
 
 **C**
 
+As ever, same code as C++, only faster, mainly due to the lack of abstraction in memory management / array handling... but at the expense of encapsulation/simplicity/readibility.
