@@ -47,10 +47,12 @@ What we really want to do is more like:
 
 Basically no point going to the next layer of the loop if we've already hit our 100 target.  And since we can see time you go down the loop, that you're essentially doing the same thing, this means that this is probably best solved using something like Recursion.  To say this speeds this whole thing up is something of an understatement...
 
+Note: There is a bit of logic missing, as you don't actually want to allow a total score to be evaluated if the current ingredient count is 0, since that would have already been evaluated on the previous pass, as this means calculating a set of ingredient quantities that have already been dealt with, however it bloats the basic algorithm pseuo-code, and isn't technically wrong, just slightly less efficient.
+
 With only 4 ingredient in my input set, using the naive method vs the recursive method:
 
-- Only 176851 out of 103030100 times the IF statement was assessed resulted in the ingredient count being valid (0.17% of the time)
-- Only 176851 out of   4962329 times the IF statement was assessed resulted in the ingredient count being valid (3.56% of the time)
+    Naive:     Only 176851 out of 103030100 times the IF statement was assessed resulted in the ingredient count being valid (0.17% of the time)
+    Recursive: Only 176851 out of   4962329 times the IF statement was assessed resulted in the ingredient count being valid (3.56% of the time)
 
 This results in about a 25X speed improvement on my system.  Definately worth it!
 
@@ -64,7 +66,7 @@ Uses the recursive algorithm and keeps the best cookie score found.
 
 **Part 2**
 
-Performed in the same pass as Part 1, but now only bothers evaluating a given cookie score if the calorie count was exactly 500.
+Performed in the same algorithm as Part 1 (since the slow part is generating the permutations), but only evaluated a given cookie score if the calorie count was exactly 500.
 
 **Python vs C++ vs C**
 
