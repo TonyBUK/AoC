@@ -13,6 +13,9 @@ def main() :
         ingredients = [extractIngredients(line.replace(",", "").replace("\n", "").split(" ")) for line in inputFile.readlines()]
     #end
 
+    # Calculated the Cookie Score for a given ingredient list
+    # Note: The size of the ingredient list can be less than the size of the number of ingredients,
+    #       this is taken to mean the remaining ingredients all have a quantity of 0.
     def calculateCookieScore(ingredients, ingredientList) :
 
         capacity   = 0
@@ -21,6 +24,7 @@ def main() :
         texture    = 0
         calories   = 0
 
+        # Multiply each ingredient property by the ingredient count and update the total
         for currentIngredientCount,currentIngredient in zip(ingredientList, ingredients) :
             capacity    += currentIngredientCount * currentIngredient["capacity"]
             durability  += currentIngredientCount * currentIngredient["durability"]
@@ -29,18 +33,22 @@ def main() :
             calories    += currentIngredientCount * currentIngredient["calories"]
         #end
 
+        # Disallow any negative totals
         if capacity   < 0 : capacity   = 0
         if durability < 0 : durability = 0
         if flavor     < 0 : flavor     = 0
         if texture    < 0 : texture    = 0
         if calories   < 0 : calories   = 0
 
+        # Return the cookie score and the calorie count
         return (capacity * durability * flavor * texture), calories
 
     #end
 
+    # Recursive Function to find the best cookie score, and the best diet cookie score (cookie score when the calorie count = 500)
     def calculateBestCookieScore(ingredients, targetCalories, bestScore = 0, bestDietScore = 0, ingredientList = None) :
 
+        # As ever, never initialise a list/dictionary/set in the default parameter list!
         if ingredientList == None :
             ingredientList = [0]
         #end
@@ -49,21 +57,38 @@ def main() :
 
             ingredientList[-1] = X
 
+            # Simple guard to prevent the Cookie Score being calculated for a set of ingredient counts
+            # that have already been checked
             if X > 0 :
-                if sum(ingredientList) > 100 : break
+
+                # If the Ingredient Count is exactly 100
                 if sum(ingredientList) == 100 :
+                    
+                    # Calculate the Cookie Score/Calorie Count
                     cookieScore,calories = calculateCookieScore(ingredients, ingredientList)
-                    if cookieScore > bestScore : bestScore = cookieScore
+                    
+                    # Update the Best Score
+                    bestScore = max(cookieScore, bestScore)
+                    
+                    # Update the Best Diet Score
                     if calories == targetCalories :
-                        if cookieScore > bestDietScore : bestDietScore = cookieScore
+                        bestDietScore = max(cookieScore, bestDietScore)
                     #end
+
+                    break # No point iterating further as the ingredient count can only go up!
+
                 #end
+
             #end
 
+            # If there's still ingredient we can iterate on...
             if len(ingredientList) < len(ingredients) :
+
+                # Recursive to the next level to start updating the next ingredient
                 ingredientList.append(0)
                 bestScore, bestDietScore = calculateBestCookieScore(ingredients, targetCalories, bestScore, bestDietScore, ingredientList)
                 ingredientList.pop()
+
             #end
 
         #end
@@ -72,6 +97,7 @@ def main() :
 
     #end
 
+    # Get the Best Score/Diet Score in a single pass to only calculate the permutations once
     bestScore, bestDietScore = calculateBestCookieScore(ingredients, 500)
 
     print(f"Part 1: {bestScore}")
