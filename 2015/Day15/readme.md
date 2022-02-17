@@ -1,9 +1,9 @@
-# Day 14
+# Day 15
 
 https://adventofcode.com/2015/day/15
 
 This introduces:
-- Optimisations...
+- Forced optimisations...
 
 So here's where we need to actually start thinking about optimisations, the crux of the problem is that the total number of ingredients has to be 100, meaning at its most basic level, for the number of ingredients provided, we have to determine the score when any combination of those ingredients (keeping in mind it's permitted to not use an ingredient) gives a total ingredient count of 100.
 
