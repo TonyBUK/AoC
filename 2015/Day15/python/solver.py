@@ -52,8 +52,16 @@ def main() :
         if ingredientList == None :
             ingredientList = [0]
         #end
+        
+        if len(ingredientList) == len(ingredients) :
+            XStart = 100 - sum(ingredientList)
+            XEnd   = XStart + 1
+        else :
+            XStart = 0
+            XEnd   = 100+1
+        #end
 
-        for X in range(100+1) :
+        for X in range(XStart, XEnd) :
 
             ingredientList[-1] = X
 
