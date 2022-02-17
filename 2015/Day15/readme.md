@@ -56,6 +56,24 @@ With only 4 ingredient in my input set, using the naive method vs the recursive 
 
 This results in about a 25X speed improvement on my system.  Definately worth it!
 
+But wait, that's not all.  When I said that the each iteration of the loop is the same, that was a lie.  When we're at the innermost iteration of the loop, we can specialise the range.  Rather than:
+
+    FOR Ingredient N Count = 0..100
+      IF the Total Ingredient Count is 100
+        Calculate the Recipe Score for using the Ingredient Counts
+      END
+    NEXT
+
+By the time we reach here, we know the count can only be:
+
+    Ingredient N Count = 100 - sum(Ingredient 1 Count .. Ingredient N-1 Count)
+
+Thing brings the final number of iterations to:
+
+    Recursive: Only 176851 out of    353701 times the IF statement was assessed resulted in the ingredient count being valid (50% of the time)
+
+Things brings the total speed up to around 60X!
+
 If you want to read up on this sort of problem in a more abstract sense...  https://en.wikipedia.org/wiki/Subset_sum_problem
 
 Otherwise, the rest of the puzzle is trivial, sum the properties of each ingredient (taking into account the quantities we've calculated), handle any negative values, and multiply them all together.
