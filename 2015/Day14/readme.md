@@ -79,3 +79,11 @@ The cast from std::size_t to int64_t incidently is to allow the while loop to go
 Follows the C++ solution closely.  This time the calls are destructive to the data being processed, as copying the data in C is more of a pain compared to C++, as I'd need to allocate the space, perform the copy, and de-allocate.  Plus since some of the data is actually a pointer to another structure anyway, whilst safe in this instance, it could be more of a pain if that too needed to be destructive.
 
 One of the weaknesses of printf incidently is that it's really beholden to the size of the type being processed, making the format strings something of a pain for portability sake.  C99 added %zu for size_t types but I'm determined to go OG C here, so I've instead cast to uint32_t which should force the type to be compatible with %u across compilers.
+
+As an aside, if anyone is curious why this is an issue, it's actually all because printf is an example of a variadic function, which is just a way of saying it takes a variable number of arguments.
+
+https://en.cppreference.com/w/c/variadic
+
+The problem is, for better or worse, the function that's called actually has no idea what the types of the parameters were, instead it has to figure out at runtime how to traverse the data passed in, which is why the format string type defintions such as %i / %llu etc. are so important in the first place, as these not only tell printf how to present the data once printed, but also how to move from one argument to the next (i.e. the size of each data type).
+
+Decent compilers understand this, and typically have specialised warnings if you ever mismatch the format string (if known at compilation time) with the arguments supplied, but ultimately printf is still going to have to re-do all this at runtime.  One of the many reasons never to write variadic functions unless you've a very *very* good reason to.
