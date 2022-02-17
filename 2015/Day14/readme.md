@@ -77,3 +77,5 @@ The cast from std::size_t to int64_t incidently is to allow the while loop to go
 **C**
 
 Follows the C++ solution closely.  This time the calls are destructive to the data being processed, as copying the data in C is more of a pain compared to C++, as I'd need to allocate the space, perform the copy, and de-allocate.  Plus since some of the data is actually a pointer to another structure anyway, whilst safe in this instance, it could be more of a pain if that too needed to be destructive.
+
+One of the weaknesses of printf incidently is that it's really beholden to the size of the type being processed, making the format strings something of a pain for portability sake.  C99 added %zu for size_t types but I'm determined to go OG C here, so I've instead cast to uint32_t which should force the type to be compatible with %u across compilers.
