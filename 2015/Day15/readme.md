@@ -76,5 +76,7 @@ A small saving can be made by not resizing the ingredientList list in the recurs
 
 **C++**
 
+No real difference from the Python code, albeit with a nice speed boost as a natural advantage of the nature of the language.
+
 **C**
 
