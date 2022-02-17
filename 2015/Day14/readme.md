@@ -70,4 +70,6 @@ Split the data more than I would like.  Probably should have kept it bundled and
 
 **C++**
 
+A bit more verbose but essentially the Python solution.  The code could be a tad faster for calculating points if I passed by reference rather than const reference, as this would prevent me having to create a copy within the winningPoints function for manipulation, but I typically favour functions that can use const inputs where possible as it typically increases the versatility of the usage (i.e. better to be non-destructive where possible).  Plus it's not a race!
+
 **C**
