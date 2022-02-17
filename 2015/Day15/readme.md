@@ -68,11 +68,11 @@ By the time we reach here, we know the count can only be:
 
     Ingredient N Count = 100 - sum(Ingredient 1 Count .. Ingredient N-1 Count)
 
-Thing brings the final number of iterations to:
+This brings the final number of iterations to:
 
     Recursive: Only 176851 out of    353701 times the IF statement was assessed resulted in the ingredient count being valid (50% of the time)
 
-Things brings the total speed up to around 60X!
+... and the total speed up to around 60X!
 
 If you want to read up on this sort of problem in a more abstract sense...  https://en.wikipedia.org/wiki/Subset_sum_problem
 
