@@ -22,7 +22,7 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     nFileSize       = nEndPos - nStartPos;
 
     *pkFileBuffer   = (char*) malloc((nFileSize+1)  * sizeof(char));
-    *pkLines        = (char**)malloc((nFileSize)    * sizeof(char));
+    *pkLines        = (char**)malloc((nFileSize)    * sizeof(char*));
 
     fread(*pkFileBuffer, nFileSize, sizeof(char), *pFile);
     (*pkFileBuffer)[nFileSize] = '\0';
