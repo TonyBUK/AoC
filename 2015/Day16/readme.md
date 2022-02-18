@@ -60,3 +60,7 @@ Sometimes it's better to favour readibility, especially since this step has esse
 Basically follows Python.  As ever, I find STL initialisations a bit clunky, meaning some of the data I'd want to be const isn't, but that is solved in later revisions of C++...
 
 **C**
+
+This makes a slight twist, in that rather than buffering/comparing strings of the compounds, this converts them into an enumerated type to avoid any unnecessary string comparisons / storage.  This does have the slight down side of being less scaleable, in that arguably Python/C++ could more easily cope with new compounds being added, but for the solution it's certainly good enough, should be slightly faster too.
+
+I've also taken the step of encapsulating the read lines functionality into its own function.  This also indicates one of the naff aspects of C, data ownership.  The readLines function allocates two buffers, for storing the line data, but the responsibility for free'ing afterwards is in the function that called readLines.  With C++, it's far easier to encapsulate all of this so that we don't accidently have the memory left allocated on shut-down.
