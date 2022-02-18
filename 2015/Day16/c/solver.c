@@ -255,8 +255,8 @@ int main(int argc, char** argv)
         free(kBuffer);
         free(kLines);
 
-        printf("Part 1 %u\n", (uint32_t)whichSue(kWrappingPaper, kSues, nSueCount, NULL,       0,                                        NULL,         0));
-        printf("Part 2 %u\n", (uint32_t)whichSue(kWrappingPaper, kSues, nSueCount, kFewerThan, sizeof(kFewerThan)/sizeof(kFewerThan[0]), kGreaterThan, sizeof(kGreaterThan)/sizeof(kGreaterThan[0])));
+        printf("Part 1: %u\n", (uint32_t)whichSue(kWrappingPaper, kSues, nSueCount, NULL,       0,                                        NULL,         0));
+        printf("Part 2: %u\n", (uint32_t)whichSue(kWrappingPaper, kSues, nSueCount, kFewerThan, sizeof(kFewerThan)/sizeof(kFewerThan[0]), kGreaterThan, sizeof(kGreaterThan)/sizeof(kGreaterThan[0])));
 
         /* Free the Sues */
         free(kSues);
