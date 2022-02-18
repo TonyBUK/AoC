@@ -21,10 +21,12 @@ std::vector<std::string> split(const std::string& s, char seperator)
     return output;
 }
 
-std::size_t whichSue(const std::map<std::string, std::size_t>&                         kWrappingPaperCompounds,
-                     const std::map<std::size_t, std::map<std::string, std::size_t> >& kSues,
-                     const std::vector<std::string>&                                   kGreaterThan = std::vector<std::string>(),
-                     const std::vector<std::string>&                                   kFewerThan   = std::vector<std::string>())
+typedef std::map<std::string, std::size_t> compoundMapType;
+
+std::size_t whichSue(const compoundMapType&                        kWrappingPaperCompounds,
+                     const std::map<std::size_t, compoundMapType>& kSues,
+                     const std::vector<std::string>&               kGreaterThan = std::vector<std::string>(),
+                     const std::vector<std::string>&               kFewerThan   = std::vector<std::string>())
 {
     // Iterate over each Sue
     for (std::map<std::size_t, std::map<std::string, std::size_t> >::const_iterator itSue = kSues.cbegin(); itSue != kSues.cend(); ++itSue)
@@ -35,7 +37,7 @@ std::size_t whichSue(const std::map<std::string, std::size_t>&                  
         bool bValidSue = true;
 
         // Iterate over each compound you remember about Sue
-        for (std::map<std::string, std::size_t>::const_iterator itCompound = kSue.cbegin(); bValidSue && (itCompound != kSue.cend()); ++itCompound)
+        for (compoundMapType::const_iterator itCompound = kSue.cbegin(); bValidSue && (itCompound != kSue.cend()); ++itCompound)
         {
             const std::string& kCompound = itCompound->first;
             const std::size_t& nQuantity = itCompound->second;
@@ -80,7 +82,7 @@ int main(int argc, char** argv)
     if (kFile.is_open())
     {
         // Create the Wrapping Paper Compounds
-        std::map<std::string, std::size_t> kWrappingPaper;
+        compoundMapType kWrappingPaper;
         kWrappingPaper["children"]      = 3;
         kWrappingPaper["cats"]          = 7;
         kWrappingPaper["samoyeds"]      = 2;
@@ -93,7 +95,7 @@ int main(int argc, char** argv)
         kWrappingPaper["perfumes"]      = 1;
 
         // Sues
-        std::map<std::size_t, std::map<std::string, std::size_t> > kSues;
+        std::map<std::size_t, compoundMapType> kSues;
 
         while (!kFile.eof())
         {
@@ -107,7 +109,7 @@ int main(int argc, char** argv)
 
             // Extract Sue
             std::vector<std::string> kSueMemory = split(kLine, ' ');
-            std::map<std::string, std::size_t> kSue;
+            compoundMapType          kSue;
 
             for (std::size_t i = 2; i < kSueMemory.size(); i += 2)
             {
