@@ -52,6 +52,15 @@ So this brings the whole thing down to:
 
     NEXT
 
+This is also the first time I've purposely left debug functionality in the code.  A good thing to do with these sorts of puzzles is spend the time to output the data in a fashion to allow yourself to follow what's happened between iterations of the puzzle.  It'll often illuminate where mistakes were made in a way that isn't always obvious when looking in the debugger.  Plus the puzzle for the day gives some good examples of what should happen each cycle, which is definately worth implementing.
+
+In-fact as the puzzles get more complex, unless you're really confident, or going for the leaderboard position, the workflow is normally:
+
+1. Use the examples from the puzzle as the input before even touching the real input.
+2. And once that works, now move to the real input.
+
+Not saying it's fool proof, as often the real input exposes some nuance/scalability that the example didn't, but it's certainly a good way of gaining confidence the core algorithm is basically doing the right thing.
+
 **Part 1**
 
 Exactly as stated above...
