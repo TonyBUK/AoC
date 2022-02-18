@@ -96,3 +96,13 @@ Essentially the Python solution, but slightly less elegant with respect to getti
 **C**
 
 Slightly different route, but that's mostly because hash maps aren't the most natural fit for C.  Instead of using a hash map for all possible solutions, I just store an array, initialised to 0, representing all possible counts from the input data set (i.e. the most items to reach a target could ever be is if all the containers are used), so slightly more effecient than the other solutions with respect to processing time.
+
+Also fun fact, todays solution exposed a nasty malloc bug introduced in all the previous solutions involving buffering the start points of each line.
+
+    kLines             = (char**)malloc((nFileSize)    * sizeof(char));
+    
+The problem is this is storing an array of pointers, it should have been:
+
+    kLines             = (char**)malloc((nFileSize)    * sizeof(char*));
+
+And yes, I've gone back and fixed the code in the prior days!  That's one of the joys of C, runtime errors often manifest in the weirdest of ways.  It just so happened all the other days had really long lines, making this attempt at guessing the line count (i.e. being lazy) make up for the fact the type size was a fraction of the size it should have been (8 bytes on a 64 bit system).  This puzzle had really short lines (2 digit numbers), causing this to ultimately be the day that exposed the bug.
