@@ -57,4 +57,6 @@ Sometimes it's better to favour readibility, especially since this step has esse
 
 **C++**
 
+Basically follows Python.  As ever, I find STL initialisations a bit clunky, meaning some of the data I'd want to be const isn't, but that is solved in later revisions of C++...
+
 **C**
