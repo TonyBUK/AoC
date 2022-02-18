@@ -40,7 +40,7 @@ def main() :
 
             for liveConway in liveConways :
 
-                # Add/Nop the Current Conway Candidate
+                # Add/Nop the Current Conway Candidate as we need the position to exist, even if it's Neighbour Count is 0...
                 conwayCandidates[liveConway] = conwayCandidates.get(liveConway, 0)
 
                 # Extract X/Y
