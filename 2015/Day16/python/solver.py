@@ -34,10 +34,20 @@ def main() :
         if greaterThan is None : greaterThan = []
         if fewerThan   is None : fewerThan   = []
 
+        # Iterate over each Sue
         for sue,compounds in sues.items() :
+
+            # Initially assume this is our Sue
             validSue = True
+
+            # Iterate over each compound you remember about Sue
             for compound,quantity in compounds.items() :
+
+                # This should always be the case...
                 if compound in wrappingPaperCompounds :
+
+                    # Determine how to compare the compound
+                    # Greater Than, Fewer Than or Equal To
                     if compound in greaterThan :
                         validSue = quantity > wrappingPaperCompounds[compound]
                     elif compound in fewerThan :
@@ -45,15 +55,25 @@ def main() :
                     else :
                         validSue = quantity == wrappingPaperCompounds[compound]
                     #end
+
+                    # If this isn't our Sue, move onto the next Sue
                     if validSue is False : break
+
                 else :
+
                     # Can't happen unless the MFCSAM ticker tape list wasn't exhaustive
                     assert(False)
+
                 #end
+
             #end
+
+            # If everything we remembered about Sue matches, we've found our Sue!
             if validSue : return sue
+
         #end
 
+        # Shouldn't get here unless all the Sue's were wrong?!?
         assert(False)
 
     #end
