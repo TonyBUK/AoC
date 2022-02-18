@@ -30,19 +30,19 @@ Simpliest way to do this is basically to walk down the indexes...
 
 So to walk this through:
 
-    Outer loop considers 5
+    Outer loop considers 5 : Total is 5 (too small)
     
       Inner Loop considers 10 : Total is 15 so accept
 
-        Innermost Loop Considers 5
+        Innermost Loop Considers 5 : Total is 20 (too big)
 
-      Inner Loop considers 5
+      Inner Loop considers 5 : Total is 10 (too small)
       
         Innermost Loop has no remaining containers
       
       Inner Loop has no remaining containers
       
-    Outer loop considers 10
+    Outer loop considers 10 : Total is 10 (too small)
     
       Inner loop considers 5: Total is 15 so accept
       
@@ -50,7 +50,7 @@ So to walk this through:
         
       Inner Loop has no remaining containers
       
-    Outer loop considers 5
+    Outer loop considers 5 : Total is 5 (too small)
     
       Inner loop has no remaining containers
       
