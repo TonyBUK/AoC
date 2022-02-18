@@ -40,7 +40,7 @@ def main() :
 
     permutations = calculatePermutations(containers, 150)
 
-    # Get the total of all permutatiosn for Part 1
+    # Get the total of all permutations for Part 1
     total        = sum([i for i in permutations.values()])
 
     # Get the minimum number of containers used for Part 2
