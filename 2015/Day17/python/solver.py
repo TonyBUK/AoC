@@ -39,7 +39,11 @@ def main() :
     #end
 
     permutations = calculatePermutations(containers, 150)
+
+    # Get the total of all permutatiosn for Part 1
     total        = sum([i for i in permutations.values()])
+
+    # Get the minimum number of containers used for Part 2
     minSolution  = min(permutations.keys())
 
     print(f"Part 1: {total}")
