@@ -378,7 +378,7 @@ int main(int argc, char** argv)
         nFileSize          = nEndPos - nStartPos;
 
         kBuffer            = (char*) malloc((nFileSize+1)  * sizeof(char));
-        kLines             = (char**)malloc((nFileSize)    * sizeof(char));
+        kLines             = (char**)malloc((nFileSize)    * sizeof(char*));
 
         fread(kBuffer, nFileSize, sizeof(char), pInput);
         fclose(pInput);
