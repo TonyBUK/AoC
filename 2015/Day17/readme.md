@@ -94,3 +94,5 @@ Not much to say on this really, this is an algorithm problem, not really one whe
 Essentially the Python solution, but slightly less elegant with respect to getting the min/total values.
 
 **C**
+
+Slightly different route, but that's mostly because hash maps aren't the most natural fit for C.  Instead of using a hash map for all possible solutions, I just store an array, initialised to 0, representing all possible counts from the input data set (i.e. the most items to reach a target could ever be is if all the containers are used), so slightly more effecient than the other solutions.
