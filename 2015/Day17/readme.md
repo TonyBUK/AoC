@@ -91,4 +91,6 @@ Not much to say on this really, this is an algorithm problem, not really one whe
 
 **C++**
 
+Essentially the Python solution, but slightly less elegant with respect to getting the min/total values.
+
 **C**
