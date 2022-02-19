@@ -77,4 +77,8 @@ Sets and Dictionaries pay dividends here, albeit, whilst I've stuck with the set
 
 **C++**
 
+Not going to lie, the C++ attempts to be a close port of the Python, and it's noticable slower, around 2X slower to be precise... and that's after I try and come up with a faster indexing method for std map (fun fact, indexing with std::array is 8X slower that the Python code).  I guess baking the data into a primitive type is pretty much what a tuple is, but still.
+
+Depends how much this irritates me as to whether I'll revisit this...
+
 **C**
