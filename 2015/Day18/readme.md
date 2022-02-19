@@ -32,7 +32,7 @@ So that would be something like:
     
       IF the Light is off, if the pre-calculated neighbour count is exactly 3, turn the light on and add to the list of On Light locations
       
-      IF the Light is off, if the pre-calculated neighbour count is not 2 or 3, turn the light off and remove from the list of On Light locations
+      IF the Light is on, if the pre-calculated neighbour count is not 2 or 3, turn the light off and remove from the list of On Light locations
       
     NEXT
 
@@ -82,3 +82,19 @@ Not going to lie, the C++ attempts to be a close port of the Python, and it's no
 Depends how much this irritates me as to whether I'll revisit this...
 
 **C**
+
+And as usual, the C version went in a different direction.  Instead of adding/removing from a hash map the On Lights, this works on a double buffer principle where it's no longer interested in whether a light changes state or not, merely whether it will be on.  So the implementation ends up being:
+
+    Calculate the Neighbour Count for all Grid Elements using a list of On Light locations for the Current Buffer
+    
+    FOR each point in the Conway Grid
+    
+      IF the Light is off, if the pre-calculated neighbour count is exactly 3, add to the list of On Lights for the Other Buffer
+      
+      IF the Light is on, if the pre-calculated neighbour count is 2 or 3, add to the list of On Lights for the Other Buffer
+      
+    NEXT
+    
+This neatly means it never has to worry about insertion/deletion/searching.  This also operates on a 1D Grid rather than 2D (typically yields faster results) and encodes the X/Y position in the form ((Y * WIDTH) + X) to provide a 1D lookup index (i.e. for a 100x100 grid, this algorithm will count from 0 .. 9999 when given X = 0..99 and Y = 0..99.
+
+To say this is faster than both the Python/C++ versions is an understatement.  And again, it's absolutely possible to implement this method in both languages, it would just be a weird choice (especially for Python) to do so, whereas C's lack of trivial provided hash map capability means it's more likely a solution like this would be implemented.
