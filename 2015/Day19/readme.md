@@ -52,14 +52,16 @@ The problem is of course this will take an absurd amount of time.  So to start w
 Even with this, it will still take a stupidly long time to find, however we can make a few assumptions about the puzzle itself, and here's where my solution may be incomplete or unsatisfying...
 
 1. Assume that the puzzle is constructed such that there's really just one core route to the solution.
-  - i.e. the only variability in ordering, not inputs.,
+  - i.e. the only variability in ordering, not inputs.
 2. Assume by and large that larger substitutions are preferable (i.e. take the greedy route)
+
+If this does prove to be incomplete, then I imagine some sort of Dijkstra'esque solution would be the way to go, giving a heuristic score for sorting which string to process next.
 
 **Python vs C++ vs C**
 
 **Python**
 
-Chances are this puzzle is the first time you'll realise Python has a default depth limit of 1000!
+Chances are this puzzle is the first time you'll realise Python has a default depth limit of 1000!  This uses the trick of using math.inf for the limit checking of the solution.  It's somewhat negated by the fact we accept the first solution.  I did toy with caching results/depths, but found it really didn't do that much, in that as the number of permutations exponentially grew, the otherhead of insertion into the dictionary cache basically became a wash with the overhead of finding other solutions.
 
 **C++**
 
