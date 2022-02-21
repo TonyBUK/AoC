@@ -52,8 +52,8 @@ The problem is of course this will take an absurd amount of time.  So to start w
 Even with this, it will still take a stupidly long time to find, however we can make a few assumptions about the puzzle itself, and here's where my solution may be incomplete or unsatisfying...
 
 1. Assume that the puzzle is constructed such that there's really just one core route to the solution.
-  - i.e. the only variability in ordering, not inputs.
-2. Assume by and large that larger substitutions are preferable (i.e. take the greedy route)
+  - i.e. the only variability is ordering of inputs, not the inputs themselves.
+2. Assume by and large that larger substitutions are preferable, being substitutions that reduce the string size by the most (i.e. take the greedy route)
 
 If this does prove to be incomplete, then I imagine some sort of Dijkstra'esque solution would be the way to go, giving a heuristic score for sorting which string to process next.
 
