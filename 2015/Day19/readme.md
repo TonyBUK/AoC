@@ -65,5 +65,11 @@ Chances are this puzzle is the first time you'll realise Python has a default de
 
 **C++**
 
+Mostly follows Python, again, I cheat by using the index of std::map to mimick a set in Python.  I've also done a few optimisations here and there as well as some type abuse.
+
+Whilst size_t is defined as unsigned, I prefer not to make assumptions if I can help it, so I've used an intermediary unsigned type to force a large negative value (casting -1 to unsigned causes a large underflow) which ideally gets me similar behaviour to using math.inf in Python.
+
+Additionally, for std::string usage in getPermutations, I try and allocate the string such that it doesn't ever need to resize for the lifetime of the function, as well as making extensive use of assign/append in order to prevent new strings being created which would typically happen with the "+" operator.
+
 **C**
 
