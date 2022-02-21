@@ -100,13 +100,6 @@ def main() :
 
             #end
 
-            # Assume that once we've found any solution, it's the best one.
-            # Whether this stands up to scrutiny or not for other inputs is something
-            # I'd be interested to find out...
-            if bestDepth != math.inf :
-                return bestDepth
-            #end
-
         #end
 
         return bestDepth
