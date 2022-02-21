@@ -61,7 +61,7 @@ If this does prove to be incomplete, then I imagine some sort of Dijkstra'esque 
 
 **Python**
 
-Chances are this puzzle is the first time you'll realise Python has a default depth limit of 1000!  This uses the trick of using math.inf for the limit checking of the solution.  It's somewhat negated by the fact we accept the first solution.  I did toy with caching results/depths, but found it really didn't do that much, in that as the number of permutations exponentially grew, the otherhead of insertion into the dictionary cache basically became a wash with the overhead of finding other solutions.
+Chances are this puzzle is the first time you'll realise Python has a default depth limit of 1000!  This uses the trick of using math.inf for the limit checking of the solution.  It's somewhat negated by the fact we accept the first solution.  I did toy with caching results/depths, but found it really didn't do that much, in that as the number of permutations exponentially grew, the overhead of insertion into the dictionary cache basically became a wash with the overhead of finding other solutions.
 
 **C++**
 
