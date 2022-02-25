@@ -92,9 +92,11 @@ So this actually ends up being a good deal faster!
 
 **Python**
 
-Nothing overly fancy here, as this is really more of an algorithmic puzzle than one that leverages data structures etc.
+Nothing overly fancy here, as this is really more of an algorithmic puzzle than one that leverages data structures etc.  As a little bodge, to try and minimise just how much gets executed in the inner loop, I sacrifice array element 0, and use array elements 1 onwards in order to *very* slightly simplify array indexing etc.
 
 **C++**
+
+Identical to Python, but signficantly faster (around 3x).  One of the perks of being closer to "bare metal".
 
 **C**
 
