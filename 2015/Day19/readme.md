@@ -73,3 +73,10 @@ Additionally, for std::string usage in getPermutations, I try and allocate the s
 
 **C**
 
+C follows the C++ solution, albeit I caved and used someone elses hash map.  In this instance, I selected:
+
+https://github.com/DavidLeeds/hashmap
+
+The main reason being that it has alot of familiarity for anyone who's used STL Map.  I've linked it as a submodule, so if cloning this repository, remember to recurse!
+
+Submodule aside, again we start to see the weakness of C, with respect to the loss of automatic processing when something goes out of scope, meaning every point where an unexpected code route can occur, all the cleanup operations have to occur prior as well to ensure there's no leaks.
