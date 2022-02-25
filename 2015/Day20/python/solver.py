@@ -16,7 +16,7 @@ def main() :
         #end
 
         normalisedTargetPresents = math.ceil(targetPresents / presentsPerHouse)
-        totalCounts              = [10 for i in range(normalisedTargetPresents+1)]
+        totalCounts              = [presentsPerHouse for i in range(normalisedTargetPresents+1)]
 
         # The Basic Algorithm to process all elves in turn, and increment the present count
         # for all possible houses they can deliver to
