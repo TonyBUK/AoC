@@ -47,10 +47,11 @@ int main(int argc, char** argv)
     {
         while (!kFile.eof())
         {
-            // Get the Current Line from the File
+            /* Get the Current Line from the File */
             std::string kLine;
             std::getline(kFile, kLine);
 
+            /* Solve the Puzzle */
             std::cout << "Part 1: " << findLowestHouseNumber(std::stoull(kLine, NULL, 10), 10)     << std::endl;
             std::cout << "Part 2: " << findLowestHouseNumber(std::stoull(kLine, NULL, 10), 11, 50) << std::endl;
         }
