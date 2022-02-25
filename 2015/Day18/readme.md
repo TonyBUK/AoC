@@ -2,7 +2,11 @@
 
 https://adventofcode.com/2015/day/18
 
-This is the classic Conway's Game of Life, something that is another staple of the Advent of Code series.  The key to solving this one is relatively straight forwards...
+This is the classic Conway's Game of Life, something that is another staple of the Advent of Code series.
+
+**Part 1**
+
+The key to solving this one is relatively straight forwards...
 
     Ensure that the grid you're counting is *not* being updated at the same time.
 
@@ -60,10 +64,6 @@ In-fact as the puzzles get more complex, unless you're really confident, or goin
 2. And once that works, now move to the real input.
 
 Not saying it's fool proof, as often the real input exposes some nuance/scalability that the example didn't, but it's certainly a good way of gaining confidence the core algorithm is basically doing the right thing.
-
-**Part 1**
-
-Exactly as stated above...
 
 **Part 2**
 
