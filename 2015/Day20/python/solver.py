@@ -11,12 +11,16 @@ def main() :
 
     def findLowestHouseNumber(targetPresents, presentsPerHouse, housesPerElf = math.inf) :
 
+        if targetPresents <= presentsPerHouse :
+            return 1
+        #end
+
         normalisedTargetPresents = math.ceil(targetPresents / presentsPerHouse)
-        totalCounts              = [0 for i in range(normalisedTargetPresents+1)]
+        totalCounts              = [10 for i in range(normalisedTargetPresents+1)]
 
         # The Basic Algorithm to process all elves in turn, and increment the present count
         # for all possible houses they can deliver to
-        for elf in range(1, normalisedTargetPresents + 1) :
+        for elf in range(2, normalisedTargetPresents + 1) :
 
             # Cache the Present Count
             elfPresents = elf * presentsPerHouse
