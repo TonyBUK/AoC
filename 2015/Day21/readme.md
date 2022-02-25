@@ -14,10 +14,10 @@ Rings   : 0, 1 or 2 rings equipped, but only 1 of each kind of ring at the same 
 
 So time to cheat...
 
-1.  Add a single dummy item to Armor List to signify not wearing Armor.  All stats will be 0.
-2.  Add two dummy items to the Ring List to signify not wearing Rings.  All stats will be 0.
+1.  Add a single dummy item to Armor List to signify not wearing Armor.  All stats/costs will be 0.
+2.  Add two dummy items to the Ring List to signify not wearing Rings.  All stats/costs will be 0.
 
-With this in mind, we now have a condition for a relatively simple set of FOR loop.s
+With this in mind, we now have a condition for a relatively simple set of FOR loops.
 
     FOR each Weapon
     
