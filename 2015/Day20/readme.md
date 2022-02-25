@@ -100,3 +100,4 @@ Identical to Python, but signficantly faster (around 3x).  One of the perks of b
 
 **C**
 
+Identical to C++/Python, and twice as fast as the C++ solution.  Major difference is a directly allocated RAM buffer rather than using STD Vector as the accessor/mutator.
