@@ -127,41 +127,6 @@ void playGamePermutations(const std::vector<itemType>& kWeapons,
             }
         }
     }
-/*
-    for weapon in WEAPONS :
-        for armor in ARMOR :
-            for ringPermutation in ringPermutations :
-
-                # Determine the Basic Stats for the Loadout
-                playerStats = {
-                    "Armor"  : weapon["Armor"] +
-                                armor["Armor"] +
-                                RINGS[ringPermutation[0]]["Armor"] +
-                                RINGS[ringPermutation[1]]["Armor"],
-                    "Damage" : weapon["Damage"] +
-                                armor["Damage"] +
-                                RINGS[ringPermutation[0]]["Damage"] +
-                                RINGS[ringPermutation[1]]["Damage"],
-                }
-
-                # Calculate Cost of the Loadout
-                cost = (weapon["Cost"] +
-                        armor["Cost"] +
-                        RINGS[ringPermutation[0]]["Cost"] +
-                        RINGS[ringPermutation[1]]["Cost"])
-            
-                # Play the Game with the current Loadout
-                # If we win, we're interested in the least gold used,
-                # otherwise we're interested in the most
-                if playGame(playerStats, BOSS_STATS, playerHealth) :
-                    if cost < leastGold : leastGold = cost
-                else :
-                    if cost > mostGold  : mostGold  = cost
-                #end
-            #end
-        #end
-    #end
-*/
 }
 
 int main(int argc, char** argv)
