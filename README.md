@@ -79,4 +79,4 @@ But you will see:
             Who knows!
         }
 
-Plus unless it's a hyper specific case, such as a whole bunch of return tests or something of that ilk, I always use braces, even if it's only to guard a single line of code.  I'm not a fan of potential ambiguity for the sake of terseness.
+Plus unless it's a hyper specific case, such as a whole bunch of return tests or something of that ilk, I always use braces, even if it's only to guard a single line of code.  I'm not a fan of potential ambiguity for the sake of terseness, but there are always exceptions...
