@@ -80,3 +80,19 @@ But you will see:
         }
 
 Plus unless it's a hyper specific case, such as a whole bunch of return tests or something of that ilk, I always use braces, even if it's only to guard a single line of code.  I'm not a fan of potential ambiguity for the sake of terseness, but there are always exceptions...
+
+***General comments on inputs***
+
+Advent of Code typically provides an input text file, but very occasionally if the input is simple, such as a single number or string, bakes the value into the Web Page itself.  For both of these types, I store this as an input text file, "input.txt".  It is perfectly valid to bake this into the source code, and even hand parse/macro the data, but personally I prefer the text file solution, especially as, on the harder tasks, my work flow is typically:
+
+1. Save the examples to a text file.
+2. Work on the core algorithms until they solve the examples in a way that matches the Advent of Code instructions.
+3. Switch the examples text file to the true input, and repeat.
+
+Essentially it's easier to debug if you already know the answer, plus most of the time, this works for getting a "good enough" solution, albeit that's not always the case, especially if the examples don't expose the true nature of the puzzle at hand.
+
+Very occasionally, some puzzles have common data that needs embedding.  Mostly just starting values, iteration counts etc., but occasionally it's a bit more involved, such as the Weapon Stats from: https://adventofcode.com/2015/day/21
+
+In this scenario, because the data *never* changes across different users, I normally bake this directly into the source code.
+
+Incidently, the examples text file is also why alot of the time, say on single line inputs, I'll still loop assuming it's multiple lines, as my initial work is on the examples, I genuinely am running a bunch of different inputs in one go.  It effectively provides a nice easy way to verify a change I've done hasn't broken things before diving into the true input.
