@@ -84,7 +84,11 @@ This is a carbon copy of Part 1, except instead of checking how little we've spe
 
 Pretty much the algorithm as described.  Using a dictionary is hardly the most efficient way of doing it, but the task itself is expressible in milliseconds, so not exactly a big deal.
 
+Also, we could compare cost to least/most before playing the game to see if we actually need to play the game (if the cost isn't the smallest or largest, the win/loss would be ignored anyway, as in the case, the winning move is not to play).  But again, it's so fast anyway, this is really just adding complexity for the sake of it.
+
 **C++**
+
+Follows the Python solution, as ever, my choice of using base C++/STL means I don't get to initialse STL types such as Vectors in a nice way.
 
 **C**
 
