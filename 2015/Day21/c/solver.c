@@ -172,6 +172,8 @@ void playGamePermutations(const itemType*   pkWeapons,
         }
     }
 
+    free(kRingPermutations);
+
     *pnLeastGold = nLeastGold;
     *pnMostGold  = nMostGold;
 }
