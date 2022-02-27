@@ -92,3 +92,4 @@ Follows the Python solution, as ever, my choice of using base C++/STL means I do
 
 **C**
 
+Pretty much a carbon copy of the C++ solution, though of note is this is the first appearance of a triangle number.  The number of possible unique pairs (where order doesn't matter) of rings is derived from this.  To do this algorithmically would have been to run the for loop twice, once to count permutations so that we can allocate it, and one to then perform the assignment.  This also never copies the ring data unlike the C++ solution, instead just copies the address.  As ever, no reason C++ couldn't have been the same, albeit it's not as typical to directly reference memory within an STL vector.
