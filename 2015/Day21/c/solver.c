@@ -139,6 +139,7 @@ void playGamePermutations(const itemType*   pkWeapons,
             ++nRingPair;
         }
     }
+    assert(nRingPermutationsSize == nRingPair);
 
     /* For each possible Load Out */
     for (nWeapon = 0; nWeapon < nWeaponsSize; ++nWeapon)
