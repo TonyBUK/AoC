@@ -72,7 +72,7 @@ Whilst this solution is good enough, it is again fodder for something more akin 
 
 There are mitigation steps to help there, but one thing this challenge will expose overall is that whilst DFS is great for permutation checking, there are times when it just isn't viable.
 
-Fortunately, this isn't one of those times, and DFS works as well as it has to!
+The solution here is borderline viable... I may revisit this depending upon how the low level solutions perform.
 
 **Part 2**
 
@@ -85,5 +85,9 @@ This is Part 1, but before the Player Turn, subtract 1 from the Players Health a
 In some ways dictionaries help in so far as we can store unique data to each spell, and even use it as a means of distinguishing whether a spell is an instant action, or an action over time, however this does come with a cost in terms of throughput, as each iteration does alot of key/array testing.
 
 **C++**
+
+Pretty disastrous compared to the Python solution.  This ends up almost being twice as slow.  Part of this is invariably down to the sorting issue I touched upon in the Part 1 solution.  Because the spells in both this and Python just iterate through a hash map, the order in which the spells are processed invariably ends up working to Pythons benefit and C++'s detriment (as there's no reason at all they would both iterate over a hash map in the same order).
+
+Depending upon whether the C solution ends up being more palatable, I may end up ditching the DFS approach...
 
 **C**
