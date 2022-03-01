@@ -66,12 +66,12 @@ def main() :
 
         #end
 
+        localMinManaSpend = minManaSpend
         for spellName,spell in SPELLS.items() :
 
             localPlayer       = {K: V for K,V in player.items()}
             localBoss         = {K: V for K,V in boss.items()}
             localManaSpend    = manaSpend
-            localMinManaSpend = minManaSpend
 
             # Hard Mode
             if (True == hardMode) :
@@ -79,7 +79,7 @@ def main() :
             #end
 
             if True == checkEndGame(localPlayer, localBoss, localManaSpend) :
-                return localMinManaSpend
+                continue
             #end
 
             # Player Turn
@@ -118,7 +118,7 @@ def main() :
             localBoss["Hit Points"] -= localPlayer["Damage"]
 
             if True == checkEndGame(localPlayer, localBoss, localManaSpend) :
-                return localMinManaSpend
+                continue
             #end
 
             # Boss Turn
@@ -130,22 +130,22 @@ def main() :
             localBoss["Hit Points"] -= localPlayer["Damage"]
 
             if True == checkEndGame(localPlayer, localBoss, localManaSpend) :
-                return localMinManaSpend
+                continue
             #end
 
             # Perform the Boss Attack
             localPlayer["Hit Points"] -= (localBoss["Damage"] - localPlayer["Armor"])
 
             if True == checkEndGame(localPlayer, localBoss, localManaSpend) :
-                return localMinManaSpend
+                continue
             #end
 
             # Recurse...
-            minManaSpend = playGames(localPlayer, localBoss, SPELLS, hardMode, localManaSpend, localMinManaSpend)
+            localMinManaSpend = playGames(localPlayer, localBoss, SPELLS, hardMode, localManaSpend, localMinManaSpend)
 
         #end
 
-        return minManaSpend
+        return localMinManaSpend
 
     #end
 
