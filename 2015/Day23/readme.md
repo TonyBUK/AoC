@@ -56,7 +56,7 @@ So because for Part 1 we initialise Register A to 0, we use the first set of sta
 
 **Part 2**
 
-So because for Part 2 we initialise Register A to 1, we use the first set of starting data, which for my data set is 77671, which takes 231 iterations through the while loop before A = 1, therefore B = 231.
+So because for Part 2 we initialise Register A to 1, we use the more different set of starting data, which for my data set is 77671, which takes 231 iterations through the while loop before A = 1, therefore B = 231.
 
 **Python vs C++ vs C**
 
