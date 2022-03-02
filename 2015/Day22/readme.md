@@ -92,6 +92,8 @@ Since the C solution was absurdly fast with the same DFS approach, I've left thi
 
 **C**
 
-No matter how many times I see it, it's incredible just how much overhead some seemingly innocuous abstractions can add.  Whereas the Python/C++ solutions are close to being unbearably slow, the C solution is near instantaneous (18x faster than Python, 36x faster than C++).  Part of this will invariably be that it "accidently" takes a better first route through the recursion, but also the removal of all abstractions with regards to arrays/indexing.  Whereas the C++/Python solutions have to do repeated hashing in order to perform cooldown checks / spell lookups, this goes with a simpler numerical index via an enum.
+No matter how many times I see it, it's incredible just how much overhead some seemingly innocuous abstractions can add.  Whereas the Python/C++ solutions are close to being unbearably slow, the C solution is near instantaneous (18x faster than Python, 36x faster than C++).
+
+Part of this will invariably be that it "accidently" takes a better first route through the recursion, but also the removal of all abstractions with regards to arrays/indexing.  Whereas the C++/Python solutions have to do repeated hashing in order to perform cooldown checks / spell lookups, this goes with a simpler numerical index via an enum.
 
 Again, this can all be fed back into the Python/C++ solutions, but I think in a way it's more interesting to show just how much overhead is added with these kinds of abstractions.
