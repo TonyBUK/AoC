@@ -88,6 +88,12 @@ In some ways dictionaries help in so far as we can store unique data to each spe
 
 Pretty disastrous compared to the Python solution.  This ends up almost being twice as slow.  Part of this is invariably down to the sorting issue I touched upon in the Part 1 solution.  Because the spells in both this and Python just iterate through a hash map, the order in which the spells are processed invariably ends up working to Pythons benefit and C++'s detriment (as there's no reason at all they would both iterate over a hash map in the same order).
 
-Depending upon whether the C solution ends up being more palatable, I may end up ditching the DFS approach...
+Since the C solution was absurdly fast with the same DFS approach, I've left this as-is for prosperity.
 
 **C**
+
+No matter how many times I see it, it's incredible just how much overhead some seemingly innocuous abstractions can add.  Whereas the Python/C++ solutions are close to being unbearably slow, the C solution is near instantaneous (18x faster than Python, 36x faster than C++).
+
+Part of this will invariably be that it "accidently" takes a better first route through the recursion, but also the removal of all abstractions with regards to arrays/indexing.  Whereas the C++/Python solutions have to do repeated hashing in order to perform cooldown checks / spell lookups, this goes with a simpler numerical index via an enum.
+
+Again, this can all be fed back into the Python/C++ solutions, but I think in a way it's more interesting to show just how much overhead is added with these kinds of abstractions.

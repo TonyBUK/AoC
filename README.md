@@ -9,7 +9,7 @@ The core idea is to not only show at least one way of solving each given problem
 
 **Note:** This isn't going to try and evangelise one language over another.  More to show each languages strengths and weaknesses, as well as some idea of feature/performance trade-offs.  If you want the TL/DR version, it will generally be:
 - Python : A very feature rich language, with some very powerful collection types that helps reduce just how much code is needed, but at the expense of speed.
-- C++    : A feature rich low level language, especially when paired with STL, which can often maintain near parity with Python in terms of features available out of the box.
+- C++    : A feature rich low level language, especially when paired with STL, which can often maintain near parity with Python in terms of features available out of the box, but with a much lower overhead with respect to speed.
 - C      : A very low level language that doesn't have out of the box parity with Python/C++ especially when it comes to dynamic arrays / hash maps, instead requiring either custom code or third party code.  This does however come with a much lower/more obvious memory footprint, and typically, when written correctly, should produce the quickest code.  But it does often come at the expense of requiring much more user written code to achieve feature parity...
 
 This isn't meant to be a "best" solution either, merely the solution I arrived at (typically as long as the solution is measurable in milliseconds or seconds, that's good enough for me).  Typically when you see solutions, they fall into one of two camps:
@@ -81,6 +81,8 @@ But you will see:
 
 Plus unless it's a hyper specific case, such as a whole bunch of return tests or something of that ilk, I always use braces, even if it's only to guard a single line of code.  I'm not a fan of potential ambiguity for the sake of terseness, but there are always exceptions...
 
+Also typically I'll write the solution in Python first, then re-write the solution in C++ (especially as Python/C++ with STL offer very similar features in termsof basic data structures), then re-write the solution in C.  Often by the time it gets to C, much of the abstractions that make Python/C++ somewhat easier to work with for this sort of task will have been removed.  I'm acutely aware that I can go back and optimise Python/C++ accordingly, but what I'm trying to showcase is (hopefully) decent examples of how someone would write a solution in a given language, and often that means discarding repeated optimisation passes for the sake of clarity.
+
 ***General comments on inputs***
 
 Advent of Code typically provides an input text file, but very occasionally if the input is simple, such as a single number or string, bakes the value into the Web Page itself.  For both of these types, I store this as an input text file, "input.txt".  It is perfectly valid to bake this into the source code, and even hand parse/macro the data, but personally I prefer the text file solution, especially as, on the harder tasks, my work flow is typically:
@@ -96,3 +98,9 @@ Very occasionally, some puzzles have common data that needs embedding.  Mostly j
 In this scenario, because the data *never* changes across different users, I normally bake this directly into the source code.
 
 Incidently, the examples text file is also why alot of the time, say on single line inputs, I'll still loop assuming it's multiple lines, as my initial work is on the examples, I genuinely am running a bunch of different inputs in one go.  It effectively provides a nice easy way to verify a change I've done hasn't broken things before diving into the true input.
+
+***About Me***
+
+I'm a pretty experienced S/W Engineer specialising in embedded C, typically written as close to bare metal as possible.  I've also worked extensively with C++/Ada, and have dabbled in C#, Python and Ruby and many more.  My main motivation for taking part in AoC was two-fold, firstly I wanted to get more experience with Python/Ruby, in that I found myself typically brute forcing C/C++ style solutions into these languages rather than taking advantage of the unique features of the languages.  As an example (for Python), my original solutions didn't contain any list/dictionary/generator comprehension whatsoever.
+
+This also tends to scratch more of an academia style itch with regards to the problem types, plus it's not that often that I get to see such a diverse range of solutions to a given problem when comparing what I came up with to the wider community.  Sometimes it's nice to be validated when my solution aligns, and sometimes it's nice to see what I missed (or on the very very rare occasions, what everyone else missed) when it doesn't.
