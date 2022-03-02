@@ -1,6 +1,4 @@
-import opcode
 import time
-import math
 
 def main() :
 
