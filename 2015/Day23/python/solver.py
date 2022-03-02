@@ -69,7 +69,7 @@ def main() :
     #end
 
     print(f"Part 1: {runByteCode(byteCode, {'a' : 0, 'b' : 0})['b']}")
-    print(f"Part 1: {runByteCode(byteCode, {'a' : 1, 'b' : 0})['b']}")
+    print(f"Part 2: {runByteCode(byteCode, {'a' : 1, 'b' : 0})['b']}")
 
 #end
 
