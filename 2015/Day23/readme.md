@@ -70,4 +70,19 @@ Oooh boy, did this ever go off into the deep end.  I figured rather than doing a
 
 In this case however, overkill, but I figured it'd at least be worth demonstrating that C++ is hardly a terse language, the only reason that it's mostly matched Python is the sheer amount of code STL hides (Strings/Vectors/Hash Maps), this is a small taste of that.
 
+That aside, the basic class heirarchy is:
+
+        Virtual Machine Class
+        |
+        |
+        --> Operands Class
+        |       |
+        |       | (read only)
+        |       v
+        --> Register Class
+
+The Virtual Machine stores the Byte Code as a list of Opcodes and associated Operands.  It also stores the Registers.  Where it gets a bit murky is that the Operands Class *also* has read only access to the Registers, in order to allow their Get method to return the value of the Register.
+
+The cleaner approach from a hierarchy perspective would be that the Get method only works on literals, and to make the Virtual Machine do the heavy lifting to interrogate the Registers Class directly if the Operands Class declares itself as a Register, but to me that's just trading one layer of convolution for another...
+
 **C**
