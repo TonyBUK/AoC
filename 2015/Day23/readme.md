@@ -54,7 +54,7 @@ For those interested, the Byte Code sequence can be expressed as:
 
 Basically the WHILE loop can only complete when the act of multipling by 3, then adding 1, sets Register A to a power of 2 (i.e. a value that can be repeatedly halved until it has a final value of 1).
 
-For those who are interested, this is the Collatz Conjecture: https://en.wikipedia.org/wiki/Collatz_conjecture
+Or for anyone who spends any time googling the 3N + 1 problem, this is the Collatz Conjecture: https://en.wikipedia.org/wiki/Collatz_conjecture
 
 So because for Part 1 we initialise Register A to 0, we use the first set of starting data, which for my data set is 9663, which takes 184 iterations through the while loop before A = 1, therefore B = 184.
 
