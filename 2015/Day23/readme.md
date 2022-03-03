@@ -56,6 +56,8 @@ Basically the WHILE loop can only complete when the act of multipling by 3, then
 
 Or for anyone who spends any time googling the 3N + 1 problem, this is the Collatz Conjecture: https://en.wikipedia.org/wiki/Collatz_conjecture
 
+That's really the nice thing about the puzzle, the fact it is performing a famous (in Mathemetical circles) algorithm isn't necessary to solve it.  But if you're willing to look deeper into the puzzle, it's possible to tease out things like this.
+
 So because for Part 1 we initialise Register A to 0, we use the first set of starting data, which for my data set is 9663, which takes 184 iterations through the while loop before A = 1, therefore B = 184.
 
 **Part 2**
