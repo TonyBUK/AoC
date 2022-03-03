@@ -19,7 +19,7 @@ It's actually step #1 that takes all the time in Part 1.
 
 **Part 2**
 
-There's actually no change here, and since this is very much a Big O problem where the total weight is the biggest factor in how long step #1 of the basic algorithm takes, this part actually completes *far* quicker than Part 1.
+There's actually no change here, and since this is very much a Big O problem where the target weight is the biggest factor in how long step #1 of the basic algorithm takes, this part actually completes *far* quicker than Part 1, since the smaller the target weight, the less ways of achieving that weight are viable...
 
 **Python vs C++ vs C**
 
