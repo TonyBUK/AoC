@@ -66,4 +66,8 @@ Very trivial implementation in Python, as this task is perfectly suited to the l
 
 **C++**
 
+Oooh boy, did this ever go off into the deep end.  I figured rather than doing a straight port, I would demonstrate why I typically don't OO all the things.  This is effectively the Python solution, but alot more... classy.  Mocking aside, VM's are actually one of the stronger use cases for encapsulation into classes, especially if we need more than one VM running concurrently (the alternative is to store a bunch of meta-data about each VM's state externally which can get annoying).
+
+In this case however, overkill, but I figured it'd at least be worth demonstrating that C++ is hardly a terse language, the only reason that it's mostly matched Python is the sheer amount of code STL hides (Strings/Vectors/Hash Maps), this is a small taste of that.
+
 **C**
