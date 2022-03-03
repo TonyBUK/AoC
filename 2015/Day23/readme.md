@@ -52,6 +52,10 @@ For those interested, the Byte Code sequence can be expressed as:
 
     END
 
+Basically the WHILE loop can only complete when the act of multipling by 3, then adding 1, sets Register A to a power of 2 (i.e. a value that can be repeatedly halved until it has a final value of 1).
+
+Or for anyone who spends any time googling the 3N + 1 problem, this is the Collatz Conjecture: https://en.wikipedia.org/wiki/Collatz_conjecture
+
 So because for Part 1 we initialise Register A to 0, we use the first set of starting data, which for my data set is 9663, which takes 184 iterations through the while loop before A = 1, therefore B = 184.
 
 **Part 2**
@@ -65,5 +69,24 @@ So because for Part 2 we initialise Register A to 1, we use the more different s
 Very trivial implementation in Python, as this task is perfectly suited to the language.
 
 **C++**
+
+Oooh boy, did this ever go off into the deep end.  I figured rather than doing a straight port, I would demonstrate why I typically don't OO all the things.  This is effectively the Python solution, but alot more... classy.  Mocking aside, VM's are actually one of the stronger use cases for encapsulation into classes, especially if we need more than one VM running concurrently (the alternative is to store a bunch of meta-data about each VM's state externally which can get annoying).
+
+In this case however, overkill, but I figured it'd at least be worth demonstrating that C++ is hardly a terse language, the only reason that it's mostly matched Python is the sheer amount of code STL hides (Strings/Vectors/Hash Maps), this is a small taste of that.
+
+That aside, the basic class heirarchy is:
+
+        Virtual Machine Class
+        |
+        |
+        --> Operands Class
+        |       |
+        |       | (read only)
+        |       v
+        --> Register Class
+
+The Virtual Machine stores the Byte Code as a list of Opcodes and associated Operands.  It also stores the Registers.  Where it gets a bit murky is that the Operands Class *also* has read only access to the Registers, in order to allow their Get method to return the value of the Register.
+
+The cleaner approach from a hierarchy perspective would be that the Get method only works on literals, and to make the Virtual Machine do the heavy lifting to interrogate the Registers Class directly if the Operands Class declares itself as a Register, but to me that's just trading one layer of convolution for another...
 
 **C**
