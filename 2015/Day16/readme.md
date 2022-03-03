@@ -41,14 +41,14 @@ into:
 
 There's no shame in just using a normal for loop to achieve the same thing.  I've always found comprehension to be a bit counter intuitive to be honest, for example:
 
-    def auntSues(x) return {0 : {}}
+    def extractSue(x) return {0 : {}}
     auntSues = {k: v
                     for line in inputFile.readlines()
                         for k,v in extractSue(line.replace(":", "").replace(",", "").replace("\n", "").split(" ")).items()}
 
 This works because extractSue returns a dictionary {Sue : Compounds}, and I use .items() to unravel it, but curiously, if I return: Sue, Compounds (i.e. two return values), that fails, as it seems to iterate over each item separately.
 
-    def auntSues(x) return 0, {}
+    def extractSue(x) return 0, {}
     auntSues = {k: v
                     for line in inputFile.readlines()
                         for k,v in extractSue(line.replace(":", "").replace(",", "").replace("\n", "").split(" "))}
