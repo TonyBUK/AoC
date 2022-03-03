@@ -64,7 +64,7 @@ def main() :
 
         #end
 
-        def getLowestQE(packages, permutations, compartmentCount, lowestQE = math.inf, currentIndex = 0, combinedMask = 0, depth = 1, stack = None) :
+        def getLowestQE(permutations, compartmentCount, lowestQE = math.inf, currentIndex = 0, combinedMask = 0, depth = 1, stack = None) :
 
             if None == stack :
                 stack = []
@@ -80,7 +80,7 @@ def main() :
                     if depth == compartmentCount :
                         return stack[0]
                     else :
-                        lowestQE = getLowestQE(packages, permutations, compartmentCount, lowestQE, i+1, deltaMask, depth + 1, stack + [permutations[i][1]])
+                        lowestQE = getLowestQE(permutations, compartmentCount, lowestQE, i+1, deltaMask, depth + 1, stack + [permutations[i][1]])
                         if lowestQE != math.inf :
                             return lowestQE
                         #end
@@ -117,7 +117,7 @@ def main() :
         permutations.sort()
 
         # Find the first combination that has no overlap, and return its QE
-        return getLowestQE(packages, permutations, compartmentCount)
+        return getLowestQE(permutations, compartmentCount)
 
     #end
 
