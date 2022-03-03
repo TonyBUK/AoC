@@ -11,10 +11,8 @@ class Registers
 
         enum RegisterType
         {
-            E_REGISTER_FIRST = 0,
             E_REGISTER_A     = 0,
-            E_REGISTER_B,
-            E_REGISTER_LAST
+            E_REGISTER_B
         };
 
                         Registers(const int64_t a = 0, const int64_t b = 0);
@@ -295,12 +293,7 @@ void VirtualMachine::AddDoubleOperand(const OpcodeType eOpcode, const Registers:
 
 void VirtualMachine::Run(const Registers& kRegisters)
 {
-    for (std::size_t nRegister = Registers::E_REGISTER_FIRST; nRegister < Registers::E_REGISTER_LAST; ++nRegister)
-    {
-        Registers::RegisterType eRegister = static_cast<Registers::RegisterType>(nRegister);
-        m_kRegisters.Set(eRegister, kRegisters.Get(eRegister));
-    }
-
+    m_kRegisters = kRegisters;
     std::size_t nAddress = 0;
 
     while (nAddress < m_kByteCode.size())
