@@ -22,7 +22,7 @@ def main() :
     #end
 
     # Read/Clean the Input File to extract the Ingredient Properties
-    auntSues = []
+    auntSues = {}
     with open("../input.txt", "r") as inputFile:
         auntSues = {k: v
                         for line in inputFile.readlines()
