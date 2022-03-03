@@ -31,4 +31,6 @@ Obviously I've not done that here!
 
 **C++**
 
+I'm not mad Python, I'm just disappointed.  Same algorithm/approach in C++, and it's a near instant solve.
+
 **C**
