@@ -92,3 +92,5 @@ The Virtual Machine stores the Byte Code as a list of Opcodes and associated Ope
 The cleaner approach from a hierarchy perspective would be that the Get method only works on literals, and to make the Virtual Machine do the heavy lifting to interrogate the Registers Class directly if the Operands Class declares itself as a Register, but to me that's just trading one layer of convolution for another...
 
 **C**
+
+For once a lower SLOC count that the C++ version, albeit that was pretty intentional.  It's closer to the C++ solution than the Python version, but in this instance, most of the similarities are more convenience to remove code repetition than anything else. 
