@@ -64,11 +64,7 @@ def main() :
 
         #end
 
-        def getLowestQE(permutations, compartmentCount, lowestQE = math.inf, currentIndex = 0, combinedMask = 0, depth = 1, stack = None) :
-
-            if None == stack :
-                stack = []
-            #end
+        def getLowestQE(permutations, compartmentCount, lowestQE = math.inf, currentIndex = 0, combinedMask = 0, depth = 1, candidateQE = 0) :
 
             for i in range(currentIndex, len(permutations)) :
 
@@ -78,9 +74,9 @@ def main() :
                 if (deltaMask) == (permutations[i][2] + combinedMask) :
 
                     if depth == compartmentCount :
-                        return stack[0]
+                        return candidateQE
                     else :
-                        lowestQE = getLowestQE(permutations, compartmentCount, lowestQE, i+1, deltaMask, depth + 1, stack + [permutations[i][1]])
+                        lowestQE = getLowestQE(permutations, compartmentCount, lowestQE, i+1, deltaMask, depth + 1, permutations[i][1] if depth == 1 else candidateQE)
                         if lowestQE != math.inf :
                             return lowestQE
                         #end
