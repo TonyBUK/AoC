@@ -21,7 +21,7 @@ std::vector<std::string> split(const std::string& s, const std::string& seperato
     return output;
 }
 
-std::size_t triangleNumber(const size_t n)
+std::size_t triangleNumber(const std::size_t n)
 {
     return (n * (n+1)) / 2;
 }
@@ -62,18 +62,18 @@ std::size_t getCodeHybrid(const std::size_t nRow, const std::size_t nCol, const 
 
 std::size_t modPow(std::size_t nBase, std::size_t nExp, std::size_t nModulus)
 {
-  std::size_t nResult = 1;
-  nBase %= nModulus;
-  while (nExp > 0)
-  {
-    if (nExp & 1)
+    std::size_t nResult = 1;
+    nBase %= nModulus;
+    while (nExp > 0)
     {
-        nResult = (nResult * nBase) % nModulus;
+        if (nExp & 1)
+        {
+            nResult = (nResult * nBase) % nModulus;
+        }
+        nBase = (nBase * nBase) % nModulus;
+        nExp >>= 1;
     }
-    nBase = (nBase * nBase) % nModulus;
-    nExp >>= 1;
-  }
-  return nResult;
+    return nResult;
 }
 
 std::size_t getCodeMathematically(const std::size_t nRow, const std::size_t nCol, const std::size_t nInitial)
