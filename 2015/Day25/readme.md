@@ -167,6 +167,6 @@ Nothing overly complicated.  The Hybrid approach is around 2X the speed of the A
 
 As predicted, nearly an instant solve for the Algorithmic solution, and the others are instant.  One interesting thing is that because C++ doesn't have a native modPow, but a simple google shows tons of very similar implementations, but as predicted, there's not much between them!
 
-One left for 2015!
-
 **C**
+
+Basically same as C++ due to the nature of the puzzle.
