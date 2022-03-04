@@ -24,8 +24,8 @@ std::size_t calculateQEFromMask(const std::vector<std::size_t>& kPackages, const
 
 std::size_t calculateCountFromMask(const std::size_t nMask)
 {
-    size_t nLength    = 0;
-    size_t nLocalMask = nMask;
+    std::size_t nLength    = 0;
+    std::size_t nLocalMask = nMask;
 
     while (nLocalMask > 0)
     {
