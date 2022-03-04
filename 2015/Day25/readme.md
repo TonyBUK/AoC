@@ -151,7 +151,7 @@ i.e.
     iterations = Triangle Number of (Row + Column - 2) + (Column - 1)
     X = (power(252533, iterations, 33554393) * 20151125) % 33554393
 
-We've now turned this whole problem into an O(1) solve time!
+We've now turned this whole problem into an O(1) solve time... power implementation notwithstanding.
 
 **Part 2**
 
@@ -161,8 +161,12 @@ Ho ho ho...
 
 **Python**
 
-Nothing overly complicated.  The Hybrid approach is around 2X the speed of the Algorithmic approach, and the Mathematical one just blows both out of the water.  I suspect for C++/C, there actually won't be a huge difference between the Hybrid/Algorithmic approach, beyond some processor level features due to the lessened branch predictions etc.
+Nothing overly complicated.  The Hybrid approach is around 2X the speed of the Algorithmic approach, and the Mathematical one just blows both out of the water.  I suspect for C++/C, there actually won't be a huge difference between the Hybrid/Algorithmic approach, beyond some processor level features due to the lessened branch predictions etc, whereas with the Algorimic approach in Python, it suffers the same fate as all interpretted languages, being the core Fetch/Decode/Execute cycle tending to be where the time is lost, more lines typically has a linear impact on throughput, and the simple act of calculating rows/columns/branching is enough to halve the speed.  Whereas nativelly, the impact of more SLOCS is far more slight.
 
 **C++**
+
+As predicted, nearly an instant solve for the Algorithmic solution, and the others are instant.  One interesting thing is that because C++ doesn't have a native modPow, but a simple google shows tons of very similar implementations, but as predicted, there's not much between them!
+
+One left for 2015!
 
 **C**
