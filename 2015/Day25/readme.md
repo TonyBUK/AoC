@@ -98,20 +98,20 @@ But of course, we're not just dealing with Row 1.
 
 Now let's walk the rows...
 
-Row 1 is the basic Triangle Number sequence (+2, +3, +4, +5, ...)
-Row 2 is the Triangle Number sequence offset by + 1 (+3, +4, +5, ...) from a higher starting point
-Row 3 is the Triangle Number sequence offset by + 2 (+4, +5, +6, ...) from a higher starting point
+- Row 1 is the basic Triangle Number sequence (+2, +3, +4, +5, ...)
+- Row 2 is the Triangle Number sequence offset by + 1 (+3, +4, +5, ...) from a higher starting point
+- Row 3 is the Triangle Number sequence offset by + 2 (+4, +5, +6, ...) from a higher starting point
 
 So we can assume the Triangle Number is actually derived from the triangle number of the row + column.
 
 Then there's the starting point...
 
-Column 1: Row 1 is offset by (+1, +2, +3, +4, ...)
-Column 2: Row 1 is offset by (+2, +3, +4, +5, ...)
-Column 3: Row 1 is offset by (+3, +4, +5, +6, ...)
-Column 4: Row 1 is offset by (+4, +5, +6, +7, ...)
+- Column 1: Row 1 is offset by (+1, +2, +3, +4, ...)
+- Column 2: Row 1 is offset by (+2, +3, +4, +5, ...)
+- Column 3: Row 1 is offset by (+3, +4, +5, +6, ...)
+- Column 4: Row 1 is offset by (+4, +5, +6, +7, ...)
 
-And so on.
+And so on.  It's effectively offset by the column number.
 
 So bringing this all together, we can derive the expression:
 
