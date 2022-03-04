@@ -32,3 +32,34 @@ Probably my slowest solution to date...  some solution types really don't gel we
 I'm not mad Python, I'm just disappointed.  Same algorithm/approach in C++, and it's a near instant solve.
 
 **C**
+
+Slightly faster than the C++ solution, and many orders of magnitude faster than the Python.  This does finally highlight one of the more annoying aspects of C.  Because in this solution, it's non trivial to pre-calculate the total number of permutations to expect, we have to keep growing a RAM buffer to store this.  This is what std::vector does under the hood for us in C++, but in C, we have to do it by hand.  The approach is basically:
+
+    IF we're about to overflow the RAM buffer
+      Create a new RAM buffer twice the size of the old one
+      Copy the old RAM buffer to the new RAM buffer
+      Remove the old RAM buffer
+    END
+
+As you can imagine, the better our starting guess of the RAM buffer size, the less times we have to perform the copy...  But that could be at the expense of vastly over allocating the memory (for example, it is possible to pre-compute the total number of permutations, but this will include unbalanced too).
+
+Also, one "gotcha" in the C code is around QSORT.  Take the following code...
+
+        if (left->nQuantumEntanglement > right->nQuantumEntanglement)
+        {
+            return 1;
+        }
+        else if (left->nQuantumEntanglement == right->nQuantumEntanglement)
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+
+You might rightly think that could be (since QSort just cares about comparisons being positive, negative or equal to understand how to shuffle the deck):
+
+        return left->nQuantumEntanglement - right->nQuantumEntanglement;
+        
+Problem is, this is all unsigned arithmetic.  Meaning negative is an impossible outcome (it just becomes large positive).  You could cast to a signed type, but can we guarentee the result would over/underflow the int type (since int is one of those loosely defined types whose size varies depending on compiler/processor etc).  Easier to just avoid that whole can of worms...  I may or may not have spent a disporportionate amount of time debugging that fact...
