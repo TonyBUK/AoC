@@ -94,7 +94,7 @@ bool comparePermutations(const PermutationType& a, const PermutationType& b)
 
 std::size_t getLowestQE(const std::vector<PermutationType>& kPermutations, const std::size_t nCompartmentCount, const std::size_t nLowestQE = MAX_SIZE_T, const std::size_t nCurrentIndex = 0, const std::size_t nCombinedMask = 0, const std::size_t nDepth = 1, std::vector<std::size_t> kStack = std::vector<std::size_t>())
 {
-    size_t nLocalLowestQE = nLowestQE;
+    std::size_t nLocalLowestQE = nLowestQE;
 
     for (std::size_t i = nCurrentIndex; i < kPermutations.size(); ++i)
     {
