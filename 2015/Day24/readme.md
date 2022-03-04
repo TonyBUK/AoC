@@ -42,3 +42,24 @@ Slightly faster than the C++ solution, and many orders of magnitude faster than 
     END
 
 As you can imagine, the better our starting guess of the RAM buffer size, the less times we have to perform the copy...  But that could be at the expense of vastly over allocating the memory (for example, it is possible to pre-compute the total number of permutations, but this will include unbalanced too).
+
+Also, one "gotcha" in the C code is around QSORT.  Take the following code...
+
+        if (left->nQuantumEntanglement > right->nQuantumEntanglement)
+        {
+            return 1;
+        }
+        else if (left->nQuantumEntanglement == right->nQuantumEntanglement)
+        {
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+
+You might rightly think that could be (since QSort just cares about comparisons being positive, negative or equal to understand how to shuffle the deck):
+
+        return left->nQuantumEntanglement - right->nQuantumEntanglement;
+        
+Problem is, this is all unsigned arithmetic.  Meaning negative is an impossible outcome (it just becomes large positive).  You could cast to a signed type, but can we guarentee the result would over/underflow the int type (since int is one of those loosely defined types whose size varies depending on compiler/processor etc).  Easier to just avoid that whole can of worms...  I may or may not have spent a disporportionate amount of time debugging that fact...
