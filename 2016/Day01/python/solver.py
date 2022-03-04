@@ -31,7 +31,7 @@ def main() :
     }
 
     def manhattenDistance(position) :
-        return abs(position[0]) + abs(position[1])
+        return sum([abs(x) for x in position])
     #end
 
     def processMoves(moves, finishOnFirstRepetition) :
