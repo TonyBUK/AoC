@@ -92,7 +92,7 @@ bool comparePermutations(const PermutationType& a, const PermutationType& b)
     return false;
 }
 
-std::size_t getLowestQE(const std::vector<PermutationType>& kPermutations, const std::size_t nCompartmentCount, const std::size_t nLowestQE = MAX_SIZE_T, const std::size_t nCurrentIndex = 0, const std::size_t nCombinedMask = 0, const std::size_t nDepth = 1, std::vector<std::size_t> kStack = std::vector<std::size_t>())
+std::size_t getLowestQE(const std::vector<PermutationType>& kPermutations, const std::size_t nCompartmentCount, const std::size_t nLowestQE = MAX_SIZE_T, const std::size_t nCurrentIndex = 0, const std::size_t nCombinedMask = 0, const std::size_t nDepth = 1, const std::size_t nCandidateQE = 0)
 {
     std::size_t nLocalLowestQE = nLowestQE;
 
@@ -105,13 +105,11 @@ std::size_t getLowestQE(const std::vector<PermutationType>& kPermutations, const
         {
             if (nDepth == nCompartmentCount)
             {
-                return kStack[0];
+                return nCandidateQE;
             }
             else
             {
-                std::vector<std::size_t> kNewStack = kStack;
-                kNewStack.push_back(kPermutations.at(i).nQuantumEntanglement);
-                nLocalLowestQE = getLowestQE(kPermutations, nCompartmentCount, nLocalLowestQE, i+1, nDeltaMask, nDepth + 1, kNewStack);
+                nLocalLowestQE = getLowestQE(kPermutations, nCompartmentCount, nLocalLowestQE, i+1, nDeltaMask, nDepth + 1, (nDepth == 1) ? kPermutations[i].nQuantumEntanglement : nCandidateQE);
                 if (nLocalLowestQE != MAX_SIZE_T)
                 {
                     return nLocalLowestQE;
