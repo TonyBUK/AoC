@@ -25,10 +25,10 @@ There's actually no change here, and since this is very much a Big O problem whe
 
 **Python**
 
-Probably my slowest solution to date...  If C/C++ are equally slow, then it's back to the drawing board.  The only reason I've kept it for now is down to how slow the Ruby solution was!  One of the things I often did with those just to get the star was output answers as it found them, as typically, answers would be found quickly, but completing all permutations would not, so that was a little shortcut to see if at least the core algorithm was right.
-
-Obviously I've not done that here!
+Probably my slowest solution to date...  some solution types really don't gel well with interpretted languages.
 
 **C++**
+
+I'm not mad Python, I'm just disappointed.  Same algorithm/approach in C++, and it's a near instant solve.
 
 **C**
