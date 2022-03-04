@@ -101,6 +101,20 @@ Incidently, the examples text file is also why alot of the time, say on single l
 
 ***About Me***
 
-I'm a pretty experienced S/W Engineer specialising in embedded C, typically written as close to bare metal as possible.  I've also worked extensively with C++/Ada, and have dabbled in C#, Python and Ruby and many more.  My main motivation for taking part in AoC was two-fold, firstly I wanted to get more experience with Python/Ruby, in that I found myself typically brute forcing C/C++ style solutions into these languages rather than taking advantage of the unique features of the languages.  As an example (for Python), my original solutions didn't contain any list/dictionary/generator comprehension whatsoever.
+I'm a pretty experienced S/W Engineer specialising in embedded C, typically written as close to bare metal as possible.  I've also worked extensively with C++/Ada, and have dabbled in x86/Z80/68K/PPC/Arm assembly, C#, Python, Java, Javascript, PHP, Pascal, Jovial, Delphi, Lua and Ruby and many more.  My main motivation for taking part in AoC was two-fold, firstly I wanted to get more experience with Python/Ruby, in that I found myself typically brute forcing C/C++ style solutions into these languages rather than taking advantage of the unique features of the languages.  As an example (for Python), my original solutions didn't contain any list/dictionary/generator comprehension whatsoever.
 
 This also tends to scratch more of an academia style itch with regards to the problem types, plus it's not that often that I get to see such a diverse range of solutions to a given problem when comparing what I came up with to the wider community.  Sometimes it's nice to be validated when my solution aligns, and sometimes it's nice to see what I missed (or on the very very rare occasions, what everyone else missed) when it doesn't.
+
+If I do add more languages, I'd probably want to select one that has some fundamental differences, for example, whilst I like Ruby, and in many ways prefer it to Python, I feel the solutions would be too similar to Python to warrant showcasing.  I'm probably more inclined to pick something like Rust, albeit let's get Python/C++/C out of the way first!
+
+I do want to stress, I've no interest in any deliberately esoteric languages, so that's a hard pass on Brain-f... etc.  If I feel like I'm just fighting the language all the way, that's not even a remotely fun experience for me.
+
+***My Development Environment***
+
+All the code is written using Visual Code on my Laptop which is a 2012 Macbook Pro with a massive thermal throttling issue, so if I've deemed the speed of a solution acceptible on my machine, you'll be just fine...  This is why I don't have any make files etc., as Visual Code basically just does all that for me on the fly.  If three's a big demand, I can easily add cmake files, but as my builds consist of (typically) single self-contained source files, or at most one other source file if I'm pulling in some external library, it's not the trickiest thing to resolve.
+
+I have very deliberately tried to shy away from libraries/functions I know to be OS specific, one of the reasons there's no timing code in C/C++.
+
+Compiler wise, C/C++ is clang for me.
+
+I am planning on upgrading my laptop at some point this year, probably to an Arm based Laptop (M1/M2 probably), so I'll of course be re-validating all of my solutions to ensure they still work.
