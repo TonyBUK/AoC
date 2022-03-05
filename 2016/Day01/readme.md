@@ -114,4 +114,40 @@ The 2015 Day 1 challenge was positively basic in comparison!
 
 **C++**
 
+So for 2015, C++ was basically just Python solutions in STL.  For 2016, I'm going to go heavier on the OO side of things.  So let's break this down.
+
+The main thing is the CPosition class.  At it's heart, it's an accessor/mutator for a data structure holding an X/Y points, but it does also implement the following:
+- Operators for addition/multiplication of other positions / scaling factors.
+- Operators for basic comparisons (which let's this be used as an key for std maps).
+- Manhatten Distance calculations.
+
+This is *all* so that instead of writing:
+
+    for (std::vector<MovesType>::const_iterator it = kMoves.cbegin(); it != kMoves.cend(); ++it)
+    {
+        // Update the Direction
+        eDirection = updateDirection(eDirection, it->eTurn);
+
+        // Update the Position
+        kPosition.posX += getVector(eDirection).posX * static_cast<int64_t>(it->nDistance));
+        kPosition.posY += getVector(eDirection).posY * static_cast<int64_t>(it->nDistance));
+    }
+
+I can instead write:
+
+    for (std::vector<MovesType>::const_iterator it = kMoves.cbegin(); it != kMoves.cend(); ++it)
+    {
+        // Update the Direction
+        eDirection = updateDirection(eDirection, it->eTurn);
+
+        // Update the Position
+        kPosition += (CPosition(getVector(eDirection)) * static_cast<int64_t>(it->nDistance));
+    }
+
+Don't get me wrong, the class would typically be tucked away in another file pair entirely (class header/implementation), and to be fair, one of the ways most people who write AoC solutions will be to utilize some core "goto" libraries, and classes for handling 2D/3D positions is utterly invaluable.
+
+If I wanted to go with a simple struct solution, I would still have to tackle using a struct as a hashing key, meaning at the very least, the < operator is required.
+
+Other than all this boiler plate code, this is effectively the Python solution.  I "handle" the lack of sets by using the STL Map function, and never comparing about the value, just the keys, which by definition have to be unique.
+
 **C**
