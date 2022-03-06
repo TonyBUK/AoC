@@ -8,9 +8,39 @@ The actual algorithm is relatively trivial.  We need to keep track of how many "
 
 This can be solved by taking the total number of "(", and subtracting the total number of ")".
 
+Some languages will literally have a count feature, where you can identify the substring/character you're interested in (i.e. "(" and ")" and return the number of times they occur, failing that, there's always the good old fashion iteration method.
+
+    FOR each character
+    
+      IF the character is "("
+        Add 1 to the number of "(" characters
+      ELSE IF the character is ")"
+        Add 1 to the number of ")" characters
+      ELSE
+        Oh dear......
+      END
+
+    NEXT
+
 **Part 2**
 
-This is a variation of Part 1.  If you solved Part 1 by adding 1 to a counter each time you saw a "(", and subtracting 1 each time you saw a ")", then this part is basically solved, as you just need to figure out how many "(" and ")" you saw in total when the counter gets to -1.
+This is a variation of Part 1.  If you solved Part 1 by adding 1 to a counter each time you saw a "(", and subtracting 1 each time you saw a ")", then this part is basically solved, as you just need to figure out how many "(" and ")" you saw in total when the counter gets to -1.  This is actually where the iteration method shown in Part 1 would actually work better...
+
+    FOR each character
+    
+      IF the character is "("
+        Add 1 to the number of "(" characters
+      ELSE IF the character is ")"
+        Add 1 to the number of ")" characters
+      ELSE
+        Oh dear......
+      END
+
+      IF the number of "(" characters MINUS the number of ")" characters is -1
+        RETURN the number of "(" characters PLUS the number of ")" characters
+      END
+
+    NEXT
 
 **Python vs C++ vs C**
 
