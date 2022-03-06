@@ -139,4 +139,6 @@ I appreciate it's moot as 0 is never used on the Keypad, but I do typically like
 
 **C++**
 
+Moved the position class to its own file, and extended it slightly to add position clamping.  The main solution now doesn't look anywhere near as bloated.  And as alluded to in the Python solution, I've used a different character "." to represent an unmoveable space.  The logical thing to check might be NULL ('\0'), but because in C/C++, strings are nul terminated, this ends not being trivial, so "." was a good enough compromise.
+
 **C**
