@@ -12,7 +12,7 @@ This was the first annual Advent of Code, albeit as I didn't start until 2020, t
 - Day 15    : I think I'd argue this was the first day that really forced a more optimal approach.
 - Day 18    : Conways Game of Life is something everyone needs to solve at least once, and doing AoC, you'll do it way more times!
 - Day 20/21 : Really like the way these two play off of each other.  At first they seem like iterations of the same puzzle, but are fundamentally different problems.
--   Albeit I can't help but feel on subsequent years, this would have been a single puzzle!
+  - Albeit I can't help but feel on subsequent years, this would have been a single puzzle!
 - Day 23    : Always enjoy a VM puzzle!
 
 I do like the fact in subsequent years, the puzzles went away from "use industry standard algorithm to solve puzzle", such as MD5/Escape Sequences/JSON.  The better puzzles tend to be ones where the language itself is mostly unimportant outside of basics such as array growth / hash maps etc.
