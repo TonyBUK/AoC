@@ -99,6 +99,12 @@ In this scenario, because the data *never* changes across different users, I nor
 
 Incidently, the examples text file is also why alot of the time, say on single line inputs, I'll still loop assuming it's multiple lines, as my initial work is on the examples, I genuinely am running a bunch of different inputs in one go.  It effectively provides a nice easy way to verify a change I've done hasn't broken things before diving into the true input.
 
+***General Comments On Solutions***
+
+Obviously I've no idea who's going to read any of this, but my assumption is that if you end up reading any of the documentation associated with the earlier puzzles, you're probably still finding your feet with respect to algorithms / code etc. in general, so I tend to pitch those accordingly.  If you're stuck on one of the later ones, you probably are more interested in the core algorithm itself for the solution, and not so much on language features etc., so those are pitched accordingly too.
+
+What I'm particuarly interested to hear is whether the blurb with the solutions helped or hindered, so that I can refine as needed.  Whilst the code is going to be the best reference at the end of the day, I also like the idea that someone might just read the accompanying text, and figure the rest out for themselves from there.
+
 ***About Me***
 
 I'm a pretty experienced S/W Engineer specialising in embedded C, typically written as close to bare metal as possible.  I've also worked extensively with C++/Ada, and have dabbled in x86/Z80/68K/PPC/Arm assembly, C#, Python, Java, Javascript, PHP, Pascal, Jovial, Delphi, Lua and Ruby and many more.  My main motivation for taking part in AoC was two-fold, firstly I wanted to get more experience with Python/Ruby, in that I found myself typically brute forcing C/C++ style solutions into these languages rather than taking advantage of the unique features of the languages.  As an example (for Python), my original solutions didn't contain any list/dictionary/generator comprehension whatsoever.
