@@ -14,9 +14,35 @@ Parts 1/2 both process the same data, the box dimensions, but with different alg
 
 The main difference here is that this needs to known the minimum value of a given array to complete the algorithm.
 
+So the basic algorithm is:
+
+    FOR each Box
+    
+      Calculate the Wrapping Paper Required:
+      => Surface Area: 2*L*W + 2*W*H + 2*H*L
+      => Leftovers   : Smallest Of: L*W, W*H, H*L
+
+      Add the Wrapping Paper to the Total Wrapping Paper
+
+    END
+
 **Part 2**
 
 The main difference here is that this needs to sort the values of a given array to complete the algorithm.
+
+So the basic algorithm is:
+
+    FOR each Box
+    
+      Calculate the Ribbon Required:
+      => Sorted Areas : Arrange from Smallest to Largest: L*W, W*H, H*L
+      => Ribbon       : (2 * Smallest Area) + (2 * Second Smallest Area) + (W * H * L) 
+
+      Add the Ribbon Length to the Total Ribbon Length
+
+    END
+
+Note: You might note that another way of doing this would be to find the largest area, and use the other two, as the order of smallest/second smallest doesn't matter, all that's important is that we don't use the largest area.
 
 **Python vs C++ vs C**
 
