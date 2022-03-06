@@ -92,6 +92,39 @@ The revised rule is that not only does Y/X have to be within the Rows/Columns of
 
 The nice thing is that loop also solves Part 1 as well.
 
+Note: Whilst I've not done it here, the addition of walls actually affords us a possible cheat.  What if we extended the boundary of the grid...
+
+    . . . . . . .
+    . . . 1 . . .
+    . . 2 3 4 . .
+    . 5 6 7 8 9 .
+    . . A B C . .
+    . . . D . . .
+    . . . . . . .
+
+Why might you do this?  Well, it means that as long as we stard on one of the number/letters, we can never go out of bounds.  The reason is there's no Up/Down/Left/Right movement that would put us outside the grid, it would just put us on an invalid value.  Meaning the loop could be optimised to:
+
+    FOR each set of moves
+
+      FOR each move in the current set
+      
+        Set the new *possible* Position to U/D/L/R based on the move
+        Note: The Keypad design is such that the Position can never go outside the Grid
+        
+        IF the *possible* Position is Valid
+        
+          Update the Position to the *possible* Position
+          
+        END
+        
+      NEXT
+      
+      Add the current Keypad Value represented by the current Position to the Pass Code
+      
+    NEXT
+
+Since we no longer need to limit the position to the grid due to the bounding walls.  This is actually a super common trick, sacrificing a little bit of memory to simpilify the processing.  And hopefully demonstrates how sometimes, the design of the input data itself is just as important as the algorithms to process it.
+
 **Python vs C++ vs C**
 
 **Python**
