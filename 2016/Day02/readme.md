@@ -67,7 +67,7 @@ becomes...
     . A B C .
     . . D . .
 
-The revised rule is that not only does Y/X have to be within the Rows/Columns of the Grid, it can't end up on an invalid position, represented above with dots.  Think of it as walls of a maze if you will.  So the core loop is very slightly adjusted:
+The revised rule is that not only does Y/X have to be within the Rows/Columns of the Grid, it can't end up on an invalid position, represented above with dots.  Think of the dots as impassable walls if that helps.  So the core loop is very slightly adjusted:
 
 
     FOR each set of moves
