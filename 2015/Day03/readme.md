@@ -18,16 +18,16 @@ The basic algorithm is to count how many unique times each pair of X/Y values oc
 
 As per Part 1, except rather than a single X/Y pair, we now need to keep track of two indepently moving X/Y pairs.  This is achieved internally with a very simple trick to manipulate an array index, whereby we just want to alternative Santa moves and Robot moves every other cycle.  The code achieves this with:
 
-nCurrent = 1 - nCurrent
+    nCurrent = 1 - nCurrent
 
 Which will alternative the value of nCurrent every cycle between 0,1,0,1 etc.  This could have also been achieved with:
 
-nCurrent = (nCurrent + 1) % 2
+    nCurrent = (nCurrent + 1) % 2
 
 or
 
-if nCurrent == 0 : nCurrent = 1
-else             : nCurrent = 0
+    if nCurrent == 0 : nCurrent = 1
+    else             : nCurrent = 0
 
 They all achieve the same thing.
 
