@@ -51,7 +51,7 @@ Incidently, questioning whether Y increases or decreases when we move up is a ve
 
 **Part 2**
 
-This is basically the same, but adds a wrinkle.  The Keypad is no longer square.  No problem, we'll make it square anyway, meaning:
+This is basically the same, but adds a wrinkle.  The Keypad is no longer a grid.  No problem, we'll make it a grid anyway, meaning:
 
         1
       2 3 4
