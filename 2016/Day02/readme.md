@@ -4,9 +4,9 @@ https://adventofcode.com/2016/day/2
 
 This is actually more similar to Part 1 than you might think, but with three differences.
 
-1. We're now just moving N/E/S/W, except E/W are referred to as L/R respectively.
-2. We only ever move one space at a time
-3. Our movement is limited to the keypad
+1. We're now just moving N/E/S/W, except this is now referred to as U/R/D/L respectively.
+2. We only ever move one space at a time.
+3. Our movement is limited to the keypad, whereas in Day 1, it was moving in an infinite space.
 
 **Part 1**
 
