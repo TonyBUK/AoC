@@ -151,3 +151,5 @@ If I wanted to go with a simple struct solution, I would still have to tackle us
 Other than all this boiler plate code, this is effectively the Python solution.  I "handle" the lack of sets by using the STL Map function, and never comparing about the value, just the keys, which by definition have to be unique.
 
 **C**
+
+I think I'd unfavourably describe this as the C++ solution without all the BS.  Didn't bother with a hash map for the visited locations, instead it's a bog standard array, making searching an O(N) (linearly increasing in execution time based on the number of inputs) problem, but for Day 1 and such a small number of inputs, O(N) is fine!
