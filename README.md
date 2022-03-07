@@ -58,6 +58,8 @@ One thing to be wary of, the solutions I've uploaded work for my particular envi
 
 The Python version targetted is in the 3.x range.  The aim isn't to constantly refresh to the latest and greatest, but acknowledgement that the fragmentation issues with Python versions utterly pales to that of C/C++ compiler versions (see below).  If anyone does find compatability issues with my Python code and some widely used variant of Python 3.X, I'd be happy to take a look to try and resolve it.  For example, how's MicroPython compatability?
 
+I'm also limiting myself to the standard libraries only.  I appreciate Numpy etc. all exist and are fairly ubiquitous, but ultimately it's typically easier to take code written using standard libraries and rewriting those to use specialised libraries than the other way around, plus there may be times when installing libraries isn't feasible for others, so I want something that, provinding you can install/run Python 3, will just work out of the box.
+
 Also as a trigger warning, I *despise* Python's indentation scoping rule, so get used to seeing "#end" all over the place to make me at least think it bookends scope.  Also my background is more procedural programming than object orientation, so my code will reflect that (my day job is typically embedded C).  Typically I only use classes to encapsulate a thing, especially if I think it would benefit from RAII/resource ownership, but my go-to isn't make all things classes.
 
 **General comments on C/C++**
