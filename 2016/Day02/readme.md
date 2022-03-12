@@ -28,9 +28,12 @@ The basic algorithm is:
     
 The main thing of interest is that in the previous task, I set Up to +1 in the Y axix, and Down to -1 in the Y axis, since that's how we tend to visualise it, but the problem is, when dealing with Y as an offset into an array, it's actually the other way around.
 
-    9 8 7
-    7 5 4
-    3 2 1
+          --X--
+          0 1 2
+
+    | 0   9 8 7
+    Y 1   7 5 4
+    | 2   3 2 1
 
 In terms of a 2D Array, this will be indexed row, then column, and positive is down / right for row/column respectively meaning:
 
