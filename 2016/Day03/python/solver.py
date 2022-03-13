@@ -2,7 +2,7 @@ import time
 
 def main() :
 
-    # Read the Triangle Coordinates
+    # Read the Triangle Lengths
     triangles = []
     with open("../input.txt", "r") as inputFile:
         triangles = [[int(x) for x in " ".join(line.strip().split()).split(" ")] for line in inputFile.readlines()]
