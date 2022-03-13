@@ -116,4 +116,6 @@ The rest of the solution basically matches Part 1/2 above pretty closely.
 
 **C++**
 
+Mostly follows the Python.  Encapsulated the triangle handling in it's own class because... C++.  You may notice some weirdness with typedef'ing an array, that's mostly because C/C++ are a bit... fiddly, when it comes to returning fixed sized arrays.  Typedef'ing or wrapping in a struct is the typical workaround here.  Personally, I disliking hiding arrays behind typedefs, as this often adds ambiguity, but it's a necessary evil here.
+
 **C**
