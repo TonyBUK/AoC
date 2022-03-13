@@ -6,6 +6,20 @@ def main() :
     triangles = []
     with open("../input.txt", "r") as inputFile:
         triangles = [[int(x) for x in " ".join(line.strip().split()).split(" ")] for line in inputFile.readlines()]
+
+        # Equivalent functionality without List Comprehension
+
+        # for line in inputFile.readlines() :
+        #     cleanedLine = line.strip()
+        #     while "  " in cleanedLine :
+        #         cleanedLine = cleanedLine.replace("  ", " ")
+        #     #end
+        #     triangle = []
+        #     for X in cleanedLine.split(" ") :
+        #         triangle.append(int(X))
+        #     #end
+        #     triangles.append(triangle)
+        # #end
     #end
 
     def countValidTriangles(triangles) :
@@ -20,6 +34,8 @@ def main() :
     #end
 
     print(f"Part 1: {countValidTriangles(triangles)}")
+
+    assert((len(triangles) % 3) == 0)
 
     # Re-arrange the triangles by columns
     rearrangedTriangles = []
