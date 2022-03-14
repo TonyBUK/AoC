@@ -33,9 +33,7 @@ In terms of how to work out if any two sides are larger than the remaining side,
     Z+X>Y
     Z+Y>X
 
-And of course because operands for "+" are associative https://en.wikipedia.org/wiki/Operator_associativity
-
-We can condense this to:
+And of course because operands for "+" are associative https://en.wikipedia.org/wiki/Operator_associativity, we can condense this to:
 
     X+Y>Z (equivalent to Y+X>Z)
     X+Z>Y (equivalent to Z+X>Y)
