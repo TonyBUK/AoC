@@ -198,3 +198,5 @@ So now we just need to bring these together... making the generic algorithm:
     Length 3 : (((floor(X / 3) * 3) + 2) * 3) + (X % 3)
 
 This may seem like alot of work, but in reality, doing this allows only a single set of data to be re-used, and once assigned, that data is never modified.  Plus if we desperately were worried about performance, we could realise that each set of three triangles shares most of the calculation, so rather than processing one triangle at a time, process three in one iteration, and so on.  But I'm happy enough with the solution for now.
+
+If we were desperately worried about performance, then we might rightly ask why we're buffering the data in RAM at at all, why not just cache "just enough" data when reading from a file to allow us to iterate over the triangle permutations, and solve both parts in the file reading phase.
