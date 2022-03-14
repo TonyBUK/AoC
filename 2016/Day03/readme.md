@@ -33,9 +33,7 @@ In terms of how to work out if any two sides are larger than the remaining side,
     Z+X>Y
     Z+Y>X
 
-And of course because operands for "+" are associative https://en.wikipedia.org/wiki/Operator_associativity
-
-We can condense this to:
+And of course because operands for "+" are associative https://en.wikipedia.org/wiki/Operator_associativity, we can condense this to:
 
     X+Y>Z (equivalent to Y+X>Z)
     X+Z>Y (equivalent to Z+X>Y)
@@ -47,6 +45,8 @@ Meaning we can do:
 
     Smallest     Next Smallest      Largest
     MIN(X,Y,Z) + MID(X,Y,Z)     >   MAX(X,Y,Z)
+
+Most languages have some form of sorting method to sort numbers low to high, meaning if we use that, then we can guarentee X,Y will be small, and Z will be large.
 
 **Part 2**
 
@@ -115,5 +115,9 @@ There's no shame in not using the list comprehension method, especially if you'r
 The rest of the solution basically matches Part 1/2 above pretty closely.
 
 **C++**
+
+Mostly follows the Python.  Encapsulated the triangle handling in it's own class because... C++.  You may notice some weirdness with typedef'ing an array, that's mostly because C/C++ are a bit... fiddly, when it comes to returning fixed sized arrays.  Typedef'ing or wrapping in a struct is the typical workaround here.  Personally, I disliking hiding arrays behind typedefs, as this often adds ambiguity, but it's a necessary evil here.
+
+You may notice that the triangle class temporarily sorts the data at the point of assessing validity, not at the point of input.  This is because if we sorted at the point of input, part 2 couldn't work, since we need to know the *original* order the data was entered in order to split by column.  Sorting that data would break this.
 
 **C**
