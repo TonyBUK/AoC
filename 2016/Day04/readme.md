@@ -72,7 +72,7 @@ If that checksum matches what we've extracted from the input string, it's valid.
 
 **Part 2**
 
-If you haven't realised, the encryption method is: https://en.wikipedia.org/wiki/Caesar_cipher
+As mentioned in the puzzle, the encryption method is: https://en.wikipedia.org/wiki/Caesar_cipher, probably one of the first ways of encoding data we learn when we're younger.
 
 What we've been asked to perform is to shift each letter by the Sector ID, which tends to be in the thousands.
 
@@ -129,6 +129,21 @@ The problem is to know this, you'd need to know that the word: "northpole" is st
 **Python**
 
 Python does have a collections package which contains functionality to help perform part 1 (analysing an input data set and returning frequency metrics), however it's such a trivial operation, I think it's more useful to show this verbosely.
+
+This again uses list comprehension for the decryption routine, equivalent code has been left in as comments.  The only other part that might need explaining is why there's a string containing the alphabet present.
+
+Rather than performing some ASCII conversion, which would be something like:
+
+    nEncrypted = ord(C) - ord('a')
+    nDecrypted = (nEncrypted + nSectorId) % 26 # or ord('z') - ord('a') + 1
+    nEncoded   = chr(nDecrypted + ord('a'))
+
+We instead just use an array a-z, and use a simple search/lookup to go between a index / value.  Making the equivalent code:
+
+    ALPHABET   = "abcdefghijklmnopqrstuvwxyz"
+    nEncrypted = ALPHABET.index(C)
+    nDecrypted = (nEncrypted + nSectorId) % 26 # or len(ALPHABET)
+    nEncoded   = ALPHABET[nDecrypted]
 
 **C++**
 
