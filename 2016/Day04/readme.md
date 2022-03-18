@@ -72,7 +72,7 @@ If that checksum matches what we've extracted from the input string, it's valid.
 
 **Part 2**
 
-If you haven't realised, the encryption method is: https://en.wikipedia.org/wiki/Caesar_cipher
+As mentioned in the puzzle, the encryption method is: https://en.wikipedia.org/wiki/Caesar_cipher, probably one of the first ways of encoding data we learn when we're younger.
 
 What we've been asked to perform is to shift each letter by the Sector ID, which tends to be in the thousands.
 
