@@ -65,6 +65,13 @@ def main() :
     def decryptData(kEncodedString, nSectorId) :
         ALPHABET = "abcdefghijklmnopqrstuvwxyz"
         kDecryptedData = "".join([ALPHABET[((ALPHABET.index(C) + nSectorId) % len(ALPHABET))] for C in kEncodedString])
+        # Equivalent to:
+        # kDecryptedData = ""
+        # for C in kEncodedString :
+        #     nUnrotatedIndex = ALPHABET.index(C)
+        #     nRotatedIndex   = (nUnrotatedIndex + nSectorId) % len(ALPHABET)
+        #     kDecryptedData += ALPHABET[nRotatedIndex]
+        # #end
         return kDecryptedData
     #end
 
