@@ -130,6 +130,21 @@ The problem is to know this, you'd need to know that the word: "northpole" is st
 
 Python does have a collections package which contains functionality to help perform part 1 (analysing an input data set and returning frequency metrics), however it's such a trivial operation, I think it's more useful to show this verbosely.
 
+This again uses list comprehension for the decryption routine, equivalent code has been left in as comments.  The only other part that might need explaining is why there's a string containing the alphabet present.
+
+Rather than performing some ASCII conversion, which would be something like:
+
+    nEncrypted = ord(C) - ord('a')
+    nDecrypted = (nEncrypted + nSectorId) % 26 # or ord('z') - ord('a') + 1
+    nEncoded   = chr(nDecrypted + ord('a'))
+
+We instead just use an array a-z, and use a simple search/lookup to go between a index / value.  Making the equivalent code:
+
+    ALPHABET   = "abcdefghijklmnopqrstuvwxyz"
+    nEncrypted = ALPHABET.index(C)
+    nDecrypted = (nEncrypted + nSectorId) % 26 # or len(ALPHABET)
+    nEncoded   = ALPHABET[nDecrypted]
+
 **C++**
 
 **C**
