@@ -106,7 +106,7 @@ So now how do we know which one is the North Pole....... here's where the puzzle
 
     What is the sector ID of the room where North Pole objects are stored?
 
-The problem is to know this, you'd need to know that the word: "northpole" is stored within the matching object.  So it's hinted upon, but not explained, meaning unless you know this, the algorithm is going to be:
+The problem is to know this, you'd need to know that the word: "northpole" is stored within the matching object.  So it's hinted upon, but not explicitly defined, meaning unless you know this, the algorithm is going to be:
 
     FOR each Input
     
