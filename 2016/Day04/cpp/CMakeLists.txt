@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.10)
+
+# set the project name
+project(solver)
+
+set(CXX_STANDARD 98)
+
+# add the executable
+add_executable(solver solver.cpp ccaesercipher.cpp ckioskdata.cpp common.cpp)
