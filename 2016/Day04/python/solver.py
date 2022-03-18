@@ -72,7 +72,7 @@ def main() :
     sectorNorthPole = 0
     for currentData in kEncryptedData :
 
-        # Validatet the Checksum
+        # Validate the Checksum
         if currentData["checkSum"] == calculateChecksum(currentData["encodedStrings"]) :
 
             sectorSum += currentData["sectorId"]
