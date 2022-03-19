@@ -149,4 +149,6 @@ We instead just use an array a-z, and use a simple search/lookup to go between a
 
 My god, it's full of bloat...  basically this is the Python solution but distributed across way more files than it should be, and arguably, I held back too!  One could argue that the encryption class should be derived from some form of base class.  It does at least leave the primary code item, solver.cpp, as a very clean solution, but certainly unless I knew both parts of the puzzle up front (which I did), I'd never code the solution this way, primarily as part 2 more often than not invalidates the part 1 solutions scaleability/extendibility.
 
+That said, the real indicator as to whether the decomposition was worth it will be whether any of it can be re-used down the line.  In this case I suspect not, but in upcoming years, this sort of approach will definately pay off.
+
 **C**
