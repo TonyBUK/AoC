@@ -1,5 +1,6 @@
 import time
 import hashlib
+import random
 
 def main() :
 
@@ -12,26 +13,39 @@ def main() :
 
     def getPasswords(kDoorId) :
 
-        PREAMBLE       = "00000"
-        VALID_INDEXES  = "01234567"
-        kPasswordPart1 = ""
-        kPasswordPart2 = list("        ")
-        nIndex         = 0
+        MOVIE_OS            = "0123456789abcdefghijklmnopqrstuvwxyz"
+        PREAMBLE            = "00000"
+        VALID_INDEXES       = "01234567"
+        kPasswordPart1      = ""
+        kPasswordPart2      = list("        ")
+        kPasswordPart2Valid = [False] * len(kPasswordPart2)
+        nIndex              = 0
+        hackTime            = time.perf_counter()
 
-        while (len(kPasswordPart1) < 8) or (" " in kPasswordPart2) :
+        while (len(kPasswordPart1) < 8) or (all(kPasswordPart2Valid) == False) :
 
             kMD5 = hashlib.md5((kDoorId + str(nIndex)).encode()).hexdigest()
-            if 0 == kMD5.find(PREAMBLE) :
+            if kMD5.startswith(PREAMBLE) :
                 if len(kPasswordPart1) < 8 :
                     kPasswordPart1 += kMD5[5]
                 #end
-                if " " in kPasswordPart2 :
+                if all(kPasswordPart2Valid) == False :
                     if kMD5[5] in VALID_INDEXES :
                         nPosition = int(kMD5[5])
-                        if " " == kPasswordPart2[nPosition] :
-                            kPasswordPart2[nPosition] = kMD5[6]
+                        if False == kPasswordPart2Valid[nPosition] :
+                            kPasswordPart2[nPosition]      = kMD5[6]
+                            kPasswordPart2Valid[nPosition] = True
                         #end
                     #end
+                #end
+            #end
+
+            if ((time.perf_counter() - hackTime) > 0.1) or all(kPasswordPart2Valid) :
+                kPasswordPart2 = [C if bValid else random.choice(MOVIE_OS) for C,bValid in zip(kPasswordPart2, kPasswordPart2Valid)]
+                print("Hacking FBI Mainframe... " + "".join(kPasswordPart2), end="\r")
+                hackTime = time.perf_counter()
+                if all(kPasswordPart2Valid) :
+                    print("Wake up Neo...  The Matrix has you")
                 #end
             #end
 
