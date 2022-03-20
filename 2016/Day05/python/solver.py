@@ -21,17 +21,15 @@ def main() :
         while (len(kPasswordPart1) < 8) or (" " in kPasswordPart2) :
 
             kMD5 = hashlib.md5((kDoorId + str(nIndex)).encode()).hexdigest()
-            if PREAMBLE in kMD5 :
-                if 0 == kMD5.index(PREAMBLE) :
-                    if len(kPasswordPart1) < 8 :
-                        kPasswordPart1 += kMD5[5]
-                    #end
-                    if " " in kPasswordPart2 :
-                        if kMD5[5] in VALID_INDEXES :
-                            nPosition = int(kMD5[5])
-                            if " " == kPasswordPart2[nPosition] :
-                                kPasswordPart2[nPosition] = kMD5[6]
-                            #end
+            if 0 == kMD5.find(PREAMBLE) :
+                if len(kPasswordPart1) < 8 :
+                    kPasswordPart1 += kMD5[5]
+                #end
+                if " " in kPasswordPart2 :
+                    if kMD5[5] in VALID_INDEXES :
+                        nPosition = int(kMD5[5])
+                        if " " == kPasswordPart2[nPosition] :
+                            kPasswordPart2[nPosition] = kMD5[6]
                         #end
                     #end
                 #end
