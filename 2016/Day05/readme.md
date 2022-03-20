@@ -67,6 +67,10 @@ This is really just a more different part 1.
 
 As you probably spotted, the "optimisation" that you can get is merging Parts 1 and 2 together such that the MD5's are only processed once, since this is going to be the expensive part of the calculation.  This saves around 30% of the total time on my input data.
 
+Of course this time is all then squandered on the stretch goal aspect, being to make the decryption cinematic.  I went with the cheezy rapidly changing random values progressively becoming the password.  This does completely negate any time saved with the optimisation pass!
+
+Interestingly, in some of the later years, there are definately puzzles where I would recommend at least having the ability to squander time on outputting what's happening, but I'll address those as they come up.
+
 **Python vs C++ vs C**
 
 **Python**
