@@ -24,7 +24,7 @@ int main(int argc, char** argv)
             if (kSector.Valid())
             {
                 nSectorSum += kSector.SectorId();
-                if (std::string::npos != kSector.Decrypt().find("north"))
+                if (std::string::npos != kSector.Decrypt().find("northpole"))
                 {
                     nNorthPoleSector = kSector.SectorId();
                 }
