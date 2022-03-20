@@ -40,6 +40,16 @@ def main() :
                 #end
             #end
 
+            # Movie OS
+            # This will rapidly print a garbled password containing a mix of:
+            # 1. Known values which never change
+            # 2. Random alphanumeric values for unknown entries
+            #
+            # The rate of change will be around 10Hz, fast enough that you can see what's going on,
+            # but not too fast that we just utterly kill throughput.
+            #
+            # I could have made this a simpler modulo check on nIndex, but that would make the frame
+            # rate CPU bound, which would just look bad.
             if ((time.perf_counter() - hackTime) > 0.1) or all(kPasswordPart2Valid) :
                 kPasswordPart2 = [C if bValid else random.choice(MOVIE_OS) for C,bValid in zip(kPasswordPart2, kPasswordPart2Valid)]
                 print("Hacking FBI Mainframe... " + "".join(kPasswordPart2), end="\r")
