@@ -83,3 +83,6 @@ Didn't think todays was overly appropriate to go nuts on classes, especially as 
 
 **C**
 
+Same as the C but massively benefitting from the same quirk as Day 4 in 2015, being that the C version of the MD5 library I've selected doesn't stringify the MD5 hash, making it much faster to work with, since there's very few conversions required.  Also, given that array searching is fiddlier in C, this uses a bit mask instead.
+
+Notably for the Movie OS output, this actually halves the rate of output, but that's only because the C version is *that* much faster at churning through the possible hashes that it can get away with it.  This actually has a compound effect, in that printing to the screen is very slow, and the more MD5 hashes we can perform between print commands, the faster the solution is reached.  Were all the Movie OS outputs removed, the difference in speed would still be there, just not as pronounced.
