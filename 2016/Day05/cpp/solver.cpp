@@ -24,7 +24,7 @@ int main(int argc, char** argv)
             std::vector<bool>   kPasswordPart2Validity(kPasswordPart2.size(), false);
             std::getline(kFile, kLine);
 
-            unsigned long i      = 1;
+            unsigned long i      = 0;
 
             while ((kPasswordPart1.size() < 8) || (std::find(kPasswordPart2Validity.begin(), kPasswordPart2Validity.end(), false) != kPasswordPart2Validity.end()))
             {
