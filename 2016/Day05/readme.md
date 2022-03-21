@@ -79,6 +79,7 @@ Not that much to say as everything I said in 2015's Day 4 solution is equally ap
 
 **C++**
 
+Didn't think todays was overly appropriate to go nuts on classes, especially as it would invariably silo the Part 1 / Part 2 solutions from each other, so this is basically a more different variation of the Python solution.
 
 **C**
 
