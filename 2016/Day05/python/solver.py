@@ -50,18 +50,17 @@ def main() :
             #
             # I could have made this a simpler modulo check on nIndex, but that would make the frame
             # rate CPU bound, which would just look bad.
-            if ((time.perf_counter() - hackTime) > 0.1) or all(kPasswordPart2Valid) :
+            if (time.perf_counter() - hackTime) > 0.1 :
                 kPasswordPart2 = [C if bValid else random.choice(MOVIE_OS) for C,bValid in zip(kPasswordPart2, kPasswordPart2Valid)]
                 print("Hacking FBI Mainframe... " + "".join(kPasswordPart2), end="\r")
                 hackTime = time.perf_counter()
-                if all(kPasswordPart2Valid) :
-                    print("Wake up Neo...  The Matrix has you")
-                #end
             #end
 
             nIndex += 1
 
         #end
+
+        print("Wake up Neo...  The Matrix has you")
 
         return kPasswordPart1, "".join(kPasswordPart2)
 
