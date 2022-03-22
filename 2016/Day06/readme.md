@@ -42,6 +42,8 @@ Basic algorithm is:
       
     END
 
+Note: You could actually have the first loop also keep track of the maximum as well which would eliminate most of the second loop, but for reasons which will be more obvious in Part 2, I've not done this.
+
 **Part 2**
 
 This is really just a more different part 1.
