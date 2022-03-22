@@ -74,6 +74,8 @@ Everything is the same, exept for the fact we now want the mimumum encountered f
 
 And of course, it's perfectly possible to merge two solutions by looking for the minimum/maximum frequencies at the same time.
 
+And had I gone with using the first loop to also determine the maximum, I'd have been somewhat scuppered for part 2, since the minimum is something you can't easily keep tabs on as you go compared to the maximum, not without some sort of sorting/constant re-evaluation of all the unqiue letter metrics.
+
 **Python vs C++ vs C**
 
 **Python**
