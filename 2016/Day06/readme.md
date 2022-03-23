@@ -91,5 +91,20 @@ Once again, I could have solved this with the collections module, but the algori
 
 **C++**
 
+Essentially the Python solution but class...ified.  I don't think this is necessarily the worst split, albeit there's zero reason this couldn't have just been a carbon copy of the Python solution.
+
+My desire to make all things const meant I had to give a way of notifying that all the data had been added via the calculate function, otherwise I could have automatically detected this whenever Min/Max were called and had it as a private method.
+
+I did a similar trick to the initialisation of min/max, albeit in this instance, instead of INFINITE, which really isn't a thing for integers in C/C++, I simply fed -1 into an unsigned type and let underflow take care of the rest.
+
+i.e.
+
+    Assume the data is 8 bits wide
+
+     -1 == 0xFF (signed)
+    255 == 0xFF (unsigned)
+
+The most famous underflow bug is probably Gandhi in civilization, albeit in my case, it's a behaviour I actively want.
+
 **C**
 
