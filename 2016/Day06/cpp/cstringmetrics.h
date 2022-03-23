@@ -23,12 +23,11 @@ class CStringMetrics
         {
             std::size_t                         nLowest;
             std::size_t                         nHighest;
-            std::map<std::size_t, std::string>  kCharacterFrequency;
+            std::map<char, std::size_t>         kCharacterFrequency;
+            std::map<std::size_t, std::string>  kCharacterFrequencyInverse;
         };
         
-
-        std::vector< std::map<char, std::size_t> >  m_kCharacterFrequencyColumns;
-        std::vector<MetricsType>                    m_kCharacterFrequencyColumnsInverse;
+        std::vector<MetricsType>                    m_kCharacterFrequencyColumns;
 };
 
 #endif // __CSTRING_METRICS_H__

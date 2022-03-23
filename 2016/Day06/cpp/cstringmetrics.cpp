@@ -1,8 +1,7 @@
 #include "cstringmetrics.h"
 
 CStringMetrics::CStringMetrics(void) :
-    m_kCharacterFrequencyColumns(),
-    m_kCharacterFrequencyColumnsInverse()
+    m_kCharacterFrequencyColumns()
 {
 }
 
@@ -10,12 +9,12 @@ void CStringMetrics::Add(const std::string& kString)
 {
     while (m_kCharacterFrequencyColumns.size() < kString.size())
     {
-        m_kCharacterFrequencyColumns.push_back(std::map<char, std::size_t>());
+        m_kCharacterFrequencyColumns.push_back(MetricsType());
     }
 
     for (std::size_t i = 0; i < kString.size(); ++i)
     {
-        std::map<char, std::size_t>& kFrequencies = m_kCharacterFrequencyColumns.at(i);
+        std::map<char, std::size_t>& kFrequencies = m_kCharacterFrequencyColumns.at(i).kCharacterFrequency;
 
         if (kFrequencies.find(kString.at(i)) == kFrequencies.end())
         {
@@ -30,35 +29,34 @@ void CStringMetrics::Add(const std::string& kString)
 
 void CStringMetrics::Calculate(void)
 {
-    m_kCharacterFrequencyColumnsInverse.clear();
-
-    for (std::size_t i = 0; i < m_kCharacterFrequencyColumns.size(); ++i)
+    for (std::vector<MetricsType>::iterator it = m_kCharacterFrequencyColumns.begin(); it != m_kCharacterFrequencyColumns.end(); ++it)
     {
-        m_kCharacterFrequencyColumnsInverse.push_back(MetricsType());
-        MetricsType& kMinMax = m_kCharacterFrequencyColumnsInverse.back();
+        it->kCharacterFrequencyInverse.clear();
+
+        MetricsType& kMinMax = *it;
         kMinMax.nLowest  = static_cast<std::size_t>(-1);
         kMinMax.nHighest = 0;
 
-        std::map<std::size_t, std::string>& kCharacterFrequencyInverse = kMinMax.kCharacterFrequency;
+        std::map<std::size_t, std::string>& kCharacterFrequencyInverse = kMinMax.kCharacterFrequencyInverse;
 
-        for (std::map<char, std::size_t>::const_iterator it = m_kCharacterFrequencyColumns.at(i).cbegin(); it != m_kCharacterFrequencyColumns.at(i).cend(); ++it)
+        for (std::map<char, std::size_t>::const_iterator itFreq = it->kCharacterFrequency.cbegin(); itFreq != it->kCharacterFrequency.cend(); ++itFreq)
         {
-            if (kCharacterFrequencyInverse.find(it->second) == kCharacterFrequencyInverse.end())
+            if (kCharacterFrequencyInverse.find(itFreq->second) == kCharacterFrequencyInverse.end())
             {
-                kCharacterFrequencyInverse[it->second] = std::string(1, it->first);
+                kCharacterFrequencyInverse[itFreq->second] = std::string(1, itFreq->first);
             }
             else
             {
-                kCharacterFrequencyInverse[it->second] += it->first;
+                kCharacterFrequencyInverse[itFreq->second] += itFreq->first;
             }
 
-            if (it->second < kMinMax.nLowest)
+            if (itFreq->second < kMinMax.nLowest)
             {
-                kMinMax.nLowest = it->second;
+                kMinMax.nLowest = itFreq->second;
             }
-            if (it->second > kMinMax.nHighest)
+            if (itFreq->second > kMinMax.nHighest)
             {
-                kMinMax.nHighest = it->second;
+                kMinMax.nHighest = itFreq->second;
             }
         }
     }
@@ -68,9 +66,9 @@ std::string CStringMetrics::Min(void) const
 {
     std::string kResult;
 
-    for (std::vector<MetricsType>::const_iterator it = m_kCharacterFrequencyColumnsInverse.cbegin(); it != m_kCharacterFrequencyColumnsInverse.cend(); ++it)
+    for (std::vector<MetricsType>::const_iterator it = m_kCharacterFrequencyColumns.cbegin(); it != m_kCharacterFrequencyColumns.cend(); ++it)
     {
-        kResult += it->kCharacterFrequency.at(it->nLowest);
+        kResult += it->kCharacterFrequencyInverse.at(it->nLowest);
     }
 
     return kResult;
@@ -80,9 +78,9 @@ std::string CStringMetrics::Max(void) const
 {
     std::string kResult;
 
-    for (std::vector<MetricsType>::const_iterator it = m_kCharacterFrequencyColumnsInverse.cbegin(); it != m_kCharacterFrequencyColumnsInverse.cend(); ++it)
+    for (std::vector<MetricsType>::const_iterator it = m_kCharacterFrequencyColumns.cbegin(); it != m_kCharacterFrequencyColumns.cend(); ++it)
     {
-        kResult += it->kCharacterFrequency.at(it->nHighest);
+        kResult += it->kCharacterFrequencyInverse.at(it->nHighest);
     }
 
     return kResult;
