@@ -42,6 +42,8 @@ Basic algorithm is:
       
     END
 
+Note: You could actually have the first loop also keep track of the maximum as well which would eliminate most of the second loop, but for reasons which will be more obvious in Part 2, I've not done this.
+
 **Part 2**
 
 This is really just a more different part 1.
@@ -71,6 +73,8 @@ Everything is the same, exept for the fact we now want the mimumum encountered f
     END
 
 And of course, it's perfectly possible to merge two solutions by looking for the minimum/maximum frequencies at the same time.
+
+And had I gone with using the first loop to also determine the maximum, I'd have been somewhat scuppered for part 2, since the minimum is something you can't easily keep tabs on as you go compared to the maximum, not without some sort of sorting/constant re-evaluation of all the unqiue letter metrics.
 
 **Python vs C++ vs C**
 
