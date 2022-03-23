@@ -2,8 +2,7 @@
 
 CStringMetrics::CStringMetrics(void) :
     m_kCharacterFrequencyColumns(),
-    m_kCharacterFrequencyColumnsInverse(),
-    m_kCharacterFrequencyColumnsMinMax()
+    m_kCharacterFrequencyColumnsInverse()
 {
 }
 
@@ -12,7 +11,6 @@ void CStringMetrics::Add(const std::string& kString)
     while (m_kCharacterFrequencyColumns.size() < kString.size())
     {
         m_kCharacterFrequencyColumns.push_back(std::map<char, std::size_t>());
-        m_kCharacterFrequencyColumnsMinMax.push_back(MetricsType());
     }
 
     for (std::size_t i = 0; i < kString.size(); ++i)
@@ -36,12 +34,12 @@ void CStringMetrics::Calculate(void)
 
     for (std::size_t i = 0; i < m_kCharacterFrequencyColumns.size(); ++i)
     {
-        MetricsType& kMinMax = m_kCharacterFrequencyColumnsMinMax.at(i);
+        m_kCharacterFrequencyColumnsInverse.push_back(MetricsType());
+        MetricsType& kMinMax = m_kCharacterFrequencyColumnsInverse.back();
         kMinMax.nLowest  = static_cast<std::size_t>(-1);
         kMinMax.nHighest = 0;
 
-        m_kCharacterFrequencyColumnsInverse.push_back(std::map<std::size_t, std::string>());
-        std::map<std::size_t, std::string>& kCharacterFrequencyInverse = m_kCharacterFrequencyColumnsInverse.back();
+        std::map<std::size_t, std::string>& kCharacterFrequencyInverse = kMinMax.kCharacterFrequency;
 
         for (std::map<char, std::size_t>::const_iterator it = m_kCharacterFrequencyColumns.at(i).cbegin(); it != m_kCharacterFrequencyColumns.at(i).cend(); ++it)
         {
@@ -70,9 +68,9 @@ std::string CStringMetrics::Min(void) const
 {
     std::string kResult;
 
-    for (std::size_t i = 0; i < m_kCharacterFrequencyColumns.size(); ++i)
+    for (std::vector<MetricsType>::const_iterator it = m_kCharacterFrequencyColumnsInverse.cbegin(); it != m_kCharacterFrequencyColumnsInverse.cend(); ++it)
     {
-        kResult += m_kCharacterFrequencyColumnsInverse.at(i).at(m_kCharacterFrequencyColumnsMinMax.at(i).nLowest);
+        kResult += it->kCharacterFrequency.at(it->nLowest);
     }
 
     return kResult;
@@ -82,9 +80,9 @@ std::string CStringMetrics::Max(void) const
 {
     std::string kResult;
 
-    for (std::size_t i = 0; i < m_kCharacterFrequencyColumns.size(); ++i)
+    for (std::vector<MetricsType>::const_iterator it = m_kCharacterFrequencyColumnsInverse.cbegin(); it != m_kCharacterFrequencyColumnsInverse.cend(); ++it)
     {
-        kResult += m_kCharacterFrequencyColumnsInverse.at(i).at(m_kCharacterFrequencyColumnsMinMax.at(i).nHighest);
+        kResult += it->kCharacterFrequency.at(it->nHighest);
     }
 
     return kResult;

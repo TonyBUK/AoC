@@ -21,14 +21,14 @@ class CStringMetrics
 
         struct MetricsType
         {
-            std::size_t nLowest;
-            std::size_t nHighest;
+            std::size_t                         nLowest;
+            std::size_t                         nHighest;
+            std::map<std::size_t, std::string>  kCharacterFrequency;
         };
         
 
-        std::vector< std::map<char, std::size_t> >          m_kCharacterFrequencyColumns;
-        std::vector< std::map<std::size_t, std::string> >   m_kCharacterFrequencyColumnsInverse;
-        std::vector<MetricsType>                            m_kCharacterFrequencyColumnsMinMax;
+        std::vector< std::map<char, std::size_t> >  m_kCharacterFrequencyColumns;
+        std::vector<MetricsType>                    m_kCharacterFrequencyColumnsInverse;
 };
 
 #endif // __CSTRING_METRICS_H__
