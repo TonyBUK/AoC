@@ -67,6 +67,8 @@ The most important thing to avoid is double counting SSL Addresses if a single I
 
 **Python**
 
+Python is pretty well suited to this.  One thing some might have noticed is I tend to use dictionaries like I would a C struct.  It's mostly because Data Classes, which would be the more obvious choice, and whilst I'm sure pretty much everyone is on at least Python 3.7, I'm trying not to overly limit the compatability of the solutions for now.  If it gets silly, I may reverse my stance here.
+
 **C++**
 
 **C**
