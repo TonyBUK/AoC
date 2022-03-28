@@ -8,8 +8,12 @@
 #include <algorithm>
 #include <assert.h>
 
-#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
-            ( std::ostringstream() << std::dec << x ) ).str()
+std::string SSTR(const int64_t Number)
+{
+    std::ostringstream ss;
+    ss << Number;
+    return ss.str();
+}
 
 class JSONNode
 {
