@@ -104,12 +104,12 @@ int main(int argc, char** argv)
                         kPasswordPart2[j] = kMovieOS[rand() % nMovieOSSize];
                     }
                 }
-                printf("Hacking FBI Mainframe... %s\r", kPasswordPart2);
-                fflush(stdout);
+                fprintf(stderr, "Hacking FBI Mainframe... %s\r", kPasswordPart2);
+                fflush(stderr);
             }
         }
 
-        printf("Welcome to the real world...          \n");
+        fprintf(stderr, "Welcome to the real world...          \n");
 
         printf("Part 1: %s\n", kPasswordPart1);
         printf("Part 2: %s\n", kPasswordPart2);

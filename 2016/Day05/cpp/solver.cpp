@@ -70,10 +70,10 @@ int main(int argc, char** argv)
                             kPasswordPart2[j] = kMovieOS.at(rand() % kMovieOS.size());
                         }
                     }
-                    std::cout << "Hacking FBI Mainframe... " << kPasswordPart2 << "\r" << std::flush;
+                    std::cerr << "Hacking FBI Mainframe... " << kPasswordPart2 << "\r" << std::flush;
                 }
             }
-            std::cout << "Follow the white rabbit...                " << std::endl;
+            std::cerr << "Follow the white rabbit...                " << std::endl;
 
             std::cout << "Part 1: " << kPasswordPart1 << std::endl;
             std::cout << "Part 2: " << kPasswordPart2 << std::endl;

@@ -147,6 +147,7 @@ int main(int argc, char** argv)
             printf("Part 1 (Algo): %llu\n", getCodeAlgorithmically(nRow, nCol, 20151125));
             printf("Part 1 (Hyb) : %llu\n", getCodeHybrid         (nRow, nCol, 20151125));
             printf("Part 1 (Math): %llu\n", getCodeMathematically (nRow, nCol, 20151125));
+            printf("Ho ho ho!\n");
         }
 
         /* Free the Line Buffers now they're no longer needed */
