@@ -51,5 +51,5 @@ The solutions themselves are nearly identical.  The main difference is that Pyth
     Language : Time      : Percentage of Best Time
     =========:===========:=========================
     Python   : 13.46ms   : 236.65%
-    C++      : 5.688ms   : 100.00%
-    C        : 7.153ms   : 125.76%
+    C++      : 5.69ms    : 100.00%
+    C        : 7.15ms    : 125.76%
