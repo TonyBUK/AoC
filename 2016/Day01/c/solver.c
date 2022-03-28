@@ -161,11 +161,19 @@ bool isRepeated(const PointType* kVisited, const size_t nVisitedSize, const Poin
 
 PointType processMovesDisallowRepeatedPositions(const MovesType* kMoves, const size_t nMoveCount)
 {
-    PointType     kPosition     = {0, 0};
-    DirectionType eDirection    = E_NORTH;
-    PointType*    kVisited      = (PointType*)malloc(nMoveCount * sizeof(PointType));
-    size_t        nVisitedSize  = 1;
+    PointType     kPosition         = {0, 0};
+    DirectionType eDirection        = E_NORTH;
+    PointType*    kVisited          = NULL;
+    size_t        nVisitedSize      = 1;
+    size_t        nMaxVisitedSize   = 0;
     size_t        i;
+
+    /* Allocate the Worst Case for Visited Locations */
+    for (i = 0; i < nMoveCount; ++i)
+    {
+        nMaxVisitedSize += kMoves[i].nDistance;
+    }
+    kVisited    = (PointType*)malloc(nMaxVisitedSize * sizeof(PointType));
 
     kVisited[0] = kPosition;
 
@@ -195,6 +203,7 @@ PointType processMovesDisallowRepeatedPositions(const MovesType* kMoves, const s
         }
     }
 
+    free(kVisited);
     return kPosition;
 }
 
