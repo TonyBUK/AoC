@@ -104,7 +104,7 @@ int main(int argc, char** argv)
             }
 
             // Part 2 - 50 Iterations
-            std::cout << "Part 1: " << kSeeSay->size()  << std::endl;
+            std::cout << "Part 2: " << kSeeSay->size()  << std::endl;
        }
     }
 
