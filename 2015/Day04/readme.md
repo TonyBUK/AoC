@@ -39,3 +39,11 @@ This is meant to create a 4 byte unsigned type, but on my setup, Intel I7 runnin
 Otherwise for the most part they're very similar.  Python/C++ both return strings, which simplifies the comparison but results in slower execution type since 5/6 characters corresponds to 5/6 byte compares.  The C implementation returns a byte array, meaning it's a 2.5 / 3 byte comparison since I'm comparing nibbles.  There's no reason the C++/Python versions couldn't also do the same thing, but it's something to keep in mind when it comes to performance.
 
 It's also noteworthy that C/C++ could have also used to OpenSSL library, which was available to me, but I went this route instead since it's not guarenteed this will be available to you in whatever environment you're using, whereas the source code solution does at least make reduce the dependencies.
+
+**Times**
+
+  Language : Time      : Percentage of Best Time
+  =========:===========:=========================
+  Python   : 6.7265s   : 100.00%
+  C++      : 14.2467s  : 211.80%
+  C        : 8.9093s   : 132.45%
