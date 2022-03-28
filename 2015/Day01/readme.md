@@ -52,4 +52,4 @@ The solutions themselves are nearly identical.  The main difference is that Pyth
     =========:===========:=========================
     Python   : 13.46ms   : 236.65%
     C++      : 5.688ms   : 100.00%
-    C        : 7.153ms.  : 125.76%
+    C        : 7.153ms   : 125.76%
