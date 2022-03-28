@@ -80,15 +80,19 @@ int main(int argc, char** argv)
         {
             std::string kLine;
             std::getline(kFile, kLine);
-            nRawLength += kLine.size();
 
-            std::string kDecoded;
-            unescape(kLine, kDecoded);
-            nDecodedLength += kDecoded.size();
+            if (!kFile.eof())
+            {
+                nRawLength += kLine.size();
 
-            std::string kEncoded;
-            escape(kLine, kEncoded);
-            nEncodedLength += kEncoded.size();
+                std::string kDecoded;
+                unescape(kLine, kDecoded);
+                nDecodedLength += kDecoded.size();
+
+                std::string kEncoded;
+                escape(kLine, kEncoded);
+                nEncodedLength += kEncoded.size();
+            }
         }
 
         std::cout << "Part 1: " << (nRawLength     - nDecodedLength) << std::endl;
