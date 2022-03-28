@@ -54,11 +54,10 @@ For C, I've opted to not perform the boiler plate code needed to buffer any data
 
 The addition of this sort of basic functionality is going to become a running theme as the challenges progress.
 
-
 **Times**
 
     Language : Time      : Percentage of Best Time
     =========:===========:=========================
-    Python   : 15.1330ms : 100.00%
-    C++      : 22.882ms  : 151.20%
-    C        : 15.975ms  : 105.56%
+    Python   : 15.13ms   : 100.00%
+    C++      : 22.88ms   : 151.20%
+    C        : 15.98ms   : 105.56%
