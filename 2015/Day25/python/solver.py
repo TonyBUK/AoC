@@ -1,10 +1,11 @@
 import time
+import sys
 
 ALGORITHMICALLY = 0
 HYBRID          = 1
 PURE_MATH       = 2
 
-def main(solveType) :
+def main(solveType, testName) :
 
     # Read/Clean the Input File to extract the Row/Columns
     targetCoords = []
@@ -44,7 +45,7 @@ def main(solveType) :
                 current = (current * 252533) % 33554393
             #end
 
-            print(f"Part 1: {current}")
+            print(f"Part 1 {testName}: {current}")
 
         elif HYBRID == solveType :
 
@@ -53,14 +54,14 @@ def main(solveType) :
                 current = (current * 252533) % 33554393
             #end
 
-            print(f"Part 1: {current}")
+            print(f"Part 1 {testName}: {current}")
         
         elif PURE_MATH == solveType :
 
             iterations = triangleNumber(targetCoord["row"] + targetCoord["col"] - 2) + targetCoord["col"] - 1
             current = (pow(252533, iterations, 33554393) * current) % 33554393
 
-            print(f"Part 1: {current}")
+            print(f"Part 1 {testName}: {current}")
 
         #end
 
@@ -70,16 +71,16 @@ def main(solveType) :
 
 if __name__ == "__main__" :
     startTime      = time.perf_counter()
-    main(ALGORITHMICALLY)
-    print(f"{(time.perf_counter() - startTime)}s")
+    main(ALGORITHMICALLY, "(Algo)")
+    print(f"{(time.perf_counter() - startTime)}s", file=sys.stderr)
 
     startTime      = time.perf_counter()
-    main(HYBRID)
-    print(f"{(time.perf_counter() - startTime)}s")
+    main(HYBRID, "(Hyb) ")
+    print(f"{(time.perf_counter() - startTime)}s", file=sys.stderr)
 
     startTime      = time.perf_counter()
-    main(PURE_MATH)
-    print(f"{(time.perf_counter() - startTime)}s")
+    main(PURE_MATH, "(Math)")
+    print(f"{(time.perf_counter() - startTime)}s", file=sys.stderr)
 
     print("Ho ho ho!")
 

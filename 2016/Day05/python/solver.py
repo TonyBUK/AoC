@@ -1,6 +1,7 @@
 import time
 import hashlib
 import random
+import sys
 
 def main() :
 
@@ -52,7 +53,7 @@ def main() :
             # rate CPU bound, which would just look bad.
             if (time.perf_counter() - hackTime) > 0.1 :
                 kPasswordPart2 = [C if bValid else random.choice(MOVIE_OS) for C,bValid in zip(kPasswordPart2, kPasswordPart2Valid)]
-                print("Hacking FBI Mainframe... " + "".join(kPasswordPart2), end="\r")
+                print("Hacking FBI Mainframe... " + "".join(kPasswordPart2), end="\r", file=sys.stderr)
                 hackTime = time.perf_counter()
             #end
 
@@ -60,7 +61,7 @@ def main() :
 
         #end
 
-        print("Wake up Neo...  The Matrix has you")
+        print("Wake up Neo...  The Matrix has you", file=sys.stderr)
 
         return kPasswordPart1, "".join(kPasswordPart2)
 
@@ -77,5 +78,5 @@ def main() :
 if __name__ == "__main__" :
     startTime      = time.perf_counter()
     main()
-    print(f"{(time.perf_counter() - startTime)}s")
+    print(f"{(time.perf_counter() - startTime)}s", file=sys.stderr)
 #end

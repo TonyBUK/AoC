@@ -1,4 +1,5 @@
 import time
+import sys
 
 def main() :
 
@@ -16,7 +17,7 @@ def main() :
         # Part 1: Subtract the number of ")" from the number of "(" to get the final floor
         print(f"Part 1: {line.count('(') - line.count(')')}")
 
-        # Part 2: Manually apply the algorithm anf print the index value
+        # Part 2: Manually apply the algorithm and print the index value
         # Note: The index value is to be output as 1 based, enumerate provides a 0 based index.
         count = 0
         for i,c in enumerate(line) :
@@ -34,5 +35,5 @@ def main() :
 if __name__ == "__main__" :
     startTime      = time.perf_counter()
     main()
-    print(f"{(time.perf_counter() - startTime)}s")
+    print(f"{(time.perf_counter() - startTime)}s", file=sys.stderr)
 #end
