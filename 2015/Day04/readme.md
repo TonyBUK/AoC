@@ -42,8 +42,8 @@ It's also noteworthy that C/C++ could have also used to OpenSSL library, which w
 
 **Times**
 
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 6.7265s   : 100.00%
-    C++      : 14.2467s  : 211.80%
-    C        : 8.9093s   : 132.45%
+        Language : Time      : Percentage of Best Time
+        =========:===========:=========================
+        Python   : 6.5583s   : 100.00%
+        C++      : 14.1509s  : 215.77%
+        C        : 8.8092s   : 134.32%
