@@ -53,3 +53,11 @@ For C++ I've introduced dynamic arrays, which, via the STL library tend to be ra
 For C, I've opted to not perform the boiler plate code needed to buffer any data beyond the current box dimensions and a single character from the input file, however as can be plainly seen, C is starting to need additional code, such as a function for determining the minimum value of an array, and a function for comparing array elements for sorting, whereas Python/C++ have these features readily available.
 
 The addition of this sort of basic functionality is going to become a running theme as the challenges progress.
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 13.99ms   : 607.68%
+    C++      : 4.42ms    : 192.11%
+    C        : 2.3ms     : 100.00%
