@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(solver)
 
 set(C_STANDARD 90)
+include_directories(hashmap/include/)
 
 if (MSVC)
     add_compile_options(/O2)
