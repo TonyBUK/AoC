@@ -58,8 +58,8 @@ Of course as ever, I *could* rework the C++ algorithm to eliminate resizing to g
 
 **Times**
 
-Language : Time      : Percentage of Best Time
-=========:===========:=========================
-Python   : 128.01ms  : 944.49%
-C++      : 85.14ms   : 628.24%
-C        : 13.55ms   : 100.00%
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 128.01ms  : 944.49%
+    C++      : 85.14ms   : 628.24%
+    C        : 13.55ms   : 100.00%
