@@ -170,3 +170,11 @@ As predicted, nearly an instant solve for the Algorithmic solution, and the othe
 **C**
 
 Basically same as C++ due to the nature of the puzzle.
+
+**Times**
+
+       Language : Time      : Percentage of Best Time
+       =========:===========:=========================
+       Python   : 2.9456s   : 1748.25%
+       C++      : 168.49ms  : 100.00%
+       C        : 169.24ms  : 100.44%
