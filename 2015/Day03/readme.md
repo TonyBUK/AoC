@@ -43,8 +43,8 @@ This normally results in more efficient code from an execution point of view, as
 
 **Times**
 
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 18.15ms   : 100.00%
-    C++      : 43.56ms   : 239.92%
-    C        : 47.64ms   : 262.41%
+        Language : Time      : Percentage of Best Time
+        =========:===========:=========================
+        Python   : 16.16ms   : 216.23%
+        C++      : 7.48ms    : 100.00%
+        C        : 28.21ms   : 377.43%
