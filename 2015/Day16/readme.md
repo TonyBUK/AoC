@@ -66,3 +66,11 @@ This makes a slight twist, in that rather than buffering/comparing strings of th
 I've also taken the step of encapsulating the read lines functionality into its own function.  This also indicates one of the naff aspects of C, data ownership.  The readLines function allocates two buffers, for storing the line data, but the responsibility for free'ing afterwards is in the function that called readLines.  With C++, it's far easier to encapsulate all of this so that we don't accidently have the memory left allocated on shut-down.
 
 The purpose of starting to encapsulate like this is eventually I want to start shifting common aspects of the processing into their own libraries, however I might keep this as a rolling thing for each days challenge as I do like the idea that someone can just grab all the files in a folder and get everything they need without having to grab the whole repo...
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 13.83ms   : 983.19%
+    C++      : 2.1ms     : 149.34%
+    C        : 1.41ms    : 100.00%
