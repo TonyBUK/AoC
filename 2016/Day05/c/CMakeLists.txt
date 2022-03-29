@@ -5,5 +5,11 @@ project(solver)
 
 set(C_STANDARD 90)
 
+if (MSVC)
+    add_compile_options(/O2)
+else()
+    add_compile_options(-O2)
+endif()
+
 # add the executable
 add_executable(solver solver.c md5.c)
