@@ -18,7 +18,7 @@ def main() :
                                   "clean"       : [["git", "clean", "-d", "-f", "-x"]]},
                   "solver.py"  : {"description" : "Python",
                                   "build"       : [],
-                                  "execute"     : ["python3", "solver.py"],
+                                  "execute"     : ["python3", "-OO", "solver.py"],
                                   "clean"       : []}}
 
     def profileCommand(kCommand, kExpected) :
@@ -27,16 +27,24 @@ def main() :
             subprocess.run(kBuildCommand, stdout=subprocess.PIPE)
         #end
 
-        startTime = time.perf_counter()
+        kTotalTime = []
         for _ in range(ITERATIONS) :
+
             print(".", end="", file=sys.stderr)
-            kResult = subprocess.run(kCommand["execute"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            startTime = time.perf_counter()
+            kResult = subprocess.run(kCommand["execute"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            nTime = (time.perf_counter() - startTime)
+            kTotalTime.append(nTime)
             if kResult.stdout != kExpected :
                 print("", file=sys.stderr)
                 return False, 0
             #end
+            sys.stderr.flush()
+            time.sleep(0)
+
         #end
-        nTime = (time.perf_counter() - startTime) / ITERATIONS
+
+        nTime = min(kTotalTime)
 
         for kCleanCommand in kCommand["clean"] :
             subprocess.run(kCleanCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
