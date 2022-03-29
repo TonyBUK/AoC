@@ -33,7 +33,7 @@ I'm not mad Python, I'm just disappointed.  Same algorithm/approach in C++, and 
 
 **C**
 
-Slightly faster than the C++ solution, and many orders of magnitude faster than the Python.  This does finally highlight one of the more annoying aspects of C.  Because in this solution, it's non trivial to pre-calculate the total number of permutations to expect, we have to keep growing a RAM buffer to store this.  This is what std::vector does under the hood for us in C++, but in C, we have to do it by hand.  The approach is basically:
+Comparable to the C++ solution, and many orders of magnitude faster than the Python.  This does finally highlight one of the more annoying aspects of C.  Because in this solution, it's non trivial to pre-calculate the total number of permutations to expect, we have to keep growing a RAM buffer to store this.  This is what std::vector does under the hood for us in C++, but in C, we have to do it by hand.  The approach is basically:
 
     IF we're about to overflow the RAM buffer
       Create a new RAM buffer twice the size of the old one
@@ -63,3 +63,11 @@ You might rightly think that could be (since QSort just cares about comparisons 
         return left->nQuantumEntanglement - right->nQuantumEntanglement;
         
 Problem is, this is all unsigned arithmetic.  Meaning negative is an impossible outcome (it just becomes large positive).  You could cast to a signed type, but can we guarentee the result would over/underflow the int type (since int is one of those loosely defined types whose size varies depending on compiler/processor etc).  Easier to just avoid that whole can of worms...  I may or may not have spent a disporportionate amount of time debugging that fact...
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 17.72s    : 10022.61%
+    C++      : 176.8ms   : 100.00%
+    C        : 191.95ms  : 108.57%
