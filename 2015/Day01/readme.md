@@ -48,8 +48,8 @@ The solutions themselves are nearly identical.  The main difference is that Pyth
 
 **Times**
 
-        Language : Time      : Percentage of Best Time
-        =========:===========:=========================
-        Python   : 12.74ms   : 539.66%
-        C++      : 3.12ms    : 132.35%
-        C        : 2.36ms    : 100.00%
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 12.68ms   : 916.20%
+    C++      : 1.38ms    : 100.00%
+    C        : 1.75ms    : 126.25%

@@ -96,8 +96,16 @@ Nothing overly fancy here, as this is really more of an algorithmic puzzle than 
 
 **C++**
 
-Identical to Python, but signficantly faster (around 3x).  One of the perks of being closer to "bare metal".
+Identical to Python, but signficantly faster.  One of the perks of being closer to "bare metal".
 
 **C**
 
-Identical to C++/Python, and twice as fast as the C++ solution.  Major difference is a directly allocated RAM buffer rather than using STD Vector as the accessor/mutator.
+Identical to C++/Python, and faster still.  Major difference is a directly allocated RAM buffer rather than using STD Vector as the accessor/mutator.
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 8.0506s   : 12114.3%
+    C++      : 81.12ms   : 122.06%
+    C        : 66.46ms   : 100.00%

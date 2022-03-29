@@ -73,3 +73,11 @@ So really all this does is two things:
 So it's basically the same recursive function, except now parsing/processing is combined.  This also has the added benefit of an absurdly low footprint compared to all the other solutions, as it's really just the buffer for the data, the buffer for scratch data, and how ever many recursive calls were made to the Parse function which can be inferred from the max depth of the input data.
 
 One thing to note is that unlike the other solutions, when "red" is encountered, the filter doesn't prevent further recursive functions being called, this is because those are still necessary since we actually still need to parse all of the data since skipping to the closing "}" is non-trivial, since you need to consider nesting, embedded "}" in strings and so on.  Simpler to allow the parser to keep going, but then discard the deltas for the purposes of this puzzle, plus in reality, it's unlikely a true parser would ever need the feature of discarding nodes at the parsing phase.
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 18.76ms   : 879.51%
+    C++      : 5.44ms    : 255.02%
+    C        : 2.13ms    : 100.00%

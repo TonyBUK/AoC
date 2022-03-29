@@ -138,3 +138,11 @@ Now I just need to do:
 Plus I can make h point to j (skipping i) and still get all that goodness, plus the relationship between sequences such as ijk are preserved.  In other words the C solution removes a whole level of repeated conversions.
 
 Now this can absolutely still be done in Python (dictionaries) or C++ (maps/vectors/arrays), but the point is that the abstraction they provide would often take you down the arguably more legible route, whereas C kind of guides you to the jankier but faster route.  So as usual, the C solution to this ends up being faster, but also due to the removal of the abstraction layer, isn't that far off in terms of code size either.
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 391.17ms  : 9371.97%
+    C++      : 6.46ms    : 154.86%
+    C        : 4.17ms    : 100.00%

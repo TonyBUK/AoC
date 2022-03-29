@@ -35,3 +35,11 @@ kString[strlen(kString)    ] = '\0';
 kString[strlen(kString) - 1] = C;
 
 Blech...
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 14.1ms    : 960.30%
+    C++      : 1.47ms    : 100.00%
+    C        : 1.62ms    : 110.71%

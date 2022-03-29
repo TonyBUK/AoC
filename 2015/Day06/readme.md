@@ -28,6 +28,6 @@ This also represents one of the few times I'll end up choosing to represent the 
 
     Language : Time      : Percentage of Best Time
     =========:===========:=========================
-    Python   : 2.3746s   : 525.50%
-    C++      : 1.1808s   : 261.31%
-    C        : 451.88ms  : 100.00%
+    Python   : 2.3384s   : 1358.65%
+    C++      : 452.37ms  : 262.83%
+    C        : 172.11ms  : 100.00%
