@@ -33,6 +33,6 @@ This also does hammer home something some may not be aware of, C does *NOT* have
 
     Language : Time      : Percentage of Best Time
     =========:===========:=========================
-    Python   : 26.33ms   : 142.13%
-    C++      : 26.82ms   : 144.81%
-    C        : 18.52ms   : 100.00%
+    Python   : 23.97ms   : 1267.81%
+    C++      : 2.73ms    : 144.22%
+    C        : 1.89ms    : 100.00%
