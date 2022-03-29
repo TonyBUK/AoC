@@ -94,3 +94,11 @@ The cleaner approach from a hierarchy perspective would be that the Get method o
 **C**
 
 For once a lower SLOC count that the C++ version, albeit that was pretty intentional.  It's closer to the C++ solution than the Python version, but in this instance, most of the similarities are more convenience to remove code repetition than anything else. 
+
+**Times**
+
+    Language : Time      : Percentage of Best Time
+    =========:===========:=========================
+    Python   : 13.35ms   : 1094.21%
+    C++      : 1.66ms    : 136.35%
+    C        : 1.22ms    : 100.00%
