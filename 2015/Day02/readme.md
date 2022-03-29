@@ -58,6 +58,6 @@ The addition of this sort of basic functionality is going to become a running th
 
     Language : Time      : Percentage of Best Time
     =========:===========:=========================
-    Python   : 15.13ms   : 100.00%
-    C++      : 22.88ms   : 151.20%
-    C        : 15.98ms   : 105.56%
+    Python   : 13.99ms   : 607.68%
+    C++      : 4.42ms    : 192.11%
+    C        : 2.3ms     : 100.00%
