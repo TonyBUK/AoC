@@ -134,7 +134,9 @@ The timing approach is to leverage the fact Python already has tools within that
 1.  Iterate through each of the solutions.
 2.  If necessary build the solution (build time won't be considered when it comes to timings).
 3.  Run each solution 10 times.
-4.  Use the average of the 10 runs as the execution time.
+4.  Use the minimum of the 10 runs as the execution time.
 5.  If necessary clean the solution (clean time won't be considered when it comes to timings).
 
 This tries to allow for any weird variances, as well as giving an application a fighting chance of warming up the cache for subsequent runs.  When reporting the times, I'll also report a percentage.  The fastest solution will have a 100% percentage, and slower solutions will indicate how much slower they were as a percentage of the fastest time.
+
+You might notice for each solution, the body of the text when comparing solutions might talk about speed deltas one way, but then the times will prove something else to be the case.  This is a result of my new development environment, before I was running on an overheating Ivy Bridge Intel I7, and didn't use any special compilation flags, now I'm running on an Apple M1 and using -O2 optimisations for C/C++.  Both of these may result in differences in timings, sometimes C/C++ swap places, or the gap lessens, but by and large the performance follows basically the same pattern.
