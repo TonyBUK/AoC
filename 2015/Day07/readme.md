@@ -36,6 +36,6 @@ C continues to expose just how much heavy lifting the dictionaries/std map funct
 
     Language : Time      : Percentage of Best Time
     =========:===========:=========================
-    Python   : 22.37ms   : 139.42%
-    C++      : 94.1ms    : 586.52%
-    C        : 16.04ms   : 100.00%
+    Python   : 20.99ms   : 752.20%
+    C++      : 7.36ms    : 263.66%
+    C        : 2.79ms    : 100.00%
