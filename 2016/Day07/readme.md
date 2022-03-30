@@ -71,4 +71,6 @@ Python is pretty well suited to this.  One thing some might have noticed is I te
 
 **C++**
 
+The IP7 functionality tends to be my preferred use case for C++ in general, in that it makes alot of sense to wrap all the functionality associated with this in a class.  Otherwise this is basically the Python solution.
+
 **C**
