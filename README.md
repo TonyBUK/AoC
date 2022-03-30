@@ -143,6 +143,7 @@ I'm also not 100% up to speed with regards to how OSX allocates tasks with respe
 
 1. Somehow the C/C++ unoptimised code was targetted to the Efficiency Cores, and part of -O2 also tags the output binaries as needing Performance Cores to the OS?
 2. Maybe unoptimised code just runs better on Intel x86 Processors, as alot of the speed will be derived from processor features such as branch prediction / out of order execution etc.
-3. Something else I've not considered...
+3. Maybe Python on Arm is just *that* good?
+4. Something else I've not considered...
 
 Also, it's noteworthy that the time each Python solution declares is the time minus any overhead of invoking the Python interpretter itself, whereas the declared times at the bottom of each readme is the time plus any overhead of invoking the Python interpretter, so the Python solutions themselves will always self-report as being faster, typically this adds around 10ms or so on my setup.
