@@ -141,7 +141,7 @@ You might notice for each solution, the body of the text when comparing solution
 
 I'm also not 100% up to speed with regards to how OSX allocates tasks with respect to Performance vs. Efficiency Cores, it's actually why I added -O2, as prior to this, the M1 was reporting Python as the hands down fastest solution (basically a complete inversion of the Ivy Bridge results).  My best theories (though unproven at this time) were:
 
-1. Somehow the C/C++ unoptimised code was targetted to the Efficiency Cores, and part of -O2 also tags the output binaries as needing Performance?
+1. Somehow the C/C++ unoptimised code was targetted to the Efficiency Cores, and part of -O2 also tags the output binaries as needing Performance Cores to the OS?
 2. Maybe unoptimised code just runs better on Intel x86 Processors, as alot of the speed will be derived from processor features such as branch prediction / out of order execution etc.
 3. Something else I've not considered...
 
