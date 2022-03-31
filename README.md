@@ -131,8 +131,8 @@ The timing approach is to leverage the fact Python already has tools within that
 
 1.  Iterate through each of the solutions.
 2.  If necessary build the solution (build time won't be considered when it comes to timings).
-3.  Run each solution 10 times.
-4.  Use the minimum of the 10 runs as the execution time.
+3.  Run each solution until 5 sets of runs all have times within margin of error of each other.
+4.  Use the average of the first/last time in this set.
 5.  If necessary clean the solution (clean time won't be considered when it comes to timings).
 
 This tries to allow for any weird variances, as well as giving an application a fighting chance of warming up the cache for subsequent runs.  When reporting the times, I'll also report a percentage.  The fastest solution will have a 100% percentage, and slower solutions will indicate how much slower they were as a percentage of the fastest time.
