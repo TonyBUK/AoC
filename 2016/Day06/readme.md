@@ -113,11 +113,3 @@ The wise man bowed his head solemnly and spoke: "ASCII is just a number, just in
 This does then lead to one unique scenario, with the hash map, I just had to use the highest/lowest frequencies, because the hash map would only consist of characters that actually appeared in each string.  Now, we have characters to consider that *never* appeared in any of the strings, meaning the minimum frequency we want for Part 2 is now the minimum non-zero frequency.  I could have subtracted 'a' from each entry and just stored 26 elements, but that makes more assumptions on the input data set that I'd prefer to, plus you then have to constants add/subtract this value when going between the index <-> character, whereas for a small waste of memory (mere bytes), we get a 1:1 mapping.
 
 Also, rather than storing all the characters that appear at a given frequency in another array, given this is now way more solution focused, it just evaluates the original array to determine min/max characters in each position.  Once again, this is all perfectly do-able in Python/C++.  Personally, the Python solution probably should have been done without creating a separate inverse hash map... whereas the C++ solution, given it's design, is probably correct to still use the method as otherwise the Min/Max methods would need to repeat the processing each time they're called.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 14.51ms   : 1011.88%
-    C++      : 1.8ms     : 125.79%
-    C        : 1.43ms    : 100.00%
