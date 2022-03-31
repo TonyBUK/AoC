@@ -63,11 +63,3 @@ You might rightly think that could be (since QSort just cares about comparisons 
         return left->nQuantumEntanglement - right->nQuantumEntanglement;
         
 Problem is, this is all unsigned arithmetic.  Meaning negative is an impossible outcome (it just becomes large positive).  You could cast to a signed type, but can we guarentee the result would over/underflow the int type (since int is one of those loosely defined types whose size varies depending on compiler/processor etc).  Easier to just avoid that whole can of worms...  I may or may not have spent a disporportionate amount of time debugging that fact...
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 17.72s    : 10022.61%
-    C++      : 176.8ms   : 100.00%
-    C        : 191.95ms  : 108.57%
