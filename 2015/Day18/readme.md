@@ -98,11 +98,3 @@ And as usual, the C version went in a different direction.  Instead of adding/re
 This neatly means it never has to worry about insertion/deletion/searching.  This also operates on a 1D Grid rather than 2D (typically yields faster results) and encodes the X/Y position in the form ((Y * WIDTH) + X) to provide a 1D lookup index (i.e. for a 100x100 grid, this algorithm will count from 0 .. 9999 when given X = 0..99 and Y = 0..99.
 
 To say this is faster than both the Python/C++ versions is an understatement.  And again, it's absolutely possible to implement this method in both languages, it would just be a weird choice (especially for Python) to do so, whereas C's lack of trivial provided hash map capability means it's more likely a solution like this would be implemented.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 690.13ms  : 7915.81%
-    C++      : 246.91ms  : 2832.1%
-    C        : 8.72ms    : 100.00%
