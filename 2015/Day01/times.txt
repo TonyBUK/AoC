@@ -1,5 +1,5 @@
 Language : Time      : Percentage of Best Time
 =========:===========:========================
-C        : 2ms       : 100.00%
-C++      : 2ms       : 100.00%
-Python   : 13ms      : 650.00%
+C        : 3ms       : 100.00%
+C++      : 3ms       : 100.00%
+Python   : 16ms      : 533.33%
