@@ -211,7 +211,7 @@ def main(kOutputFormat) :
 
     for kYear,kTimes in kYears.items() :
 
-        if kTimes["count"] != (25 * 3) :
+        if kTimes["count"] == (25 * 3) :
 
             for kKey,nTime in kTimes.items() :
                 
