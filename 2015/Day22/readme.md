@@ -97,11 +97,3 @@ No matter how many times I see it, it's incredible just how much overhead some s
 Part of this will invariably be that it "accidently" takes a better first route through the recursion, but also the removal of all abstractions with regards to arrays/indexing.  Whereas the C++/Python solutions have to do repeated hashing in order to perform cooldown checks / spell lookups, this goes with a simpler numerical index via an enum.
 
 Again, this can all be fed back into the Python/C++ solutions, but I think in a way it's more interesting to show just how much overhead is added with these kinds of abstractions.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 7.2031s   : 26896.97%
-    C++      : 1.7849s   : 6664.9%
-    C        : 26.78ms   : 100.00%
