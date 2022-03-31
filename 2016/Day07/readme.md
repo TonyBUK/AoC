@@ -71,6 +71,8 @@ Python is pretty well suited to this.  One thing some might have noticed is I te
 
 **C++**
 
-The IP7 functionality tends to be my preferred use case for C++ in general, in that it makes alot of sense to wrap all the functionality associated with this in a class.  Otherwise this is basically the Python solution.
+The IP7 functionality tends to be my preferred use case for C++ in general, in that it makes alot of sense to wrap all the functionality associated with this in a class.  Otherwise this is basically the Python solution, just much faster.
 
 **C**
+
+Pretty much the C++ code, but does everything in-place rather than using a class.  This does introduce a few... quirks, such as extractIPAddress allocating data, but expecting the function that called it to know it has to de-allocate it afterwards.  C++ does a much better job of encapsulating this and giving actual ownership of data, whereas in C it's more ambiguous.  Typically most C libraries would also have a clean function to handle this part, but it is still a manual process, whereas with C++, it's all automatic thanks to the fact it's able to automatically trigger clean-up behaviour the moment something goes out of scope.
