@@ -154,11 +154,3 @@ That said, the real indicator as to whether the decomposition was worth it will 
 **C**
 
 Basically a trimmed down C++ solution without hash maps.  This also acts destructively to the encrypted data, but for the purposes of the puzzle, this is basically fine.  Also you may notice that this actually does perform the ASCII conversion that was derided in the Python solution, primarily because in C (and C++ as well), char's are just integers, so we can easily go to/from ASCII encoding very quickly.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 21.72ms   : 698.08%
-    C++      : 4.19ms    : 134.76%
-    C        : 3.11ms    : 100.00%
