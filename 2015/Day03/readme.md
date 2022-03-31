@@ -40,11 +40,3 @@ C++ mimicks the set behaviour using std::map.  This is effectively data indexed 
 C doesn't have an easy equivalent to this, meaning either I would have to create some sort of unique hashing based system to mimick set functionality, or for a more trivial, but ultimately slower (especially as the data size increases) solution, I've ended up just testing whether a new entry has been seen before.
 This also represents the first time I had to perform heap allocations in C to ensure I could store all the data required.  This is going to be a running theme where writing in C requires some upfront interrogation of the input data in order to determine the memory footprint required for processing.
 This normally results in more efficient code from an execution point of view, as Python/C++ will invariably have to perform numerous heap re-allocations / memory copies as the data set grows, but it does make the code fiddlier to write.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:========================
-    C        : 10ms      : 333.33%
-    C++      : 3ms       : 100.00%
-    Python   : 17ms      : 566.67%
