@@ -88,11 +88,3 @@ Additionally, support for large repetitions is handled at compile time with a si
 Here's where tighter control over memory buffers really pays off.  The C implementation isn't even remotely optimal, as it uses the storeSeeSay routine always, and performs memory allocations/free's in a way that could be optimised by some trivial tests / allocation oversizes, yet even so, it's around 5 times faster than the C++ version which is in turn slightly faster than the Python version.  The main reason is the code that's hidden in those versions, specifically array resizing.  Everytime we append data to an array, under the hood it needs to test whether it's going to fit within the memory size it's pre-allcated for the array.
 
 Whilst we could do some more intelligent array initialisations in both instances, it's something that isn't required for functioning code in Python/C++, whereas C *absolutely* requires it, and that can often be a huge benefit in terms of having alot more visibility over exactly what code will execute, and what the memory footprint of that code will be.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 1.0099s   : 3144.14%
-    C++      : 70.54ms   : 219.62%
-    C        : 32.12ms   : 100.00%

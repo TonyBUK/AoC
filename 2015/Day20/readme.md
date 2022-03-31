@@ -101,11 +101,3 @@ Identical to Python, but signficantly faster.  One of the perks of being closer 
 **C**
 
 Identical to C++/Python, and faster still.  Major difference is a directly allocated RAM buffer rather than using STD Vector as the accessor/mutator.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 8.0506s   : 12114.3%
-    C++      : 81.12ms   : 122.06%
-    C        : 66.46ms   : 100.00%

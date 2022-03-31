@@ -55,11 +55,3 @@ To show it actually can happen, this is actually slower than the Python solution
 Whereas C with a much more bare metal approach to memory management again takes the speed crown.  This is effectively the C++ algorithm but without the dynamic array growth/shrinkage/copying (instead, just a separate variable indicating the size increments/decrements) to show just how much overhead that can add.
 
 Of course as ever, I *could* rework the C++ algorithm to eliminate resizing to get speed more on par with C, but this is one of those cases where the more you optimize it, the more you tend to steer away from how one would typically implement it in the language, rather than an attempt for the fastest possible solution.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 128.01ms  : 944.49%
-    C++      : 85.14ms   : 628.24%
-    C        : 13.55ms   : 100.00%

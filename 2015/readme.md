@@ -16,13 +16,3 @@ This was the first annual Advent of Code, albeit as I didn't start until 2020, t
 - Day 23    : Always enjoy a VM puzzle!
 
 I do like the fact in subsequent years, the puzzles went away from "use industry standard algorithm to solve puzzle", such as MD5/Escape Sequences/JSON.  The better puzzles tend to be ones where the language itself is mostly unimportant outside of basics such as array growth / hash maps etc.
-
-**Speed Running 2015**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 95.9853s  : 3205.55%
-    C++      : 13.7876s  : 460.45%
-    C        : 2.9943s   : 100.00%
-
-Note: This are execution times only, and don't count build times.

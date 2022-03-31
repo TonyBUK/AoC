@@ -147,11 +147,3 @@ Moved the position class to its own file, and extended it slightly to add positi
 **C**
 
 Again, more different C++ solution, just omits any encapsulation of point functionality in favour of inlining the code due to its simple nature.  If it ever does get more complex, then I'll create a C equivalent set of functions to match the C++ Point class.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 16.71ms   : 1248.76%
-    C++      : 1.86ms    : 138.73%
-    C        : 1.34ms    : 100.00%

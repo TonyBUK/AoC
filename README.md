@@ -119,15 +119,13 @@ I do want to stress, I've no interest in any deliberately esoteric languages, so
 
 ***My Development Environment***
 
-All the code was initially written using Visual Code on my Laptop which is a 2012 Macbook Pro with a massive thermal throttling issue, so if I've deemed the speed of a solution acceptible on my machine, you'll be just fine...  This is why I don't have any make files etc., as Visual Code basically just does all that for me on the fly.  If there's a big demand, I can easily add cmake files, but as my builds consist of (typically) single self-contained source files, or at most one other source file if I'm pulling in some external library, it's not the trickiest thing to resolve.
+All the code was initially written using Visual Code on my Laptop which is a 2012 Macbook Pro with a massive thermal throttling issue, so if I've deemed the speed of a solution acceptible on my machine, you'll be just fine...
 
 Since starting this task, I have upgraded to a shiny new M1 Pro based Macbook Pro, so any/all times cited in the tests are based on this setup, as I figured now I have a less volatile environment (timing would not have been practical on the old laptop due to thermal throttling), it seemed about time to have an automatic way of validating/timing everything.
 
 I have very deliberately tried to shy away from libraries/functions I know to be OS specific, one of the reasons there's no timing code in C/C++.
 
 Compiler wise, C/C++ is clang for me.
-
-I am planning on upgrading my laptop at some point this year, probably to an Arm based Laptop (M1/M2 probably), so I'll of course be re-validating all of my solutions to ensure they still work.
 
 The timing approach is to leverage the fact Python already has tools within that automatically solve OS compatability for high precision timings, so the method is:
 
@@ -140,3 +138,12 @@ The timing approach is to leverage the fact Python already has tools within that
 This tries to allow for any weird variances, as well as giving an application a fighting chance of warming up the cache for subsequent runs.  When reporting the times, I'll also report a percentage.  The fastest solution will have a 100% percentage, and slower solutions will indicate how much slower they were as a percentage of the fastest time.
 
 You might notice for each solution, the body of the text when comparing solutions might talk about speed deltas one way, but then the times will prove something else to be the case.  This is a result of my new development environment, before I was running on an overheating Ivy Bridge Intel I7, and didn't use any special compilation flags, now I'm running on an Apple M1 and using -O2 optimisations for C/C++.  Both of these may result in differences in timings, sometimes C/C++ swap places, or the gap lessens, but by and large the performance follows basically the same pattern.
+
+I'm also not 100% up to speed with regards to how OSX allocates tasks with respect to Performance vs. Efficiency Cores, it's actually why I added -O2, as prior to this, the M1 was reporting Python as the hands down fastest solution (basically a complete inversion of the Ivy Bridge results).  My best theories (though unproven at this time) were:
+
+1. Somehow the C/C++ unoptimised code was targetted to the Efficiency Cores, and part of -O2 also tags the output binaries as needing Performance Cores to the OS?
+2. Maybe unoptimised code just runs better on Intel x86 Processors, as alot of the speed will be derived from processor features such as branch prediction / out of order execution etc.
+3. Maybe Python on Arm is just *that* good?
+4. Something else I've not considered...
+
+Also, it's noteworthy that the time each Python solution declares is the time minus any overhead of invoking the Python interpretter itself, whereas the declared times at the bottom of each readme is the time plus any overhead of invoking the Python interpretter, so the Python solutions themselves will always self-report as being faster, typically this adds around 10ms or so on my setup.

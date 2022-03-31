@@ -87,11 +87,3 @@ https://en.cppreference.com/w/c/variadic
 The problem is, for better or worse, the function that's called actually has no idea what the types of the parameters were, instead it has to figure out at runtime how to traverse the data passed in, which is why the format string type defintions such as %i / %llu etc. are so important in the first place, as these not only tell printf how to present the data once printed, but also how to move from one argument to the next (i.e. the size of each data type).
 
 Decent compilers understand this, and typically have specialised warnings if you ever mismatch the format string (if known at compilation time) with the arguments supplied, but ultimately printf is still going to have to re-do all this at runtime.  One of the many reasons never to write variadic functions unless you've a very *very* good reason to.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 17.9ms    : 1087.47%
-    C++      : 2.41ms    : 146.16%
-    C        : 1.65ms    : 100.00%

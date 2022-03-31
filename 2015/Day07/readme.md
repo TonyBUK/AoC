@@ -31,11 +31,3 @@ Python sort of trivialised this a bit, with all the inputs being refactored into
 C++ follows the Python approach pretty closely, albeit it's a tad more verbose, but STL does a very good job of maintaining feature parity with Python for an out of the box solution.
 
 C continues to expose just how much heavy lifting the dictionaries/std map functionality is really providing.  This implements a hash map for parity, albeit the code would be *far* simpler if this took the throughput hit and just searched a regular array for entries, however moving forwards this sort of functionality will be critical for C to maintain any hope of maintaining parity with the solutions.  We also start to see some of the pitfalls of C to do with memory allocation, it starts to become less obvious who owns what data and who is responsible for free'ing it after use.  This is very much a solved problem in C++ with classes (class constructor allocates, class destructor de-allocates), but with C this can get *VERY* messy.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 20.99ms   : 752.20%
-    C++      : 7.36ms    : 263.66%
-    C        : 2.79ms    : 100.00%

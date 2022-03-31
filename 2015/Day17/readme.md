@@ -106,11 +106,3 @@ The problem is this is storing an array of pointers, it should have been:
     kLines             = (char**)malloc((nFileSize)    * sizeof(char*));
 
 And yes, I've gone back and fixed the code in the prior days!  That's one of the joys of C, runtime errors often manifest in the weirdest of ways.  It just so happened all the other days had really long lines, making this attempt at guessing the line count (i.e. being lazy) make up for the fact the type size was a fraction of the size it should have been (8 bytes on a 64 bit system).  This puzzle had really short lines (2 digit numbers), causing this to ultimately be the day that exposed the bug, considering just how many days I got away with it.
-
-**Times**
-
-    Language : Time      : Percentage of Best Time
-    =========:===========:=========================
-    Python   : 25.74ms   : 1792.35%
-    C++      : 1.46ms    : 101.59%
-    C        : 1.44ms    : 100.00%
