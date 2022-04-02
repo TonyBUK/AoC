@@ -48,9 +48,7 @@ And we'll be provided 2 commands.
           ....#.............................................
           ..................................................
 
-    - The main gotcha here is that when shifting, the data will be pushed outside of the array, but this is what the rotate feature comes into play as it's our job to wrap this back around.  This is essentially just a modulo operation.
-        - Shifted X = (Unshifted X + Amount to Shift By) mod WIDTH
-        - Shifted Y = (Unshifted Y + Amount to Shift By) mod HEIGHT
+    - Note: This will wraparound the bottom of a column back to the top.
 
 **Part 1**
 
@@ -71,6 +69,10 @@ For the rotate command, the basic algorithm is:
     FOR either the Row or Column specified by the Rotate Command
       Set the Grid position specified by the (ROL, COL) + the amount to shift the Row/Column by to the unshifted value from the Buffered Row/Column
     END
+
+The main gotcha here is that when shifting, the data will be pushed outside of the array, but this is what the rotate feature comes into play as it's our job to wrap this back around.  This is essentially just a modulo operation:
+- Shifted X = (Unshifted X + Amount to Shift By) mod WIDTH
+- Shifted Y = (Unshifted Y + Amount to Shift By) mod HEIGHT
 
 Once all commands are processed, we just count the number of block characters.
 
