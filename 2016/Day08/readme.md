@@ -48,7 +48,9 @@ And we'll be provided 2 commands.
           ....#.............................................
           ..................................................
 
-    - Note: This will wraparound the bottom of a column back to the top.
+    - The main gotcha here is that when shifting, the data will be pushed outside of the array, but this is what the rotate feature comes into play as it's our job to wrap this back around.  This is essentially just a modulo operation.
+        - Shifted X = (Unshifted X + Amount to Shift By) mod WIDTH
+        - Shifted Y = (Unshifted Y + Amount to Shift By) mod HEIGHT
 
 **Part 1**
 
