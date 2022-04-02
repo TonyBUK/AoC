@@ -99,4 +99,6 @@ In terms of why Python does this, I'd actually argue it's better Python does def
 
 **C++**
 
+Introducing Fizz Buzz... enterprise edition.  I mean I don't hate it, but this implementation is frankly adding more layers than is really needed.  It does result in a pretty clean solution, but the amount of boiler plate code needed is a tad overkill.  Oh and for the grid class, I've not bothered testing negative shifts or massive shifts, as it wasn't needed... but because I was turning this into a class based solution, I did feel compelled to add relatively pointless extentions to the capability as a result.  May or may not be inspired by real life "dead" code I've had to deal with...
+
 **C**
