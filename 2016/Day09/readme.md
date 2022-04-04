@@ -154,4 +154,9 @@ I think my only complaint really is that Python loops are alot more restrictive 
 
 **C++**
 
+To be honest the optimisation for time doesn't lend itself too well to avoiding repetition when creating this as a class.  There's ways around this, albeit it'd probably end up involving templates / function pointers.  Additionally, the whole JIT methodology for decompressing/length calculation breaks my whole const ethos for accessor only functions, and I'd prefer not making multiple member functions mutable as that'd defeat what const functions tries to achieve.
+
+That said, as ever, it does lead to a very clean top level function compared to other solutions.
+
+
 **C**
