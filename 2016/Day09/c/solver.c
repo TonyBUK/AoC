@@ -57,6 +57,9 @@ size_t getDecompressionLength(char* kCompressedText, const bool bRecurse)
 {
     typedef enum DecompressorStateType {E_COPYING_TEXT, E_DECODING_EXPANSION, E_EXPANDING_TEXT} DecompressorStateType;
 
+    /* String Length */
+    const size_t            nStringLength       = strlen(kCompressedText);
+
     /* Decompression State */
     DecompressorStateType   eState              = E_COPYING_TEXT;
 
@@ -74,7 +77,7 @@ size_t getDecompressionLength(char* kCompressedText, const bool bRecurse)
 
     size_t                  i;
 
-    for (i = 0; i < strlen(kCompressedText); ++i)
+    for (i = 0; i < nStringLength; ++i)
     {
         switch (eState)
         {
@@ -152,6 +155,9 @@ char* getDecompressedText(char* kCompressedText, const bool bRecurse)
 {
     typedef enum DecompressorStateType {E_COPYING_TEXT, E_DECODING_EXPANSION, E_EXPANDING_TEXT} DecompressorStateType;
 
+    /* String Length */
+    const size_t            nStringLength       = strlen(kCompressedText);
+
     /* Decompression State */
     DecompressorStateType   eState              = E_COPYING_TEXT;
 
@@ -172,7 +178,7 @@ char* getDecompressedText(char* kCompressedText, const bool bRecurse)
 
     strcpy(kDecompressedText, "");
 
-    for (i = 0; i < strlen(kCompressedText); ++i)
+    for (i = 0; i < nStringLength; ++i)
     {
         switch (eState)
         {
