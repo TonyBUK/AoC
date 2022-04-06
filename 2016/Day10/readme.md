@@ -169,7 +169,7 @@ A. Since Part 2 just cares about when Output Bins 0, 1 and 2 are populated, we c
 
 **Python**
 
-Pretty much implemented as described.  There's perhaps a little bit of clunkiness with getting back to the Bot Id of the Bot being processed (only needed for Part 1), otherwise, a nice and easy implementation.
+Pretty much implemented as described...
 
 
 **C++**
