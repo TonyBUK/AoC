@@ -169,7 +169,7 @@ A. Since Part 2 just cares about when Output Bins 0, 1 and 2 are populated, we c
 
 **Python**
 
-Pretty much implemented as described...
+Pretty much implemented as described making Python a very good fit for this puzzle.
 
 
 **C++**
