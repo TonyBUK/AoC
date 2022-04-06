@@ -144,6 +144,10 @@ Method 2: Recurse until everything has been expanded (Lengths Only)
 
 And an order of magnitude once again, now expressible in ms on my M1.
 
+Interestingly speed wise, for lengths, this behaves exactly as you'd expect, C > C++ > Python in terms of speed.  When I actually decompress the text... utter reversal, Python by far outshines the other two solutions here.  C suffers from the fact I got lazy and didn't incrementally allocate as I went, making it have to do almost twice the work by solving each part of the recursion twice (once for length, once for data).  C++ suffers from thousands of strings being allocated/de-allocated throughout the life of the program.  Something that Python has to deal with as well, except for... Python uses a garbage collector.
+
+Whereas C++ de-allocates the strings when no-longer used, Python can collate all the memory clearing operations and perform it only if/when necessary (32gb of RAM really helps).  What interests me now is how C# might fare here...  Albeit, of course I'm not decompressing the strings at all, just calculating the lengths, and that set of functions favours C/C++ over Python.
+
 
 **Python vs C++ vs C**
 
@@ -160,3 +164,8 @@ That said, as ever, it does lead to a very clean top level function compared to 
 
 
 **C**
+
+This follows the C++ solution but applies a simple trick to gain speed improvements, there's no text copying.
+- There's two points where the C++ solution needs to copy text, decoding the expansion command, and buffering the expansion text for recursion.
+    - The Expansion Command is worked around by buffering pointers, and relying upon the fact that the integer conversion functions will treat any non-numerical character as the trigger to process the value so-far, meaning we don't have to extract or clean the string first.
+    - The Expansion Text is a bit trickier, in that we buffer a pointer to the start, and temporarily replace the character at the end of the Expansion Test in the original compressed string with a NUL terminator.
