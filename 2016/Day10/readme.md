@@ -71,7 +71,7 @@ The problem here is that you end up with an algorithm something like:
       
     END
 
-As you can see, it's basically going over the entire command list several times, and in reality, at any given point, only two of the commands are actually valid.
+As you can see, it's basically going over the entire command list several times, and in reality, at any given point, only one or two of the commands are actually valid.
 
 What might be better then is:
 
