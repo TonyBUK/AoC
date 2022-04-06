@@ -88,7 +88,7 @@ def main() :
             kBot["chips"].sort()
 
             if 2 == len(kBot["chips"]) :
-                kQueue.append([kCommand["params"]["bot"], kBot])
+                kQueue.append(kCommand["params"]["bot"])
             #end
 
         else :
@@ -118,7 +118,7 @@ def main() :
             # Determine if Target Bot has enough chips to need adding to the queue
 
             if 2 == len(kTarget["chips"]) :
-                kQueue.append([kCommand["id"], kTarget])
+                kQueue.append(kCommand["id"])
             #end
 
         # Otherwise... Output Bin
@@ -151,7 +151,7 @@ def main() :
         # Process the Current Bot in the Queue
         # Note: Should be pop(0) to get the oldest, but the order itself is unimportant, and pop() is quicker
         #       as it doesn't have to shift any data around.
-        nBotId, kBot = kQueue.pop()
+        nBotId = kQueue.pop()
 
         # Test for the Part 1 Solution
         if kBot["chips"] == kChipComparison :
@@ -163,8 +163,8 @@ def main() :
         # Note: This function will populate more entries in the Queue if applicable
         # Note: This is processed High/Low in that order to make pop'ing more efficient in processCommand
         #       for removing the Chip.
-        processCommand(kBots, kOutputs, kQueue, kBot["command"]["high"], kBot["chips"], 1)
-        processCommand(kBots, kOutputs, kQueue, kBot["command"]["low"],  kBot["chips"], 0)
+        processCommand(kBots, kOutputs, kQueue, kBots[nBotId]["command"]["high"], kBots[nBotId]["chips"], 1)
+        processCommand(kBots, kOutputs, kQueue, kBots[nBotId]["command"]["low"],  kBots[nBotId]["chips"], 0)
 
     #end
 
