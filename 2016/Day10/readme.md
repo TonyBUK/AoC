@@ -159,9 +159,11 @@ Now my solution addresses none of these, as I suspect the puzzle inputs make eac
 So once again, this is a Puzzle that's solved in Part 1, in that we change nothing, and all we care about now is when the bots have finished, what chips are in Output Bins 0, 1 and 2.  The only thing this might influence is the gotcha's, specifically:
 
 Q. What if after processing a Command, an Output Bin needs to hold more than 2 chips?
+
 A. This would mean the puzzle description is incomplete as it doesn't define what to do in this instance, though I suspect we'd only care about the first.
 
 Q. What if there's always a Command that can be processed (i.e. there's always at least one Bot holding two chips)?
+
 A. Since Part 2 just cares about when Output Bins 0, 1 and 2 are populated, we could use these three bins holding chips as a means of halting any processing.  However, all the wording of the puzzle strongly implies that the bots will *always* complete.
 
 
