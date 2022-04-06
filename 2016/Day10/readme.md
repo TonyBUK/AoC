@@ -77,6 +77,7 @@ What might be better then is:
 
 - Store a separate list of bots to store which chips they're holding, and what commands should be performed if they're holding two chips
 - Store a separate list of Output Bins to store which chips they're holding
+- Store a Queue of Bots that can be processed (holding two chips).
 
 So what happens to the input, well, let's see...
 
