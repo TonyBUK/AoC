@@ -154,7 +154,7 @@ def main() :
         nBotId = kQueue.pop()
 
         # Test for the Part 1 Solution
-        if kBot["chips"] == kChipComparison :
+        if kBots[nBotId]["chips"] == kChipComparison :
             assert(None == nPart1BotId)
             nPart1BotId = nBotId
         #end
