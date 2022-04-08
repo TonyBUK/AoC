@@ -181,3 +181,6 @@ This basically partitions ownership / uniqueness of processing within the Output
 
 **C**
 
+This is a faster, but lazier hybrid of the Python/C++ solution.  The primary source of laziness is this makes the 100% dodgy assumption that the bot id's and output bin id's will just be integer array indexes starting from 0, meaning we can just pre-allocate enough bots/bins based on the number of lines of text in the input file.  This means that whereas Python/C++ will gracefully handle arbitrary bot id's should they be provided, the C solution will not (it'll just bomb out with an assertion failure when testing the indexes are valid for my assumption).
+
+This does however mean that unlike the Python/C++ solutions, this lacks any dynamic array resizing, which gives it a fractional speed advantage over the C++ solution, where most of time, after rounding to the nearest ms, they take roughly the same amount of time to execute.
