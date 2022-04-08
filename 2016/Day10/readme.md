@@ -176,6 +176,7 @@ Pretty much implemented as described making Python a very good fit for this puzz
 
 **C++**
 
+This basically partitions ownership / uniqueness of processing within the Output Bin and Bot classes.  I've also derived these from a parent class in order to force the one method any of the derived classes would need, the ability to receive chips, even if they don't necessarily do the same thing when received.  Now arguably, the task of self identifying whether a bot should add itself to the queue or not should lie with the bot receiving the chip, not the one giving the chip, but honestly, it doesn't get you much for this puzzle, and would convolute things since I'd now need to make the queue available to the bot receiving the chip as well.  I feel what's done gets the point across just fine...
 
 
 **C**
