@@ -44,7 +44,7 @@ So let's start with the core algorithm:
 
 The big gotcha here is that we can end up just performing the same motions over and over again, with us looping indefinately and never solving the puzzle.
 
-So the first optimisation: Caching the game state, and exiting if it's one we've seen before in a "better" solution (i.e. have we taken more moves just to get to a game state we've seen already).
+So the first optimisation: Caching the game state, and exiting if it's one we've seen before in a "better" solution (i.e. have we taken more moves just to get to a game state we've seen already), pair goes up, pair goes down, pair goes up, pair goes down.
 
 So just keep a cache of the elevator position and what generators/microchips were on each floor right?  Well, that'd work, but is actually not aggressive enough to achieve a decent execution time.  What we need to realise is just how unimportant the specific chips/generators actually are.
 
