@@ -101,6 +101,16 @@ Next up, we want the general trend of the generators/microchips to be upwards, s
 3. Next, try to move all unique items upwards
 4. Finally, try to move all unique pairs downwards
 
+Plus this is the basic pattern you'd follow anyway.  Moving 4 items upwards would be:
+
+-   2 up (2 on floor 2, 2 on floor 1)
+-   1 down (1 on floor 2, 3 on floor 1)
+-   2 up (3 on floor 2, 1 on floor 1)
+-   1 down (2 on floor 2, 2 on floor 1)
+-   2 up (4 on floor 2)
+
+i.e. for the most part, this is the main sequence you'll use.
+
 Next up, we want to start discarding no hoper paths, which will become prominent once we find *any* solution, and that is if we take the most *optimistic* projection of how many moves we need to solve the puzzle (even if it isn't legal), would that actually improve the solution, if not, give up.
 
 So what's a way of calculating this...
