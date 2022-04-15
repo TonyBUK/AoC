@@ -1,0 +1,3 @@
+Language : Time      : Percentage of Best Time
+=========:===========:========================
+Python   : 336ms     : 100.00%
