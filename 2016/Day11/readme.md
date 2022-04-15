@@ -111,9 +111,9 @@ Similarly 4 items is 5 moves (2 up, 1 down, 2 up, 1 down 2 up)
 
 So we can approximate this as :
 
-0 items     = 0 * floors to move
-1 - 2 items = 1 * floors to move
-3+ items    = (3 + ((items - 3) * 2)) * floors to move
+    0 items     = 0 * floors to move
+    1 - 2 items = 1 * floors to move
+    3+ items    = (3 + ((items - 3) * 2)) * floors to move
 
 All done now right??????? Right???????
 
