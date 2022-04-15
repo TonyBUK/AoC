@@ -2,7 +2,7 @@
 
 https://adventofcode.com/2016/day/11
 
-At heart a path finding problem with circular states.  Wheras with most puzzles, the difference between the fastest/slowest execution times (if we normalise out hardware/language) is typically quite small, this is the kind of puzzle where you'll have some people boasting fractions of a second, and others lamenting 3+ hour solve times, and in many cases, the solutions themselves may even basically follow the same approach...
+At heart a path finding problem with circular states (i.e. you can make several moves and just end up back where you started).  Wheras with most puzzles, the difference between the fastest/slowest execution times (if we normalise out hardware/language) is typically quite small, this is the kind of puzzle where you'll have some people boasting fractions of a second, and others lamenting 3+ hour solve times, and in many cases, the solutions themselves may even basically follow the same approach...
 
 Very much a puzzle where the devil is in the detail.
 
@@ -55,7 +55,9 @@ Consider the following two states, one from the example on Advent of Code, and o
     F2 HG .  .  .      F2 .  .  LG .  
     F1 .  HM .  LM     F1 .  HM .  LM 
 
-It really doesn't matter that in onr instance, the Lithium Generator is on Floor 2 and the Hydrogen Generator is on Floor 3, and in the other, the Hydrogen Generator is on Floor 2, and the Lithium Generator is on Floor 3, both scenarios would take 11 moves to solve.  So what we need to do is represent the game state in such a way that the given examples would be the same.
+It really doesn't matter that in one instance, the Lithium Generator is on Floor 2 and the Hydrogen Generator is on Floor 3, and in the other, the Hydrogen Generator is on Floor 2, and the Lithium Generator is on Floor 3, both scenarios would take 11 moves to solve.
+
+So what we need to do is represent the game state in such a way that the given examples would be the same.
 
 What I'd propose is splitting this into one state for all Generators, and one for all Microchips.
 
