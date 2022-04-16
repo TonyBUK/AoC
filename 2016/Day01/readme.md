@@ -148,7 +148,7 @@ Don't get me wrong, the class would typically be tucked away in another file pai
 
 If I wanted to go with a simple struct solution, I would still have to tackle using a struct as a hashing key, meaning at the very least, the < operator is required.
 
-Other than all this boiler plate code, this is effectively the Python solution.  I "handle" the lack of sets by using the STL Map function, and never comparing about the value, just the keys, which by definition have to be unique.
+Other than all this boiler plate code, this is effectively the Python solution.
 
 **C**
 
