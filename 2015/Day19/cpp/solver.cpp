@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <map>
+#include <set>
 #include <vector>
 #include <algorithm>
 #include <cinttypes>
@@ -25,7 +25,7 @@ std::vector<std::string> split(const std::string& s, std::string seperator)
     return output;
 }
 
-void getPermutations(const std::string& kMedicineMolecule, const std::vector< std::vector<std::string> >& kModuleFabricationRules, std::map<std::string, std::size_t>& kPermutations)
+void getPermutations(const std::string& kMedicineMolecule, const std::vector< std::vector<std::string> >& kModuleFabricationRules, std::set<std::string>& kPermutations)
 {
     const std::size_t nMedicineMolecueLen = kMedicineMolecule.length();
     kPermutations.clear();
@@ -50,7 +50,7 @@ void getPermutations(const std::string& kMedicineMolecule, const std::vector< st
             kTemp.append(kMedicineMolecule.substr(nNewIndex + kSearchLen, nMedicineMolecueLen));
 
             // Add the Substitution to the unique list of Substituted Strings
-            kPermutations[kTemp] = 0;
+            kPermutations.insert(kTemp);
 
             // Attempt to find the next substitution...
             nNewIndex = kMedicineMolecule.find(kSearch, nNewIndex + 1);
@@ -58,19 +58,19 @@ void getPermutations(const std::string& kMedicineMolecule, const std::vector< st
     }
 }
 
-std::size_t findFavouriteMolecule(const std::map<std::string, std::size_t>& kCurrentMolecules, const std::vector< std::vector<std::string> >& kModuleFabricationRules, const std::string& kFavouriteMolecule, const std::size_t nDepth = 1, const std::size_t nBestDepth = MAX_SIZE_T)
+std::size_t findFavouriteMolecule(const std::set<std::string>& kCurrentMolecules, const std::vector< std::vector<std::string> >& kModuleFabricationRules, const std::string& kFavouriteMolecule, const std::size_t nDepth = 1, const std::size_t nBestDepth = MAX_SIZE_T)
 {
     // Note: We could work our way forwards, parsing all possible sets at each level until
     //       we reach an answer, but this soon becomes a "heat death of the universe" style
     //       task where each new depth exponentially adds more permutations.
     //       Instead, if we start from the end and work backwards.  The fact the solutions are
     //       reductive helps reduce the overhead of permutations.
-    std::map<std::string, std::size_t> kNewMolecules;
-    std::size_t                        nBestDepthLocal = nBestDepth;
+    std::set<std::string> kNewMolecules;
+    std::size_t           nBestDepthLocal = nBestDepth;
 
-    for (std::map<std::string, std::size_t>::const_iterator it = kCurrentMolecules.cbegin(); it != kCurrentMolecules.cend(); ++it)
+    for (std::set<std::string>::const_iterator it = kCurrentMolecules.cbegin(); it != kCurrentMolecules.cend(); ++it)
     {
-        getPermutations(it->first, kModuleFabricationRules, kNewMolecules);
+        getPermutations(*it, kModuleFabricationRules, kNewMolecules);
 
         if (kNewMolecules.find(kFavouriteMolecule) != kNewMolecules.end())
         {
@@ -81,9 +81,9 @@ std::size_t findFavouriteMolecule(const std::map<std::string, std::size_t>& kCur
             // Rather than just randomly iterating through the solutions, sort them by length and parse
             // each group separately...
             std::vector<std::size_t>           kNewMoleculesSizes;
-            for (std::map<std::string, std::size_t>::const_iterator itNew = kNewMolecules.cbegin(); itNew != kNewMolecules.cend(); ++itNew)
+            for (std::set<std::string>::const_iterator itNew = kNewMolecules.cbegin(); itNew != kNewMolecules.cend(); ++itNew)
             {
-                const std::string& kNewMolecule = itNew->first;
+                const std::string& kNewMolecule = *itNew;
                 if (std::find(kNewMoleculesSizes.begin(), kNewMoleculesSizes.end(), kNewMolecule.length()) == kNewMoleculesSizes.end())
                 {
                     kNewMoleculesSizes.push_back(kNewMolecule.length());
@@ -94,13 +94,13 @@ std::size_t findFavouriteMolecule(const std::map<std::string, std::size_t>& kCur
             std::sort(kNewMoleculesSizes.begin(), kNewMoleculesSizes.end());
             for (std::vector<std::size_t>::const_iterator itSize = kNewMoleculesSizes.cbegin(); itSize != kNewMoleculesSizes.cend(); ++itSize)
             {
-                std::map<std::string, std::size_t> kNewMoleculesSizeSorted;
-                for (std::map<std::string, std::size_t>::const_iterator itNew = kNewMolecules.cbegin(); itNew != kNewMolecules.cend(); ++itNew)
+                std::set<std::string> kNewMoleculesSizeSorted;
+                for (std::set<std::string>::const_iterator itNew = kNewMolecules.cbegin(); itNew != kNewMolecules.cend(); ++itNew)
                 {
-                    const std::string& kNewMolecule = itNew->first;
+                    const std::string& kNewMolecule = *itNew;
                     if (kNewMolecule.length() == *itSize)
                     {
-                        kNewMoleculesSizeSorted[kNewMolecule] = 0;
+                        kNewMoleculesSizeSorted.insert(kNewMolecule);
                     }
                     nBestDepthLocal = findFavouriteMolecule(kNewMoleculesSizeSorted, kModuleFabricationRules, kFavouriteMolecule, nDepth + 1, nBestDepthLocal);
 
@@ -157,12 +157,12 @@ int main(int argc, char** argv)
             }
         }
 
-        std::map<std::string, std::size_t> kPermutations;
+        std::set<std::string> kPermutations;
         getPermutations(kMedicineMolecule, kModuleFabricationRules, kPermutations);
         std::cout << "Part 1: " << kPermutations.size() << std::endl;
 
         kPermutations.clear();
-        kPermutations[kMedicineMolecule] = 0;
+        kPermutations.insert(kMedicineMolecule);
         swapRules(kModuleFabricationRules);
         std::cout << "Part 2: " << findFavouriteMolecule(kPermutations, kModuleFabricationRules, "e") << std::endl;
    }
