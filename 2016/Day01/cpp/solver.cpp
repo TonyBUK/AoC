@@ -2,9 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <map>
-#include <cinttypes>
-#include <cmath>
+#include <set>
 #include <assert.h>
 
 std::vector<std::string> split(const std::string& s, const std::string& seperator)
@@ -245,8 +243,8 @@ CPosition processMovesDisallowRepeatedPositions(const std::vector<MovesType>& kM
 {
     CPosition                   kPosition(0, 0);
     DirectionType               eDirection = E_NORTH;
-    std::map<CPosition, bool>   kVisited;
-    kVisited[kPosition] = true;
+    std::set<CPosition>         kVisited;
+    kVisited.insert(kPosition);
 
     for (std::vector<MovesType>::const_iterator it = kMoves.cbegin(); it != kMoves.cend(); ++it)
     {
@@ -263,7 +261,7 @@ CPosition processMovesDisallowRepeatedPositions(const std::vector<MovesType>& kM
             {
                 return kPosition;
             }
-            kVisited[kPosition] = true;
+            kVisited.insert(kPosition);
         }
     }
 
