@@ -2,7 +2,7 @@
 
 https://adventofcode.com/2016/day/11
 
-At heart a path finding problem with circular states.  Wheras with most puzzles, the difference between the fastest/slowest execution times (if we normalise out hardware/language) is typically quite small, this is the kind of puzzle where you'll have some people boasting fractions of a second, and others lamenting 3+ hour solve times, and in many cases, the solutions themselves may even basically follow the same approach...
+At heart a path finding problem with circular states (i.e. you can make several moves and just end up back where you started).  Wheras with most puzzles, the difference between the fastest/slowest execution times (if we normalise out hardware/language) is typically quite small, this is the kind of puzzle where you'll have some people boasting fractions of a second, and others lamenting 3+ hour solve times, and in many cases, the solutions themselves may even basically follow the same approach...
 
 Very much a puzzle where the devil is in the detail.
 
@@ -44,7 +44,7 @@ So let's start with the core algorithm:
 
 The big gotcha here is that we can end up just performing the same motions over and over again, with us looping indefinately and never solving the puzzle.
 
-So the first optimisation: Caching the game state, and exiting if it's one we've seen before in a "better" solution (i.e. have we taken more moves just to get to a game state we've seen already).
+So the first optimisation: Caching the game state, and exiting if it's one we've seen before in a "better" solution (i.e. have we taken more moves just to get to a game state we've seen already), pair goes up, pair goes down, pair goes up, pair goes down.
 
 So just keep a cache of the elevator position and what generators/microchips were on each floor right?  Well, that'd work, but is actually not aggressive enough to achieve a decent execution time.  What we need to realise is just how unimportant the specific chips/generators actually are.
 
@@ -55,7 +55,9 @@ Consider the following two states, one from the example on Advent of Code, and o
     F2 HG .  .  .      F2 .  .  LG .  
     F1 .  HM .  LM     F1 .  HM .  LM 
 
-It really doesn't matter that in onr instance, the Lithium Generator is on Floor 2 and the Hydrogen Generator is on Floor 3, and in the other, the Hydrogen Generator is on Floor 2, and the Lithium Generator is on Floor 3, both scenarios would take 11 moves to solve.  So what we need to do is represent the game state in such a way that the given examples would be the same.
+It really doesn't matter that in one instance, the Lithium Generator is on Floor 2 and the Hydrogen Generator is on Floor 3, and in the other, the Hydrogen Generator is on Floor 2, and the Lithium Generator is on Floor 3, both scenarios would take 11 moves to solve.
+
+So what we need to do is represent the game state in such a way that the given examples would be the same.
 
 What I'd propose is splitting this into one state for all Generators, and one for all Microchips.
 
@@ -99,6 +101,16 @@ Next up, we want the general trend of the generators/microchips to be upwards, s
 3. Next, try to move all unique items upwards
 4. Finally, try to move all unique pairs downwards
 
+Plus this is the basic pattern you'd follow anyway.  Moving 4 items upwards would be:
+
+-   2 up (2 on floor 2, 2 on floor 1)
+-   1 down (1 on floor 2, 3 on floor 1)
+-   2 up (3 on floor 2, 1 on floor 1)
+-   1 down (2 on floor 2, 2 on floor 1)
+-   2 up (4 on floor 2)
+
+i.e. for the most part, this is the main sequence you'll use.
+
 Next up, we want to start discarding no hoper paths, which will become prominent once we find *any* solution, and that is if we take the most *optimistic* projection of how many moves we need to solve the puzzle (even if it isn't legal), would that actually improve the solution, if not, give up.
 
 So what's a way of calculating this...
@@ -111,9 +123,9 @@ Similarly 4 items is 5 moves (2 up, 1 down, 2 up, 1 down 2 up)
 
 So we can approximate this as :
 
-0 items     = 0 * floors to move
-1 - 2 items = 1 * floors to move
-3+ items    = (3 + ((items - 3) * 2)) * floors to move
+    0 items     = 0 * floors to move
+    1 - 2 items = 1 * floors to move
+    3+ items    = (3 + ((items - 3) * 2)) * floors to move
 
 All done now right??????? Right???????
 
