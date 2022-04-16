@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <map>
+#include <set>
 
 struct positionType
 {
@@ -25,11 +25,11 @@ int main(int argc, char** argv)
     kFile.open("../input.txt");
     if (kFile.is_open())
     {
-        std::map<positionType, bool>    kPositions;
-        positionType                    kPosition                 = {0,0};
-        std::map<positionType, bool>    kCombinedPositions;
-        positionType                    kCombinedPosition[2]      = {{0,0},{0,0}};
-        int                             nCurrent                  = 0;
+        std::set<positionType>    kPositions;
+        positionType              kPosition                 = {0,0};
+        std::set<positionType>    kCombinedPositions;
+        positionType              kCombinedPosition[2]      = {{0,0},{0,0}};
+        int                       nCurrent                  = 0;
 
         while (!kFile.eof())
         {
@@ -55,8 +55,8 @@ int main(int argc, char** argv)
                 kPosition.Y                   -= 1;
             }
 
-            kPositions.insert        (std::pair<positionType, bool>(kPosition,                   true));
-            kCombinedPositions.insert(std::pair<positionType, bool>(kCombinedPosition[nCurrent], true));
+            kPositions.insert        (kPosition);
+            kCombinedPositions.insert(kCombinedPosition[nCurrent]);
             nCurrent = 1 - nCurrent;
         }
 
