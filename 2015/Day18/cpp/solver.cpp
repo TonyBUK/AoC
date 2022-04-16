@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <set>
 #include <array>
 #include <cinttypes>
 #include <assert.h>
@@ -22,21 +23,21 @@ typedef uint64_t positionType;
 
 #endif
 
-void initialiseConwayCandidates(const std::map<positionType, std::size_t>& kLiveConways, std::map<positionType, std::size_t>& kConwayNeighbourCount, const std::size_t nWidth, const std::size_t nHeight)
+void initialiseConwayCandidates(const std::set<positionType>& kLiveConways, std::map<positionType, std::size_t>& kConwayNeighbourCount, const std::size_t nWidth, const std::size_t nHeight)
 {
     kConwayNeighbourCount.clear();
 
-    for (std::map<positionType, std::size_t>::const_iterator it = kLiveConways.cbegin(); it != kLiveConways.cend(); ++it)
+    for (std::set<positionType>::const_iterator it = kLiveConways.cbegin(); it != kLiveConways.cend(); ++it)
     {
         // Add/Nop the Current Conway Candidate
-        if (kConwayNeighbourCount.find(it->first) == kConwayNeighbourCount.end())
+        if (kConwayNeighbourCount.find(*it) == kConwayNeighbourCount.end())
         {
-            kConwayNeighbourCount[it->first] = 0;
+            kConwayNeighbourCount[*it] = 0;
         }
 
         // Extract X/Y
-        const std::size_t Y = EXTRACT_Y(it->first);
-        const std::size_t X = EXTRACT_X(it->first);
+        const std::size_t Y = EXTRACT_Y(*it);
+        const std::size_t X = EXTRACT_X(*it);
 
         // Set the Y Bounds
         const std::size_t tYStart = (Y >             1) ? Y - 1 : 0;
@@ -64,9 +65,9 @@ void initialiseConwayCandidates(const std::map<positionType, std::size_t>& kLive
     }
 }
 
-std::size_t processConways(const std::map<positionType, std::size_t>& kInitialLiveConways, const std::size_t nIterations, const std::size_t nWidth, const std::size_t nHeight, const bool bForceCorners = false)
+std::size_t processConways(const std::set<positionType>& kInitialLiveConways, const std::size_t nIterations, const std::size_t nWidth, const std::size_t nHeight, const bool bForceCorners = false)
 {
-    std::map<positionType, std::size_t> kLiveConways            = kInitialLiveConways;
+    std::set<positionType>              kLiveConways            = kInitialLiveConways;
     std::map<positionType, std::size_t> kConwayNeighbourCount;
     const std::array<positionType, 4>   kConwayCorners          =
     {{
@@ -82,7 +83,7 @@ std::size_t processConways(const std::map<positionType, std::size_t>& kInitialLi
         {
             for (std::array<positionType, 4>::const_iterator it = kConwayCorners.cbegin(); it != kConwayCorners.cend(); ++it)
             {
-                kLiveConways[*it] = 0;
+                kLiveConways.insert(*it);
             }
         }
 
@@ -101,7 +102,7 @@ std::size_t processConways(const std::map<positionType, std::size_t>& kInitialLi
             {
                 if (3 == it->second)
                 {
-                    kLiveConways[it->first] = 0;
+                    kLiveConways.insert(it->first);
                 }
             }
         }
@@ -111,7 +112,7 @@ std::size_t processConways(const std::map<positionType, std::size_t>& kInitialLi
     {
         for (std::array<positionType, 4>::const_iterator it = kConwayCorners.cbegin(); it != kConwayCorners.cend(); ++it)
         {
-            kLiveConways[*it] = 0;
+            kLiveConways.insert(*it);
         }
     }
 
@@ -125,9 +126,9 @@ int main(int argc, char** argv)
     if (kFile.is_open())
     {
         // Containers
-        std::map<positionType, std::size_t> kLiveConways;
-        std::size_t                         nHeight         = 0;
-        std::size_t                         nWidth          = 0;
+        std::set<positionType> kLiveConways;
+        std::size_t            nHeight         = 0;
+        std::size_t            nWidth          = 0;
 
         while (!kFile.eof())
         {
@@ -140,7 +141,7 @@ int main(int argc, char** argv)
                 if ('#' == kLine.at(nX))
                 {
                     positionType kPos   = MAKE_POSITION(nX, nHeight);
-                    kLiveConways[kPos]  = 0;
+                    kLiveConways.insert(kPos);
                 }
                 if (nX >= nWidth)
                 {
