@@ -165,11 +165,11 @@ def main() :
     # etc.
     def countMinMoves(kFloors) :
         nCount = 0
-        for i in range(len(kFloors)) :
+        for i in range(len(kFloors) - 1) :
             nFloorCount = len(kFloors[i]["generator"]) + len(kFloors[i]["microchip"])
             if nFloorCount == 0 : continue
             nFloorMultiplier = len(kFloors) - i - 1
-            if nFloorCount <= 2 : nCount += 1 * nFloorMultiplier
+            if nFloorCount <= 2 : nCount += nFloorMultiplier
             else                : nCount += (3 + ((nFloorCount - 3) * 2)) * nFloorMultiplier
         #end
         return nCount
@@ -246,7 +246,6 @@ def main() :
 
             # Ignore any invalid elevator moves
             if nNewFloor not in range(0, 4) : continue
-            if nNewFloor == nFloor          : continue
 
             for i in range(len(kFloorLookup)) :
 
