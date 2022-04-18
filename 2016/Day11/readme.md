@@ -190,5 +190,7 @@ Essentially implemented exactly as stated.  As array duplication is expensive, t
 
 **C++**
 
+This is the Python solution divided into classes.  With hindsight I'd have been better off storing generators/microchips in their own arrays rather than an array of structs which would have helped with having to split alot of handling of whether to process microchips/generators inside of loops rather than outside.
+
 
 **C**
