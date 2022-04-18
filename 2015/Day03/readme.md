@@ -35,8 +35,9 @@ They all achieve the same thing.
 
 Once again, something of a flex for Python.  Sets are unordered sets of data where every value is guarenteed to be unique.  Any duplicates are discarded, meaning once we've completed the loop, the size of a set will be equivalent to the number of unique locations visited.
 
-C++ mimicks the set behaviour using std::map.  This is effectively data indexed with a unique key which can be any arbitrary data type, as long as the compiler understands how to compare two elements with each other.  Whilst the data doesn't have to be unique, the keys do, and that's what the C++ version uses to mimick Pythons sets.  The data itself is ignored, and is only there because a std::map entry consists of a key, and associated data.  This then means the number of entries in the std::map is again equivalent to the number of unique locations visited.
+C++ mimicks the set behaviour using std::set.  This is effectively data that also acts as as a unique key which can be any arbitrary data type, as long as the compiler understands how to compare two elements with each other.
 
 C doesn't have an easy equivalent to this, meaning either I would have to create some sort of unique hashing based system to mimick set functionality, or for a more trivial, but ultimately slower (especially as the data size increases) solution, I've ended up just testing whether a new entry has been seen before.
+
 This also represents the first time I had to perform heap allocations in C to ensure I could store all the data required.  This is going to be a running theme where writing in C requires some upfront interrogation of the input data in order to determine the memory footprint required for processing.
 This normally results in more efficient code from an execution point of view, as Python/C++ will invariably have to perform numerous heap re-allocations / memory copies as the data set grows, but it does make the code fiddlier to write.
