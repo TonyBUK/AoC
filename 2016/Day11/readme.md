@@ -194,3 +194,36 @@ This is the Python solution divided into classes.  With hindsight I'd have been 
 
 
 **C**
+
+As usual, this is going to take a bit of a diversion.  First let's consider the nature of what we're actually storing.  For Python/C++, storing the strings for each Generator/Microchip was relatively simple, but in reality, the string is just a way of uniquely telling each of them apart, it doesn't have to be strings.  Infact, if we really look, we have 5 Pairs of things for Part 1, and 7 Pairs of things for Part 2, meaning we could just refer to them by number (i.e. 1 .. 5 and 1 .. 7 for each part).  If we refer to each numerically, maybe we can start packing the data together so tightly that we could get away with not using an array for storing the state.
+
+But now we've got to think combinations, we don't want to confuse multiple states, for example, let's say I did use 1..5, where:
+1. Polonium
+2. Promethium
+3. Thulium
+4. Cobalt
+5. Ruthenium
+
+So maybe if I want to store Polonium and Cobalt on a floor, I just add 1 and 4 right... giving 5.  But what if I just wanted to store Ruthenium on its own, giving 5.  So it's going to need to be a bit more sophisticated, so instead, we use masks.
+
+    0x00000001 : (1)  Polonium
+    0x00000002 : (2)  Promethium
+    0x00000004 : (4)  Thulium
+    0x00000008 : (8)  Cobalt
+    0x00000010 : (16) Ruthenium
+
+Using those values we can now combine them in any order without fear of confusing one state for another, where the values 0 .. 31 give all possible combinations.  This uses 5 bits of data, and if we also consider we need to store Generators and Microchips over 4 floors, that gives 5 * 2 * 4 = 40 bits.  And for Part 2, 7 * 2 * 4 = 56 bits.  In other words, we can pack both parts and store all 4 floors worth of data in 64 bits.  This drastically reduces things such as comparisons, moving floors and so on.
+
+Now how about the cache.  The cache is a bit more nuanced, this stores variable length arrays for each type on each floor all storing values 0 .. 3, representing the floor it's companion item is on.  This means if we do the same thing, each data element needs 2 bits at least.  The problem is now we're actually getting a bit close for comfort in terms of space, as we no longer have the space to store fixed sizes of data as we did the Generator/Microchip combinations.
+
+It's not ideal, but the best strategy I've come up with so far is:
+
+Item Offsets = 2 bits per entry, which for Part 2 is 7 * 2 (Microchips/Generators) * 2 bits = 28 bits.
+
+But the problem now is that we're packing the data so tightly, we run the risk of duplicating entries in the cache as there's no distinguishing the floors, so we need something else present that would help resolve this, and the nice thing is that thanks to Part 2, we'll never have more than 7 items to worry about. due to the size of the data input.  This means we need 3 bits per length, making the remaining data.
+
+Lengths = 3 bits per entry, which for both parts is 2 (Microchips/Generators) * 4 Floors * 3 bits = 24 bits
+
+Making the worst case usage, 52 bits.
+
+So with all this in place, we have a solution that has no means of extending beyond 7 entries without a massive re-write... but for our efforts, we get a 4x speed bost from C++, and a 10x speed boost from Python.
