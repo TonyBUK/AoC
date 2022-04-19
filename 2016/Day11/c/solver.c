@@ -130,12 +130,14 @@ int compare(const void* a, const void* b)
     return 0;
 }
 
-uint64_t elementState(const uint64_t kElements, const uint64_t* kOther, uint64_t* nLength)
+uint64_t elementState(const uint64_t kElements, const uint64_t* kOther, uint64_t* nLength, uint64_t* nCount)
 {
     const uint64_t nUnused = (uint64_t)-1;
     uint64_t       kElementsOnFloor[MAX_ITEMS];
     uint64_t       nMask   = 0;
     uint64_t       i;
+
+    *nCount = 0;
 
     for (i = 0; i < MAX_ITEMS; ++i)
     {
@@ -164,6 +166,7 @@ uint64_t elementState(const uint64_t kElements, const uint64_t* kOther, uint64_t
         {
             nMask    |= generateMask(i) * kElementsOnFloor[i];
             *nLength += BITS_PER_ITEM;
+            *nCount += 1;
         }
         else
         {
@@ -171,8 +174,7 @@ uint64_t elementState(const uint64_t kElements, const uint64_t* kOther, uint64_t
         }
     }
 
-    nMask |= 0x7 << *nLength;
-    *nLength += 3;
+    assert(*nCount <= 7);
 
     return nMask;
 }
@@ -180,16 +182,20 @@ uint64_t elementState(const uint64_t kElements, const uint64_t* kOther, uint64_t
 uint64_t state(const uint64_t* kGenerators, const uint64_t* kMicrochips)
 {
     uint64_t i;
-    uint64_t nCumulativeShift = 0;
+    uint64_t nCumulativeShift = 24;
+    uint64_t nSizeShift       = 0;
     uint64_t nMask            = 0;
+    uint64_t nCount           = 0;
 
     for (i = 0; i < MAX_FLOORS; ++i)
     {
         uint64_t       nItemLength;
-        const uint64_t nFloorMask = elementState(kGenerators[i], kMicrochips, &nItemLength);
+        const uint64_t nFloorMask = elementState(kGenerators[i], kMicrochips, &nItemLength, &nCount);
 
-        nMask |= (nFloorMask << nCumulativeShift);
+        nMask |= nFloorMask << nCumulativeShift;
+        nMask |= nCount << nSizeShift;
         nCumulativeShift += nItemLength;
+        nSizeShift       += 3;
     }
 
     assert(nCumulativeShift < (sizeof(uint64_t) * 8));
@@ -197,12 +203,15 @@ uint64_t state(const uint64_t* kGenerators, const uint64_t* kMicrochips)
     for (i = 0; i < MAX_FLOORS; ++i)
     {
         uint64_t       nItemLength;
-        const uint64_t nFloorMask = elementState(kMicrochips[i], kGenerators, &nItemLength);
+        const uint64_t nFloorMask = elementState(kMicrochips[i], kGenerators, &nItemLength, &nCount);
 
-        nMask |= (nFloorMask << nCumulativeShift);
+        nMask |= nFloorMask << nCumulativeShift;
+        nMask |= nCount << nSizeShift;
         nCumulativeShift += nItemLength;
+        nSizeShift       += 3;
     }
 
+    assert(nSizeShift       <= 24);
     assert(nCumulativeShift < (sizeof(uint64_t) * 8));
 
     return nMask;
