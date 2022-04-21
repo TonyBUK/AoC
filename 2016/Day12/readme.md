@@ -176,7 +176,7 @@ So we have one loop left, and if this isn't obvious now, this buffers a, adds b 
 
 https://en.wikipedia.org/wiki/Fibonacci_number
 
-So that's probably good enough for the native solution.  Problem is, this is translated from *my* input.  What I don't know is how the inputs distinguish themselves.  I have my suspcions that the initial value of d (26 or 26 + 7) would vary, and that what we set c to on the final loop will change, but without a larger data set size, we can't be overly confident this will scale to a general solution.... so what's the alternative.
+So that's probably good enough for the native solution.  Problem is, this is translated from *my* input.  What I don't know is my input will differ from yours.  I have my suspcions that the initial value of d (26 or 26 + 7) would vary, and that what we set c to on the final loop will change (but the Fibonacci sequence itself will be unchanged), but without a larger data set size, we can't be overly confident this will scale to a general solution.... so what's the alternative.
 
 The answer, throw all the hand analysis in the garbage, and try to optimise as best as possible the byte code interpretter with caching...
 
