@@ -23,7 +23,7 @@ typedef enum OpcodeType
 typedef struct OperandType
 {
     bool                    bRegister;
-    char                    kRegister;
+    unsigned char           kRegister;
     int64_t                 nLiteral;
 } OperandType;
  
