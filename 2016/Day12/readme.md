@@ -320,5 +320,7 @@ Python's loose typing makes register/literal detection nice and simple.  I do wi
 
 **C++**
 
+I'll take over-engineered for 1000 Alex.  In all fairness, this solution does a good job of separating out the optimisations from the original code, making it trivial to switch between the two, and it manages to do this without showing any evidence that it's impacted speed in any meaningful way, but let's face it, we could have achieved the same in far less code if we'd just done it procedurally rather than going OO.
+
 
 **C**
