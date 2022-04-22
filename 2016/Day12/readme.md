@@ -322,5 +322,17 @@ Python's loose typing makes register/literal detection nice and simple.  I do wi
 
 I'll take over-engineered for 1000 Alex.  In all fairness, this solution does a good job of separating out the optimisations from the original code, making it trivial to switch between the two, and it manages to do this without showing any evidence that it's impacted speed in any meaningful way, but let's face it, we could have achieved the same in far less code if we'd just done it procedurally rather than going OO.
 
+The original version of this I wrote way back (that I basically scrapped) was originally C++ rather than Python and took 6 seconds to solve Part 2, I've not profiled why it was so much slower, however a quick glance of the deltas are:
+
+1. My old version used string compared for the opcode.
+2. My old version dynamically tested the operands to see if they were registers or not (string checks) when executing *every* opcode, not just on parsing the data on startup.
+3. My old version didn't read the brief on there being 4 registers 'a' .. 'd', and instead just created them (if needed) every time it reached an operand that wasn't a number, again, all whilst processing the bytecode, not just on an initial parse.
+
+So hopefully that shows it's not just a case of using C/C++ nets faster code compared to Python, in-fact Python without the code patching *still* ran faster than my old C++ implementation!
+
 
 **C**
+
+And back to simple, basically follows the Python solution, but the usual tricks, such as a wasteful register array just so I can directly index on the char, I've gone unsigned to avoid weirdness between compilers treating char as signed vs unsigned, albeit 'a' .. 'd' are all in the positive range for both anyway.
+
+So here's a fun fact, the patching isn't strictly too important for C++/C.  On my system, both very fast solve times without patching the code, both I would consider fast enough to be good enough to post without to be honest (C did 64ms, C++ did 215ms).
