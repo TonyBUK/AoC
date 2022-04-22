@@ -324,7 +324,7 @@ I'll take over-engineered for 1000 Alex.  In all fairness, this solution does a 
 
 The original version of this I wrote way back (that I basically scrapped) was originally C++ rather than Python and took 6 seconds to solve Part 2, I've not profiled why it was so much slower, however a quick glance of the deltas are:
 
-1. My old version used string compared for the opcode.
+1. My old version used string compares for the opcode, rather than enum's (meaning I couldn't implement a switch statement which would hopefully become a jump table).
 2. My old version dynamically tested the operands to see if they were registers or not (string checks) when executing *every* opcode, not just on parsing the data on startup.
 3. My old version didn't read the brief on there being 4 registers 'a' .. 'd', and instead just created them (if needed) every time it reached an operand that wasn't a number, again, all whilst processing the bytecode, not just on an initial parse.
 
