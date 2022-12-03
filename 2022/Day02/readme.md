@@ -361,15 +361,15 @@ This fixed rock, but globally broke Scissors, and we'd still an if statement to 
 
 But of course we actually want Lose/Draw/Win to be 0, 1, 2 for the multiplication to work, so this actually becomes:
 
-        ((Rock (1)     +  1 (Win)  + 1) % 3) + 1 = 2 (Paper)
-        ((Rock (1)     +  0 (Draw) + 1) % 3) + 1 = 1 (Rock)
-        ((Rock (1)     + -1 (Lose) + 1) % 3) + 1 = 3 (Scissors)
-        ((Paper (2)    +  1 (Win)  + 1) % 3) + 1 = 3 (Scissors)
-        ((Paper (2)    +  0 (Draw) + 1) % 3) + 1 = 2 (Paper)
-        ((Paper (2)    + -1 (Lose) + 1) % 3) + 1 = 1 (Rock)
-        ((Scissors (3) +  1 (Win)  + 1) % 3) + 1 = 1 (Rock)
-        ((Scissors (3) +  0 (Draw) + 1) % 3) + 1 = 3 (Scissors)
-        ((Scissors (3) + -2 (Lose) + 1) % 3) + 1 = 2 (Paper)
+        ((Rock (1)     + 2 (Win)  + 1) % 3) + 1 = 2 (Paper)
+        ((Rock (1)     + 1 (Draw) + 1) % 3) + 1 = 1 (Rock)
+        ((Rock (1)     + 0 (Lose) + 1) % 3) + 1 = 3 (Scissors)
+        ((Paper (2)    + 2 (Win)  + 1) % 3) + 1 = 3 (Scissors)
+        ((Paper (2)    + 1 (Draw) + 1) % 3) + 1 = 2 (Paper)
+        ((Paper (2)    + 0 (Lose) + 1) % 3) + 1 = 1 (Rock)
+        ((Scissors (3) + 2 (Win)  + 1) % 3) + 1 = 1 (Rock)
+        ((Scissors (3) + 1 (Draw) + 1) % 3) + 1 = 3 (Scissors)
+        ((Scissors (3) + 0 (Lose) + 1) % 3) + 1 = 2 (Paper)
 
 So the algorithm is:
 
