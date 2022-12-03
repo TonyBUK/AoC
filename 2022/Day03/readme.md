@@ -128,6 +128,26 @@ That's it!  By AND'ing the two sets together, it only keeps values that are comm
 
 That's it!
 
+The Python version also leverages the zip function, which is an *extremely* powerful way of iterating simultaneously on multiple things at a time.  It also expands array slicing to add steps, specifically:
+
+        kBadges = [(kSet1 & kSet2 & kSet3).pop() for kSet1,kSet2,kSet3 in zip(kItemsAsSets[::3], kItemsAsSets[1::3], kItemsAsSets[2::3])]
+
+Which is equivalent to:
+
+        for kSet1, kSet2, kSet 3 in zip(kItemsAsSets[0::3], kItemsAsSets[1::3], kItemsAsSets[2::3])
+
+                kBadges.append(kSet1 & kSet2 & kSet3)
+
+        #end
+
+But what about the zip function itself?  Well, it's got 3 inputs, meaning it's going to iterate over three things at the same time, but where it gets interesting is the array slicing, specifically, [0::3], [1::3], [2::3].  What this is essentially doing is saying: starting at element 0, 1 and 2 respectively, iterate to the end of the list, and only iterate every 3 items.  The more manual way of doing this would be:
+
+        for index in range(0, len(kItemsAsSets), 3) :
+                kSet1 = kItemsAsSets[index + 0]
+                kSet2 = kItemsAsSets[index + 1]
+                kSet3 = kItemsAsSets[index + 2]
+                kBadges.append(kSet1 & kSet2 & kSet3)
+        #end
 
 **C++**
 

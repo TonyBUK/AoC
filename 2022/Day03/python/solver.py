@@ -16,7 +16,7 @@ def main() :
 
         # Merge the Compartments back and make them Sets
         kItemsAsSets   = list(set(item[0]) | set(item[1]) for item in kItems)
-        kBadges        = [(kSet1 & kSet2 & kSet3).pop() for kSet1,kSet2,kSet3 in zip(kItemsAsSets[::3], kItemsAsSets[1::3], kItemsAsSets[2::3])]
+        kBadges        = [(kSet1 & kSet2 & kSet3).pop() for kSet1,kSet2,kSet3 in zip(kItemsAsSets[0::3], kItemsAsSets[1::3], kItemsAsSets[2::3])]
 
         print(f"Part2: {sum(kBadges)}")
 
