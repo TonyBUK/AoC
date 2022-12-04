@@ -54,6 +54,7 @@ int main(int argc, char** argv)
 
     if (pData)
     {
+        /* This lookup table is indexed to force a-z to 1-26 and A-Z to 27-52*/
         const unsigned char kASCIITranslation[128] =
         {
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -69,12 +70,17 @@ int main(int argc, char** argv)
         unsigned long nPart1  = 0;
         unsigned long nPart2  = 0;
 
+        /* Thw Backpacks are stored into one of three buffers.  This allows
+         * processing individual backpacks for Part 1, whilst providing a
+         * means for Part 2 to compare three Backpacks against each other.
+         */
         unsigned long nBuffer = 0;
         while (!feof(pData))
         {
             unsigned char kBackpacks[3][MAX_BACKPACK_SIZE];
             unsigned long kBackpackSizes[3];
 
+            /* Read the Current Backpack */
             unsigned char kItem;
             kBackpackSizes[nBuffer] = 0;
             while ((unsigned char)'\n' != (kItem = (unsigned char)fgetc(pData)))
@@ -93,12 +99,12 @@ int main(int argc, char** argv)
 
             assert((kBackpackSizes[nBuffer] % 2) == 0);
 
-            // Solve Part 1
+            /* Solve Part 1 */
             nPart1 += CompartmentDuplicate(kBackpacks[nBuffer], kBackpackSizes[nBuffer]);
 
             nBuffer = (nBuffer + 1) % 3;
 
-            // Solve Part 2
+            /* Solve Part 2 if we've read 3 Backpacks */
             if (nBuffer == 0)
             {
                 nPart2 += BackpackDuplicate(kBackpacks[0], kBackpackSizes[0],
