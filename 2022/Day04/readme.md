@@ -42,9 +42,9 @@ In other words:
 So to bring it all together...
 
     IF range1.start >= range2.start AND
-      range1.start <= range2.end   AND
-      range1.end   >= range2.start AND
-      range1.end   <= range2.end
+       range1.start <= range2.end   AND
+       range1.end   >= range2.start AND
+       range1.end   <= range2.end
 
       Range 1 is a subset of Range 2
 
