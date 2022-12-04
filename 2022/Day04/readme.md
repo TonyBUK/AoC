@@ -29,58 +29,58 @@ And to find out whether an entry exists within another range?  Just test whether
 
 In other words:
 
-  IF entry >= range.start AND entry <= range.end
+    IF entry >= range.start AND entry <= range.end
 
-    It's exists within the range
+      It's exists within the range
 
-  ELSE
+    ELSE
 
-    It doesn't exist within the range.
+      It doesn't exist within the range.
 
-  END
+    END
 
 So to bring it all together...
 
-  IF range1.start >= range2.start AND
-     range1.start <= range2.end   AND
-     range1.end   >= range2.start AND
-     range1.end   <= range2.end
+    IF range1.start >= range2.start AND
+      range1.start <= range2.end   AND
+      range1.end   >= range2.start AND
+      range1.end   <= range2.end
 
-    Range 1 is a subset of Range 2
+      Range 1 is a subset of Range 2
 
-  ELSE
+    ELSE
 
-    Range 1 is not a subset of Range 2
+      Range 1 is not a subset of Range 2
 
-  END
+    END
 
 But let's assume that both the ranges have their start/end in ascending order (i.e. the end of a range will never be smaller than the start).  This means we have two redundant checks.  Comparing the start of range 1 to the end of range 2 is unnecessary, because if the end of range 1 is smaller than the end of range 2, the start of range 1 *MUST* be smaller than the end of range 2 as well.  Same goes for comparing the end of range 1 to the start of range 2.  This leaves:
 
-  IF range1.start >= range2.start AND
-     range1.end   <= range2.end
+    IF range1.start >= range2.start AND
+      range1.end   <= range2.end
 
-    Range 1 is a subset of Range 2
+      Range 1 is a subset of Range 2
 
-  ELSE
+    ELSE
 
-    Range 1 is not a subset of Range 2
+      Range 1 is not a subset of Range 2
 
-  END
+    END
 
 And of course we also need to check if range 2 is a subset of Range 1.  So we need to reverse the checks as well.  Giving...
 
-  IF (range1.start >= range2.start AND
-      range1.end   <= range2.end)  OR
-     (range2.start >= range1.start AND
-      range2.end   <= range1.end>)
+    IF (range1.start >= range2.start AND
+        range1.end   <= range2.end)  OR
+      (range2.start >= range1.start AND
+        range2.end   <= range1.end>)
 
-    At least one range is a subset of another
+      At least one range is a subset of another
 
-  ELSE
+    ELSE
 
-    Neither range is a subset of another.
+      Neither range is a subset of another.
 
-  END
+    END
 
 
 **Part 2**
@@ -96,18 +96,18 @@ Neither range is a subset of the other, but they do share values in common, bein
 
 Testing this is really just a permutation of what we did in Part 1.  So if we focus on testing whether Range 1 intersects with Range 2, we just need to check either the start or the end exists in Range 2, meaning:
 
-  if (range1.start >= range1.start AND
-      range1.start <= range2.end) OR
-     (range1.end   >= range2.start AND
-      range2.end   <= range2.end)
+    IF (range1.start >= range1.start AND
+        range1.start <= range2.end) OR
+      (range1.end   >= range2.start AND
+        range2.end   <= range2.end)
 
-    Range 1 Intersect with Range 2
+      Range 1 Intersect with Range 2
 
-  ELSE
+    ELSE
 
-    Range 1 does not Intersect with Range 2
+      Range 1 does not Intersect with Range 2
 
-  END
+    END
 
 So all we need to check now is that Range 2 Intersects with Range 1 and OR them right?  Nope, we're all done.  It's impossible for Range 2 to intersect with Range 1 without Range 1 also intersecting with Range 2.
 
