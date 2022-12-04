@@ -27,7 +27,7 @@ def main(SoveWithLookup) :
                         SCISSORS   : PAPER}
 
         # Read the Move List into an array of Move/Response
-        with open("input.txt", "r") as inputFile:
+        with open("../input.txt", "r") as inputFile:
 
             # First Extract the Elves
             moves = [line.split() for line in inputFile.readlines()]
@@ -74,7 +74,7 @@ def main(SoveWithLookup) :
 
     else :
 
-        with open("input.txt", "r") as inputFile:
+        with open("../input.txt", "r") as inputFile:
 
             PART1 = {
                 "A X" : DRAW + ROCK,
