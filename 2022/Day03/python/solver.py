@@ -12,13 +12,13 @@ def main() :
                         [kLookup.index(char) for char in line.strip()[len(line.strip())//2:]]] for line in inputFile.readlines()]
         kDuplicates = list(list(set(item[0]) & set(item[1])) for item in kItems)
 
-        print(f"Part1: {sum(sum(kDuplicate) for kDuplicate in kDuplicates)}")
+        print(f"Part 1: {sum(sum(kDuplicate) for kDuplicate in kDuplicates)}")
 
         # Merge the Compartments back and make them Sets
         kItemsAsSets   = list(set(item[0]) | set(item[1]) for item in kItems)
         kBadges        = [(kSet1 & kSet2 & kSet3).pop() for kSet1,kSet2,kSet3 in zip(kItemsAsSets[0::3], kItemsAsSets[1::3], kItemsAsSets[2::3])]
 
-        print(f"Part2: {sum(kBadges)}")
+        print(f"Part 2: {sum(kBadges)}")
 
     #end
 
