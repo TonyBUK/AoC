@@ -57,7 +57,7 @@ So to bring it all together...
 But let's assume that both the ranges have their start/end in ascending order (i.e. the end of a range will never be smaller than the start).  This means we have two redundant checks.  Comparing the start of range 1 to the end of range 2 is unnecessary, because if the end of range 1 is smaller than the end of range 2, the start of range 1 *MUST* be smaller than the end of range 2 as well.  Same goes for comparing the end of range 1 to the start of range 2.  This leaves:
 
     IF range1.start >= range2.start AND
-      range1.end   <= range2.end
+       range1.end   <= range2.end
 
       Range 1 is a subset of Range 2
 
@@ -71,7 +71,7 @@ And of course we also need to check if range 2 is a subset of Range 1.  So we ne
 
     IF (range1.start >= range2.start AND
         range1.end   <= range2.end)  OR
-      (range2.start >= range1.start AND
+       (range2.start >= range1.start AND
         range2.end   <= range1.end>)
 
       At least one range is a subset of another
@@ -98,7 +98,7 @@ Testing this is really just a permutation of what we did in Part 1.  So if we fo
 
     IF (range1.start >= range1.start AND
         range1.start <= range2.end) OR
-      (range1.end   >= range2.start AND
+       (range1.end   >= range2.start AND
         range2.end   <= range2.end)
 
       Range 1 Intersect with Range 2
