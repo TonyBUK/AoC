@@ -37,6 +37,7 @@ The reason is that otherwise, any time you want to add or remove anything from t
     ARRAY[1] = Z, N
 
 is actually:
+
     Array    : Offset : Data
     =========:========:=====
     ARRAY[1] : 0      : Z
