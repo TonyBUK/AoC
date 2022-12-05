@@ -122,7 +122,7 @@ int main(int argc, char** argv)
                     assert(i > 0);
 
                     nMoveStart   = i + 1;
-                    nColumnCount = (strlen(kLines[i-1]) + 1) / 4;
+                    nColumnCount = (strlen(kLines[i-1]) / 4) + 1;
 
                     /* Create the Create Stacks */
                     kCrateStack9000      = (char**) malloc(nColumnCount * sizeof(char*));
