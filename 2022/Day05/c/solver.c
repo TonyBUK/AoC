@@ -185,6 +185,8 @@ int main(int argc, char** argv)
                 }
                 kCrateStackDepth[nTarget] += nCount;
                 kCrateStackDepth[nSource] -= nCount;
+
+                assert(kCrateStackDepth[nTarget] < MAX_SIZE);
             }
 
             /* Output Part 1 */
