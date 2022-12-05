@@ -88,6 +88,8 @@ So with that in mind, hopefully you have an array with the right data.  It's act
 
 This would print out the crate contents, and let you compare it to your input data.
 
+If this proves too tricky, given the stacks are actually quite a small part of the input, there's no shame in even hard coding it.  Just be aware this will somewhat limit how flexible your solution is.
+
 Moving on, the next part of the task is to process a move command.  Most of this will be common with Part 2.
 
     FOR each Move
