@@ -12,7 +12,7 @@ long GetUniqueOffset(const long BUFFER_SIZE, char* kBuffer, FILE** pData)
 
     long i;
 
-    /* Load the Part 1 Tally Buffer */
+    /* Load the Tally Buffer */
     for (i = 0; i < BUFFER_SIZE; ++i)
     {
         /* Buffer the Data of Interest */
@@ -29,7 +29,7 @@ long GetUniqueOffset(const long BUFFER_SIZE, char* kBuffer, FILE** pData)
         }
     }
 
-    /* Solve Part 1 */
+    /* Solve... */
     while (1)
     {
         /* Buffer the Data of Interest */
