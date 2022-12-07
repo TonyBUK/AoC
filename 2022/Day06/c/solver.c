@@ -47,6 +47,17 @@ long GetUniqueOffset(const long BUFFER_SIZE, char* kBuffer, FILE** pData)
         /* Update the Circular Buffer */
         kBuffer[nCircularBufferPointer] = kData;
 
+        /* For the item we've pop'd, there's only two values of interest:
+         * 1 : This means the value before was 2, and is now 1, meaning we
+         *     need to increment the number of unique entries we've got.
+         * 0 : This means the value before was 1, and is now 0, meaning we
+         *     need to decrerement the number of unique entries we've got.
+         * 
+         * Any other number wouldn't change the number of unique entries, for
+         * example, if the value was 2, it means that value before was 3, and
+         * does not change how many unique entries there are, it just means
+         * something that wasn't unique still isn't unique.
+         */
         if (1 == nDecrementedTally)
         {
             ++nBufferNumUniques;
@@ -56,6 +67,17 @@ long GetUniqueOffset(const long BUFFER_SIZE, char* kBuffer, FILE** pData)
             --nBufferNumUniques;
         }
 
+        /* For the item we've push'd, there's only two values of interest:
+         * 1 : This means the value before was 0, and is now 1, meaning we
+         *     need to increment the number of unique entries we've got.
+         * 2 : This means the value before was 1, and is now 2, meaning we
+         *     need to decrerement the number of unique entries we've got.
+         * 
+         * Any other number wouldn't change the number of unique entries, for
+         * example, if the value was 3, it means that value before was 2, and
+         * does not change how many unique entries there are, it just means
+         * something that wasn't unique still isn't unique.
+         */
         if (1 == nIncrementedTally)
         {
             ++nBufferNumUniques;
@@ -67,6 +89,9 @@ long GetUniqueOffset(const long BUFFER_SIZE, char* kBuffer, FILE** pData)
 
         ++nBufferPointer;
 
+        /* Test if the Puzzle has been solved (i.e. the number of unique
+         * as entries is the same size the slice size we're interested in)
+         */
         if (nBufferNumUniques == BUFFER_SIZE)
         {
             return nBufferPointer;
