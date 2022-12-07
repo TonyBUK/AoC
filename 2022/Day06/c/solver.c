@@ -4,9 +4,8 @@
 #define PART_1_SIZE (4)
 #define PART_2_SIZE (14)
 
-long GetUniqueOffset(const long BUFFER_SIZE, FILE** pData)
+long GetUniqueOffset(const long BUFFER_SIZE, char* kBuffer, FILE** pData)
 {
-    char     kBuffer[BUFFER_SIZE];
     long     kBufferTally[256]   = {0};
     long     nBufferNumUniques   = 0;
     long     nBufferPointer      = 0;
@@ -78,11 +77,13 @@ long GetUniqueOffset(const long BUFFER_SIZE, FILE** pData)
 int main(int argc, char** argv)
 {
     FILE* pData = fopen("../input.txt", "r");
- 
+
     if (pData)
     {
-        const long nBufferPointerPart1 = GetUniqueOffset(PART_1_SIZE, &pData);
-        const long nBufferPointerPart2 = GetUniqueOffset(PART_2_SIZE, &pData);
+        char       kBufferPart1[PART_1_SIZE];
+        char       kBufferPart2[PART_2_SIZE];
+        const long nBufferPointerPart1 = GetUniqueOffset(PART_1_SIZE, kBufferPart1, &pData);
+        const long nBufferPointerPart2 = GetUniqueOffset(PART_2_SIZE, kBufferPart2, &pData);
 
         printf("Part 1: %li\n", nBufferPointerPart1);
         printf("Part 2: %li\n", nBufferPointerPart1 + nBufferPointerPart2);
