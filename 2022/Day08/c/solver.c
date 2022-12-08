@@ -3,28 +3,6 @@
 #include <ctype.h>
 #include <assert.h>
 
-#include <mach/mach_time.h>
-
-// Returns the current time in microseconds.
-uint64_t get_microseconds()
-{
-    static mach_timebase_info_data_t timebase;
-
-    // Get the timebase if this is the first time we're called.
-    // We only do this once to avoid the overhead of calling mach_timebase_info.
-    if (timebase.denom == 0) {
-        mach_timebase_info(&timebase);
-    }
-
-    // Convert the mach time to microseconds.
-    uint64_t mach_time = mach_absolute_time();
-    uint64_t microseconds = mach_time * timebase.numer / timebase.denom;
-    return microseconds;
-}
-
-#undef FALSE
-#undef TRUE
-
 #define FALSE (0)
 #define TRUE  (1)
 
