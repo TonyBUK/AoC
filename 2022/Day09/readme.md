@@ -271,15 +271,15 @@ But of course C arrays are 0 based, and we'll probably encounter negative locati
 
 Let's look at what my puzzle returns.
 
-  X Axis = -47 .. 144
-  Y Axis = -65 .. 196
-  Width  = 144 - -47 = 191
-  Height = 196 - -65 = 261
+    X Axis = -47 .. 144
+    Y Axis = -65 .. 196
+    Width  = 144 - -47 = 191
+    Height = 196 - -65 = 261
 
 Well we know the smallest value.  If we negated that add added it to the all positions we'd get:
 
-  X Axis = (-47+47) .. (144+47)
-  Y Axis = (-65_65) .. (196+65)
+    X Axis = (-47+47) .. (144+47)
+    Y Axis = (-65_65) .. (196+65)
 
 But why add it, we set the starting position of all knots to [0, 0].  Why not set it to these offset values, as all we care about is unique positions, not what those positions really were.  Once we do this, we have a nice trivial 0 based index check.
 
