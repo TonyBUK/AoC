@@ -93,8 +93,6 @@ def main() :
         kUniquePositionsPart1 = set()
         kUniquePositionsPart1.add(tuple(kTail))
 
-        # As simple as it gets... if the'yre adjacent, we do nothing, otherwise
-        # we go to the previous position of the Head (i.e. undo the Vector)
         for kMove in kMoves :
 
             kVector = VECTORS[kMove[0]]
@@ -106,9 +104,15 @@ def main() :
 
                 if True == Adjacent(kHead, kTail) : continue
 
-                # The Tail will just occupy the heads old position
-                kTail[0] = kHead[0] - kVector[0]
-                kTail[1] = kHead[1] - kVector[1]
+                # Calculate the Direction of Travel Needed between the Head and Tail
+                # We get this by computer a vector limited to 1 in each axis in the direction of
+                # the delta.
+                kTailVector = [min(1, max(-1, kHead[0] - kTail[0])),
+                               min(1, max(-1, kHead[1] - kTail[1]))]
+
+                # Move the Tail
+                kTail[0] += kTailVector[0]
+                kTail[1] += kTailVector[1]
 
                 kUniquePositionsPart1.add(tuple(kTail))
 
@@ -128,15 +132,13 @@ def main() :
         kUniquePositionsPart2 = set()
         kUniquePositionsPart2.add(tuple(kKnots[-1]))
 
-        # This time we do part 1 properly... if the two are not adjacent,
-        # we calculate the direction of the move between the two (diagonals
-        # are allowed) between the current knot and the prior one.
         for kMove in kMoves :
 
             kVector     = VECTORS[kMove[0]]
 
             for _ in range(kMove[1]) :
 
+                # Move the Head
                 kKnots[0][0] += kVector[0]
                 kKnots[0][1] += kVector[1]
 
@@ -150,6 +152,7 @@ def main() :
                     kTailVector = [min(1, max(-1, kKnots[i-1][0] - kKnots[i][0])),
                                    min(1, max(-1, kKnots[i-1][1] - kKnots[i][1]))]
 
+                    # Move the Knot
                     kKnots[i][0] += kTailVector[0]
                     kKnots[i][1] += kTailVector[1]
 
