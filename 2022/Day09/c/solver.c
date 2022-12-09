@@ -6,7 +6,7 @@
 #define FALSE (0)
 #define TRUE  (1)
 
-#define KNOT_GRID(p, X, Y, OX, OY, W) (p[((Y + OY) * W) + X + OX])
+#define KNOT_GRID(p, X, Y, W) (p[(Y * W) + X])
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
@@ -104,6 +104,7 @@ int main(int argc, char** argv)
         size_t                  nUniqueCountPart2 = 0;
 
         TVector                 kKnots[10];
+        const size_t            KNOT_SIZE = (sizeof(kKnots) / sizeof(kKnots[0]));
 
         /* Read the entire file into a line buffer. */
         readLines(&pData, &kBuffer, &kLines, &nLineCount, NULL);
@@ -178,8 +179,13 @@ int main(int argc, char** argv)
         memset(pUniqueBufferPart1, 0, SIZE_X * SIZE_Y * sizeof(unsigned));
         memset(pUniqueBufferPart2, 0, SIZE_X * SIZE_Y * sizeof(unsigned));
 
-        /* Solve both parts... */
-        memset(&kKnots, 0, sizeof(kKnots));
+        /* Solve both parts... If we make the start position the Offset, we get indexing for free! */
+        for (i = 0; i < KNOT_SIZE; ++i)
+        {
+            kKnots[i].X = OFFSET_X;
+            kKnots[i].Y = OFFSET_Y;
+        }
+
         for (i = 0; i < nLineCount; ++i)
         {
             size_t    N;
@@ -192,7 +198,7 @@ int main(int argc, char** argv)
                 kKnots[0].X += pMoves[i].V.X;
                 kKnots[0].Y += pMoves[i].V.Y;
 
-                for (j = 1; j < (sizeof(kKnots) / sizeof(kKnots[0])); ++j)
+                for (j = 1; j < KNOT_SIZE; ++j)
                 {
                     if ((abs((int)(kKnots[j].X - kKnots[j-1].X)) > 1) ||
                         (abs((int)(kKnots[j].Y - kKnots[j-1].Y)) > 1))
@@ -211,7 +217,7 @@ int main(int argc, char** argv)
                 }
 
                 /* Part 1 acts on the 2nd Knot */
-                p = &KNOT_GRID(pUniqueBufferPart1, kKnots[1].X, kKnots[1].Y, OFFSET_X, OFFSET_X, SIZE_X);
+                p = &KNOT_GRID(pUniqueBufferPart1, kKnots[1].X, kKnots[1].Y, SIZE_X);
                 if (FALSE == *p)
                 {
                     *p = TRUE;
@@ -219,7 +225,7 @@ int main(int argc, char** argv)
                 }
 
                 /* Part 2 acts on the Last Knot */
-                p = &KNOT_GRID(pUniqueBufferPart2, kKnots[(sizeof(kKnots) / sizeof(kKnots[0])) - 1].X, kKnots[(sizeof(kKnots) / sizeof(kKnots[0])) - 1].Y, OFFSET_X, OFFSET_X, SIZE_X);
+                p = &KNOT_GRID(pUniqueBufferPart2, kKnots[KNOT_SIZE - 1].X, kKnots[KNOT_SIZE - 1].Y, SIZE_X);
                 if (FALSE == *p)
                 {
                     *p = TRUE;
