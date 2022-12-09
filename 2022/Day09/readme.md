@@ -6,7 +6,7 @@ Kind of a interesting issue for this one.  The puzzle itself is so *close* to im
 
 **Part 1**
 
-Part 1 is actually deceptively trivial.  You'll either get lucky and solve it in a way that's viable for Part 2, or you'll get unlucky, and your solution here won't work.
+Part 1 is actually deceptively trivial.  You'll either get lucky and solve it in a way that's viable for Part 2, or you'll get unlucky, think of a cool short-cut, and your solution here won't work.
 
 Firstly the common part... the input is actually nice and simple.  A series of lines, divided by a space, with a direction, and a move count.  This can be trivialised using vectors.
 
@@ -98,8 +98,8 @@ Now there is a horrible solution that I may or may not have come up with... the 
 
 Now the implication is that we need to do something different whether it's only one or two axis that are different between the Head/Tail.  In reality it's:
 
-  Difference = (Head - Tail)
-  Vector     = Difference Limited to +/-1 in each Axis
+    Difference = (Head - Tail)
+    Vector     = Difference Limited to +/-1 in each Axis
 
 So let's go through the examples:
 
@@ -321,4 +321,4 @@ This way the puzzle becomes:
 
     NEXT
 
-In-fact we can go further.  Part 2 actually subsumes Part 1.  Part 1 is just checking the second knot.
+In-fact we can go further.  Part 2 actually subsumes Part 1.  Part 1 is just checking the second knot, which the C version implements.
