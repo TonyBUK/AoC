@@ -135,7 +135,7 @@ int main(int argc, char** argv)
         {
             if (isdigit(kTreeGrid[nFilePointer]))
             {
-                kTreeGrid[nDataPointer] = kTreeGrid[nFilePointer] - '0';
+                kTreeGrid[nDataPointer] = kTreeGrid[nFilePointer];
                 ++nDataPointer;
             }
             else if (0 == GRID_WIDTH)
