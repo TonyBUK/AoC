@@ -73,65 +73,63 @@ int main(int argc, char** argv)
 
         /* Initial States */
         long          x                 = 1;
-        TOpcodeType   eOpcode           = OPCODE_LAST;
-        long          nOperand;
-        long          nRemainingCycles  = 0;
         long          nCycleCounter     = 0;
         long          nSum              = 0;
-        long          nRow;
-        long          nCol;
         char kDisplay[HEIGHT][WIDTH + 1]; /* Add the NUL terminator to simplify the print operation */
 
         memset(kDisplay, ' ', sizeof(kDisplay));
 
-        while (!feof(pData) || nRemainingCycles)
+        while (!feof(pData))
         {
-            /* Are we ready to process the last opcode / handle the new opcode? */
-            if (0 == nRemainingCycles)
+            /* Get the Next Opcode */
+            const TOpcodeType eOpcode          = getOpcode(&pData);
+            long              nRemainingCycles = CYCLE_COUNT[eOpcode];
+            long              nOperand;
+
+            /* Verify the Opcode / Buffer any Operands */
+            switch (eOpcode)
             {
-                /* Process the Buffered Opcode */
-                if (OPCODE_ADDX == eOpcode)
+                case OPCODE_NOOP: break;
+                case OPCODE_ADDX:
                 {
-                    x += nOperand;
-                }
+                    nOperand = getValue(&pData);
+                } break;
 
-                /* Get the Next Opcode */
-                eOpcode          = getOpcode(&pData);
-                nRemainingCycles = CYCLE_COUNT[eOpcode];
-
-                /* Verify the Opcode / Buffer any Operands */
-                switch (eOpcode)
-                {
-                    case OPCODE_NOOP: break;
-                    case OPCODE_ADDX:
-                    {
-                        nOperand = getValue(&pData);
-                    } break;
-
-                    default: assert(0);
-                }
+                default: assert(0);
             }
 
             /* Process the End of Cycle */
-            ++nCycleCounter;
-            --nRemainingCycles;
-
-            /* Part 1
-             * Sum of Cycles and Frequencies at specified iterations
-             */
-            if (0 == ((nCycleCounter - 20) % 40))
+            while(nRemainingCycles)
             {
-                nSum += nCycleCounter * x;
+                long nRow;
+                long nCol;
+
+                ++nCycleCounter;
+                --nRemainingCycles;
+
+                /* Part 1
+                * Sum of Cycles and Frequencies at specified iterations
+                */
+                if (0 == ((nCycleCounter - 20) % 40))
+                {
+                    nSum += nCycleCounter * x;
+                }
+
+                /* Part 2
+                * Updating based on Pixel Position
+                */
+                nRow = (nCycleCounter-1) / WIDTH;
+                nCol = nCycleCounter - (nRow * WIDTH);
+                if ((nCol >= x) && (nCol <= (x + 2)))
+                {
+                    kDisplay[nRow][nCol-1] = '#';
+                }
             }
 
-            /* Part 2
-             * Updating based on Pixel Position
-             */
-            nRow = (nCycleCounter-1) / WIDTH;
-            nCol = nCycleCounter - (nRow * WIDTH);
-            if ((nCol >= x) && (nCol <= (x + 2)))
+            /* Process the Buffered Opcode */
+            if (OPCODE_ADDX == eOpcode)
             {
-                kDisplay[nRow][nCol-1] = '#';
+                x += nOperand;
             }
         }
         fclose(pData);
