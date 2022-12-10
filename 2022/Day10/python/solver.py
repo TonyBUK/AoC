@@ -20,8 +20,6 @@ def main() :
             }
 
             # Initial state, as a bodge, we buffer a NOP.
-            nRemainingCycles = 0
-            kLastOpcode      = ["noop"]
             nCycle           = 0
             x                = 1
             nResult          = 0
@@ -29,41 +27,37 @@ def main() :
             # Initial Display State
             kDisplay         = ["" for _ in range(nHeight)]
 
-            # Reverse the Opcodes (also neatly stops us destroying the original data)
-            kBufferedOpcodes = list(reversed(kOpcodes))
-
             # Process all the Opcodes / Cycles
-            while (nRemainingCycles > 0) or (len(kBufferedOpcodes) > 0) :
+            for kOpcode in kOpcodes :
 
-                # Process the Buffered Command once its timer elapses
-                if 0 == nRemainingCycles :
+                nRemainingCycles = CYCLES[kOpcode[0]]
 
-                    if kLastOpcode[0] == "addx" :
+                while nRemainingCycles > 0 :
 
-                        x += kLastOpcode[1]
+                    # Process the End of Cycle
+                    nCycle           += 1
+                    nRemainingCycles -= 1
 
+                    # Part 1
+                    # Sum of Cycles and Frequencies at specified iterations
+                    if ((nCycle - nCycleStart) % nCycleFrequency) == 0 :
+                        nResult += nCycle * x
                     #end
 
-                    kLastOpcode      = kBufferedOpcodes.pop()
-                    nRemainingCycles = CYCLES[kLastOpcode[0]]
+                    # Part 2
+                    # Dumping based on Pixel Position
+                    nRow           = (nCycle - 1)//nWidth
+                    nPixelPosition = nCycle - (nRow * nWidth)
+                    kDisplay[nRow] += "#" if (nPixelPosition in range(x, x + 3)) else " "
 
                 #end
 
-                # Process the End of Cycle
-                nCycle           += 1
-                nRemainingCycles -= 1
+                # Process the Buffered Command once its timer elapses
+                if kOpcode[0] == "addx" :
 
-                # Part 1
-                # Sum of Cycles and Frequencies at specified iterations
-                if ((nCycle - nCycleStart) % nCycleFrequency) == 0 :
-                    nResult += nCycle * x
+                    x += kOpcode[1]
+
                 #end
-
-                # Part 2
-                # Dumping based on Pixel Position
-                nRow           = (nCycle - 1)//nWidth
-                nPixelPosition = nCycle - (nRow * nWidth)
-                kDisplay[nRow] += "#" if (nPixelPosition in range(x, x + 3)) else " "
 
             #end
 
