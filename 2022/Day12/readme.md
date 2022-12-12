@@ -6,7 +6,7 @@ Another staple of the Advent of Code... path finding.
 
 **Part 1**
 
-The crux of this is to abandon your first through, which was no doubt a recursive function like:
+The crux of this is to abandon your first thought, which was no doubt a recursive function like:
 
     POS = Start Poisition
 
