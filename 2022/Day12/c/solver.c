@@ -157,7 +157,7 @@ void BFS(const size_t WIDTH, const size_t HEIGHT, const unsigned long kStart, si
             {
                 qsort(&kQueueBuffer[nQueueHead], (nQueueTail - nQueueHead), sizeof(TQueueType), CompareQueue);
             }
-            /* TODO: Probably some sort of copy if needed... */
+            /* TODO: Would be better if this could sort in-place rather than shifting all the data */
             else if (nQueueHead > nQueueTail)
             {
                 const size_t nQueueSize = (SIZE - nQueueHead) + nQueueTail;
