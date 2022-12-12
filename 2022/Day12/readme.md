@@ -75,7 +75,7 @@ This is one that can be solved naively.  The basic algorithm could be:
 
     FOR each position that contains 'a'
 
-      Find the Route Length to 'Z' from 'a' using Part 1's solution
+      Find the Route Length to 'E' from 'a' using Part 1's solution
 
     NEXT
 
