@@ -41,7 +41,6 @@ def main() :
                 bMerged = False
                 for i, kBound1 in enumerate(kBounds) :
                     for kBound2 in kBounds[i+1:] :
-
                         if min(kBound1[-1], kBound2[-1]) >= max(kBound1[0], kBound2[0]) :
                             kNewBound = tuple([min(kBound1[0], kBound2[0]), max(kBound1[1], kBound2[1])])
                             if kBound1 in kCombinedBounds : kCombinedBounds.remove(kBound1)
@@ -67,7 +66,7 @@ def main() :
 
         def getYIntersections(kBeaconPlusManhatten1, kBeaconPlusManhatten2) :
 
-            def lineIntersection(line1, line2):
+            def lineIntersectionY(line1, line2):
 
                 xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
                 ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
@@ -78,13 +77,12 @@ def main() :
 
                 div = det(xdiff, ydiff)
                 if div == 0:
-                    return []
+                    return None
                 #end
 
                 d = (det(*line1), det(*line2))
-                x = det(d, xdiff) / div
                 y = det(d, ydiff) / div
-                return [x, y]
+                return y
 
             #end
 
@@ -120,10 +118,10 @@ def main() :
 
             for kLine1 in kBeacon1Lines :
                 for kLine2 in kBeacon2Lines :
-                    kCurrentIntersection = lineIntersection(kLine1, kLine2)
-                    if len(kCurrentIntersection) > 0 :
-                        if 0 != (kCurrentIntersection[1] % 1) :
-                            nFloor                        = int(math.floor(kCurrentIntersection[1]))
+                    nCurrentIntersection = lineIntersectionY(kLine1, kLine2)
+                    if None != nCurrentIntersection :
+                        if 0 != (nCurrentIntersection % 1) :
+                            nFloor                        = int(math.floor(nCurrentIntersection))
                             kIntersectionRange            = set()
                             kAdjacentIntegersectionRange  = set()
                             kAdjacentIntegersectionRange.add(nFloor + 1)
@@ -131,7 +129,7 @@ def main() :
                             kAdjacentIntegersectionRange.add(nFloor + 2)
                             kAdjacentIntegersectionRange.add(nFloor - 1)
                         else :
-                            nIntersectionRange            = int(kCurrentIntersection[1])
+                            nIntersectionRange            = int(nCurrentIntersection)
                             kIntersectionRange            = set([nIntersectionRange])
                             kAdjacentIntegersectionRange  = set()
                             kAdjacentIntegersectionRange.add(nIntersectionRange + 1)
@@ -190,6 +188,9 @@ def main() :
                 kSecondaryQueue |= set([nIntersection for nIntersection in kAdjacentIntersections if nIntersection in TGT_RANGE])
             #end
         #end
+
+        # Remove everything from the Secondary Queue already present in the Primary Queue
+        kSecondaryQueue -= kPriorityQueue
 
         bFound = False
         for Y in kPriorityQueue :
