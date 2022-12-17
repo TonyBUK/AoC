@@ -67,7 +67,14 @@ So to bring it together algorithmically, let's solve this with BFS.
 
 So go back to Part 1 and keep track of two things in the queue right... right?  If you've answered yes, see you in 30 minutes when your program finally finishes running.
 
-What we want is to run Part 1 almost *exactly* as-is, but with two changes.
+And don't worry, this isn't me smugly proclaiming this as someone who knew that this would be the case, this is from experience.  Before I got to a fast(ish) solution I tried:
+
+1. Moving both at the same time 1 minute at a time.
+2. Moving both at the same time using the Part 1 algorithm and arbitrating movement between them to force the slower path to tie up with faster paths (i.e. if the elephant will arrive in 5 minutes, and the human in 10, the time ticks on by 5 minutes for a round, and the human only travels 1/2 the route).
+
+Both were slow, but the arbitration code for 2. actually outweighed the apparent benefits.  And that's why we profile!  Know your bottlenecks, before optimising.  Just because something feels like something should be faster doesn't mean it is...
+
+With that in mind... what we want is to run Part 1 almost *exactly* as-is, but with two changes.
 
 1. Starting Minutes should now be 26 instead of 30.
 2. We no longer care about the Best Pressure score overally, we care about the Best Pressure Score for a given set of closed valves.
