@@ -31,7 +31,7 @@ So the simple solution here is to count how many cubes are adjacent to each othe
       NEXT
     NEXT
 
-So now the solution is: (Num Cubes * 6) - Adjacent Countz
+So now the solution is: (Num Cubes * 6) - Adjacent Count
 
 **Part 2**
 
