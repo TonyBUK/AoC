@@ -22,30 +22,19 @@ def main() :
 
         #end
 
-        def isConnectedCubes(c1, c2) :
-
-            for i in range(3) :
-                if abs(c1[i] - c2[i]) > 1 :
-                    return False
-                #end
-            #end
-            return True
-
-        #end
-
         kCubes = [tuple([int(x) for x in kLine.strip().split(",")]) for kLine in inputFile.readlines()]
 
         # Part 1: Subtract any Adjacent Sides
-        nTotalPotentialSufraceArea = len(kCubes) * 6
+        nTotalPotentialSurfaceArea = len(kCubes) * 6
         for i,kCube1 in enumerate(kCubes) :
             for kCube2 in kCubes[i+1:] :
                 if isAdjacentCubes(kCube1, kCube2) :
-                    nTotalPotentialSufraceArea -= 2
+                    nTotalPotentialSurfaceArea -= 2
                 #end
             #end
         #end
 
-        print(f"Part 1: {nTotalPotentialSufraceArea}")
+        print(f"Part 1: {nTotalPotentialSurfaceArea}")
 
         # Part 2:
         # We're going to be adding "water" cubes to the list starting from obviously outside.
