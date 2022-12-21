@@ -111,8 +111,8 @@ def main() :
                     # Reversed : a = x + b
                     return monkeyMathReverse(kMonkeys, kSolvedMonkeys, kUnsolvedMonkeys, nMonkeyValue + nStartValue, kMonkeyExpression[0], kTargetMonkey)
                 elif kMonkeyExpression[1] == "/" :
-                    # Normal   : x = a * b
-                    # Reversed : a = x * a
+                    # Normal   : x = a / b
+                    # Reversed : a = x * b
                     return monkeyMathReverse(kMonkeys, kSolvedMonkeys, kUnsolvedMonkeys, nMonkeyValue * nStartValue, kMonkeyExpression[0], kTargetMonkey)
                 #end
                 assert(False)
