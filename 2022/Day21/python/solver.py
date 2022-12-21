@@ -47,8 +47,6 @@ def main() :
                         kMonkeys[kMonkey] = kMonkeys[kMonkeyExpression[0]] // kMonkeys[kMonkeyExpression[2]]
                     elif kMonkeyExpression[1] == "-" :
                         kMonkeys[kMonkey] = kMonkeys[kMonkeyExpression[0]] - kMonkeys[kMonkeyExpression[2]]
-                    elif kMonkeyExpression[1] == "=" :
-                        kMonkeys[kMonkey] = kMonkeys[kMonkeyExpression[0]] == kMonkeys[kMonkeyExpression[2]]
                     else :
                         assert(False)
                     #end
