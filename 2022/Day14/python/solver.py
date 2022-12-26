@@ -42,27 +42,21 @@ def main() :
                 # Try to Move Down
                 kDown = tuple([kItem[0], kItem[1] + 1])
                 if (kDown not in kObstacles) and (kDown not in kSand) and ((kDown[1] < nFloor) or bEndlessVoid) :
-                    if kDown not in kQueue :
-                        kQueue.add(kDown)
-                    #end
+                    kQueue.add(kDown)
                     continue
                 #end
 
                 # Try to Move Down Left
                 kDownLeft = tuple([kDown[0] - 1, kDown[1]])
                 if (kDownLeft not in kObstacles) and (kDownLeft not in kSand) and ((kDownLeft[1] < nFloor) or bEndlessVoid) :
-                    if kDownLeft not in kQueue :
-                        kQueue.add(kDownLeft)
-                    #end
+                    kQueue.add(kDownLeft)
                     continue
                 #end
 
                 # Try to Move Down Right
                 kDownRight = tuple([kDown[0] + 1, kDown[1]])
                 if (kDownRight not in kObstacles) and (kDownRight not in kSand) and ((kDownRight[1] < nFloor) or bEndlessVoid) :
-                    if kDownRight not in kQueue :
-                        kQueue.add(kDownRight)
-                    #end
+                    kQueue.add(kDownRight)
                     continue
                 #end
 
