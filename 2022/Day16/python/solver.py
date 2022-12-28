@@ -83,8 +83,8 @@ def main() :
 
                     # Select each of the Best Target Valves
                     for kNewTarget in kWorthwhileValves :
-                        if kNewTarget not in kOpenedValves :
-                            if kNewTarget != kTargetValve :
+                        if kNewTarget != kTargetValve :
+                            if kNewTarget not in kOpenedValves :
                                 if len(kShortestMoves[kTargetValve][kNewTarget]) < nTime :
                                     kQueue.append([nNewPressure, nTime - len(kShortestMoves[kTargetValve][kNewTarget]) - 1, kNewTarget, kNewOpenedValves])
                                 #end
@@ -136,9 +136,9 @@ def main() :
 
                 # Crudely check what's left... we could limit this based on intersection testing but typically
                 # the overhead negates the payoff
-                nMaxValue = max([kVisitedCopy[v] for v in kVisitedCopy])
+                nMaxValue = max([v for v in kVisitedCopy.values()])
 
-                # And a sanity check to exist when no combination of what's remaining would help improve
+                # And a sanity check to exit when no combination of what's remaining would help improve
                 # the score
                 if (nMaxValue * 2) < nBestPressure :
                     break
