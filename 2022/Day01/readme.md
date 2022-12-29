@@ -262,3 +262,5 @@ Of course as we're dealing with C, we do now also need to handle alot of the str
         FOR each Digit
             Number = (Number * 10) + int(Digit)
         NEXT
+
+What's actually interesting is throughput wise, this is at parity with Python, if not a little slower.  This is due to the constant re-sorting, whereas Python only does this once at the end.  This *could* work that way, but we'd need to either hard code or *guess* the size at the beginning.  This is somewhere that C++ would provide a best of both worlds solution.
