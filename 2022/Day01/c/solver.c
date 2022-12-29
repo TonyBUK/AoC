@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <assert.h>
  
-int mealCompareFunction(const void * a, const void * b)
-{
-   return ((int)*(unsigned long*)a - (int)*(unsigned long*)b);
-}
- 
 /* Convert a line of text into an unsigned long, use 0xFFFFFFFF as a bodge to indicate no number
  * has been parsed.
  */
@@ -60,15 +55,23 @@ int main(int argc, char** argv)
                 nCandidateMeal += nCalorieCount;
             }
  
-            /* Make sure we actually had a meal to check... */
-            if (0u != nCandidateMeal)
+            /* If the meal has more calories than the current 3rd place... */
+            if (nCandidateMeal > kTopMeals[0])
             {
-                /* If the meal has more calories than the current 3rd place... */
-                if (nCandidateMeal > kTopMeals[0])
+                if (nCandidateMeal > kTopMeals[2])
                 {
-                    /* Replace the current 3rd place, and re-sort the meals. */
-                    kTopMeals[0]   = nCandidateMeal;
-                    qsort(kTopMeals, sizeof(kTopMeals) / sizeof(unsigned long), sizeof(unsigned long), mealCompareFunction);
+                    kTopMeals[0] = kTopMeals[1];
+                    kTopMeals[1] = kTopMeals[2];
+                    kTopMeals[2] = nCandidateMeal;
+                }
+                else if (nCandidateMeal > kTopMeals[1])
+                {
+                    kTopMeals[0] = kTopMeals[1];
+                    kTopMeals[1] = nCandidateMeal;
+                }
+                else
+                {
+                    kTopMeals[0]  = nCandidateMeal;
                 }
             }
         }
