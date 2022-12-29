@@ -145,16 +145,23 @@ def main() :
                 #end
                 
                 # Only bother testing intersections / permutations if something remaining is worth testing
+                # Note: The slowness here is intersection testing, which is why the logic is geared towards
+                #       checking that last.
+                #
+                #       A more efficient strategy would be to convert the sets into bitmasks and use boolean
+                #       arithmetic for intersections, albeit that's hardly Pythonic.  C on the other hand...
                 if (kVisited[kMe] + nMaxValue) > nBestPressure :
                     for kThem in kVisitedCopy :
-                        if len(kMe.intersection(kThem)) == 0 :
-                            nPressure = kVisited[kMe] + kVisited[kThem]
-                            if nPressure > nBestPressure :
+                        nPressure = kVisited[kMe] + kVisited[kThem]
+                        if nPressure > nBestPressure :
+                            if len(kMe.intersection(kThem)) == 0 :
                                 nBestPressure = nPressure
                             #end
                         #end
                     #end
                 #end
+            else :
+                break
             #end
         #end
 
