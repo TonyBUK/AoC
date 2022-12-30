@@ -8,7 +8,7 @@ set(C_STANDARD 90)
 if (MSVC)
     add_compile_options(/O2)
 else()
-    add_compile_options(-O2)
+    add_compile_options(-O3)
 endif()
 
 # add the executable
