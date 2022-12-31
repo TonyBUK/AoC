@@ -155,6 +155,14 @@ Here's where we can get creative... if we apply a limitation to the inputs that,
 
   Then I can store all possible permutations of unique tunnels with a 16,384 element array.  Wasteful, but *fast*... very very fast.
 
+  But to get here, we need to go through quite a few hoops.  First of all, we need to assign a unique bit mask to each *important* tunnel/valve.  Because we need to know how long it takes to get from one important valve to another, all the valve's will need a bit mask entry, which limits us to 64 valves in total, but now the tricky part, sorting them.
+
+  To this end, we can again throw a ton of RAM at the issue.  Specifically, each valve has a 2 character ID, i.e. AA, we can abuse this as a 16 bit number since each character occupies a byte.  This gives a nice easy way from going from the Valve ID into an arbitrary lookup that we can use later, meaning we can create a set of lookups before we've done any sorting, and at a later stage, meaning we can just do a single pass on the file, and sort things later.
+
+  This neatly means that when path finding, the connected tunnels have a nice easy lookup method to go to the bitmask, sorted order etc.
+
+  This may seem like a *lot* of effort, and it really is, in that with C++ and std vector / std map etc., the task would be utterly trivialised, but by a little creativity in using the natural uniqueness we can attribute to each tunnel, we can bypass any hashing / tree storage that other solutions would use, and typically be alot quicker as a result.
+
   It also neatly means for Part 2, instead of testing the intersections of two data sets, we have a single bitwise AND on two integers.
 
   This gives us a 10,000% delta between C and Python.  However, this is absolutely *not* a scaleable solution.  I believe it should solve any permutation of the AoC puzzle, but wouldn't solve a general case input unlike the Python solution.
