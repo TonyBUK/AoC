@@ -145,4 +145,16 @@ TBD - I'm prioritising Python/C for my first pass of this year.
 
 **C**
 
-TBD - Playing catch-up with multiple solutions now as the puzzles get harder!
+Here's where we can get creative... if we apply a limitation to the inputs that, when all is said and done, there will be a sane number of tunnels with non-zero flow rates, we can be a bit creative with how we work around the lack of hash maps.  In my particular input, I end up with 13 non-zero flow rates, and the start tunnel, which means if I were to treat each of these tunnels as a unique bit in a bit-mask, i.e.
+
+    1 : 0000000000001
+    2 : 0000000000010
+    3 : 0000000000100
+  
+  etc.
+
+  Then I can store all possible permutations of unique tunnels with a 16,384 element array.  Wasteful, but *fast*... very very fast.
+
+  It also neatly means for Part 2, instead of testing the intersections of two data sets, we have a single bitwise AND on two integers.
+
+  This gives us a 10,000% delta between C and Python.  However, this is absolutely *not* a scaleable solution.  I believe it should solve any permutation of the AoC puzzle, but wouldn't solve a general case input unlike the Python solution.
