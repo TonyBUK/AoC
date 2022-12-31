@@ -240,4 +240,4 @@ TBD - I'm prioritising Python/C for my first pass of this year.
 
 **C**
 
-TBD - Playing catch-up with multiple solutions now as the puzzles get harder!
+Pretty much the Python solution, main difference is that it doesn't populate the Peaks/Middle until after it's disproved the intersections, but most of the throughput improvements come from C vs Python as opposed to anything algorithmic.
