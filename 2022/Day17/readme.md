@@ -172,4 +172,6 @@ TBD - I'm prioritising Python/C for my first pass of this year.
 
 **C**
 
-TBD - Playing catch-up with multiple solutions now as the puzzles get harder!
+This is one that *really* isn't suited to C, at least not until we can waste petabytes of RAM with impunity.  As such, this is a solution that uses hash tables.  The major difference to the Python version is that instead of storing the entire history of collisions, this just stores the last 256(ish) entries in a circular buffer.
+
+This also makes the peaks for each column that was only really used by the Python solution for loop detection an integral part of the general case solution.
