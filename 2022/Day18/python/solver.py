@@ -153,16 +153,17 @@ def main() :
             #end
 
             # If the Water Cube wasn't Adjacent, check if the Water Cube was Diagonal
-            bDiagonal = False
-            for kDiagonalCubeDelta in DIAGONAL_CUBE_DELTAS :
-                if tuple([A+B for A,B in zip(kWaterCube, kDiagonalCubeDelta)]) in kCubes :
-                    bDiagonal = True
-                    break
+            if False == bAdjacent :
+                for kDiagonalCubeDelta in DIAGONAL_CUBE_DELTAS :
+                    if tuple([A+B for A,B in zip(kWaterCube, kDiagonalCubeDelta)]) in kCubes :
+                        bAdjacent = True
+                        break
+                    #end
                 #end
             #end
 
             # Add the Candidates to the Queue if the Watercube was Diagonal or Adjacent
-            if bAdjacent or bDiagonal :
+            if bAdjacent  :
                 kQueue += kCandidates
             #end
 
