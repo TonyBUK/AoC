@@ -21,6 +21,7 @@ typedef unsigned bool;
 #define COLLISION_HEIGHT        (256)
 #define COLLISION_WIDTH         (7)
 #define COLLISION_WIDTH_PADDED  (COLLISION_WIDTH + ROCK_WIDTH)
+#define INITIAL_HISTORY_SIZE    (65536)
 
 /* Note: Padding for Collisions is needed to simplify the case of testing
  *       right edge collision.  As the rocks as defined such that the
@@ -168,7 +169,7 @@ uint64_t getTowerHeight(const uint64_t nTotalFallingRocks, const char* kJetStrea
     uint64_t                        nTowerHeight                    = 0llu;
     unsigned char*                  kTowerHeightHistory;
     size_t                          nTowerHeightHistorySize         = 0u;
-    size_t                          nTowerHeightHistoryMaxSize      = 256u;
+    size_t                          nTowerHeightHistoryMaxSize      = INITIAL_HISTORY_SIZE;
     TCollisionHistoryHashMapType    kTowerStateHashMap;
     uint64_t*                       pnTowerStateHashData;
     size_t                          X, Y;
