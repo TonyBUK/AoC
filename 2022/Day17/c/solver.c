@@ -172,6 +172,7 @@ uint64_t getTowerHeight(const uint64_t nTotalFallingRocks, const char* kJetStrea
     size_t                          nTowerHeightHistoryMaxSize      = INITIAL_HISTORY_SIZE;
     TCollisionHistoryHashMapType    kTowerStateHashMap;
     uint64_t*                       pnTowerStateHashData;
+    TCollisionHistoryType*          pkTowerStateHashKey;
     size_t                          X, Y;
     size_t                          nHead                           = COLLISION_HEIGHT - (ROCK_HEIGHT + 1);
     uint64_t                        nLoopOffset;
@@ -394,6 +395,10 @@ uint64_t getTowerHeight(const uint64_t nTotalFallingRocks, const char* kJetStrea
     hashmap_foreach_data(pnTowerStateHashData, &kTowerStateHashMap)
     {
         free(pnTowerStateHashData);
+    }
+    hashmap_foreach_key(pkTowerStateHashKey, &kTowerStateHashMap)
+    {
+        free(pkTowerStateHashKey);
     }
     hashmap_cleanup(&kTowerStateHashMap);
 
