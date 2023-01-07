@@ -111,4 +111,6 @@ TBD - I'm prioritising Python/C for my first pass of this year.
 
 **C**
 
-TBD - Playing catch-up with multiple solutions now as the puzzles get harder!
+This completely lops off the prior seen states, essentially the greedy nature of the algorithm, plus early exit testing means this doesn't appear to impact the overall maximum queue size.
+
+Originally the queue was implemented as a circular buffer, however this *did* result in massive queue repetition / bloat, presumably as prioritising solutions towards the tail would result in higher Geode counts being encountered sooner, which in turn would help early exit conditions.
