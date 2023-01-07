@@ -59,12 +59,19 @@ unsigned char getValue(FILE** pFile, const unsigned char nMax)
     return (unsigned char)nValue;
 }
 
+#define getCubeIndex(kCube)         \
+    (((size_t)(kCube)->X << 16u) |  \
+     ((size_t)(kCube)->Y <<  8u) |  \
+     ((size_t)(kCube)->Z))
+
+/*
 size_t getCubeIndex(const TCubeType* kCube)
 {
     return ((size_t)kCube->X << 16u) |
            ((size_t)kCube->Y <<  8u) |
            ((size_t)kCube->Z);
 }
+*/
 
 int main(int argc, char** argv)
 {
