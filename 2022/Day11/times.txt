@@ -1,4 +1,4 @@
 Language : Time      : Percentage of Best Time
 =========:===========:========================
 C        : 1800us    : 100.00%
-Python   : 283.68ms  : 15741.37%
+Python   : 283.67ms  : 15770.91%
