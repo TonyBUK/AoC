@@ -324,4 +324,4 @@ TBD - I'm prioritising Python/C for my first pass of this year.
 
 **C**
 
-TBD - Playing catch-up with multiple solutions now as the puzzles get harder!
+Basically a cleaner solution all round.  For hashing, I again encode the strings as numbers, albeit as it's now 4 characters, I can't be as wasteful as allocating 8 bits each would need an array 4,294,967,296 in size to contain all possibilities.  Instead, I pack each character into a 5 bit value, meaning 20 bits are needed, or 1,048,576 elements in the index.  The only other major difference is the main monkeyMath function is recursive here, whereas the Python variant was iterative, makes more sense for traversal really.  Only annoyance is pre-caching, whereby the "humn" exclusion is perhaps a tad more painful here, but that was mostly because rather than storing "solved" and "unsolved", I rely on whether an element identifies itself as literal or not.
