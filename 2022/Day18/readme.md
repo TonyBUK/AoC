@@ -140,4 +140,4 @@ TBD - I'm prioritising Python/C for my first pass of this year.
 
 **C**
 
-This limits the scope of the solution my assuming all cubes occur within an 8 bit window (i.e. no axis is outside the range 0 .. 255).  It further limits this by adding on a small nominal value of 10 to each axis, the primary reason is to ensure no adjacent cubes during Part 2 will ever go negative.  In doing so, we can replace a pesky hash table with 16 Meg of RAM, allocated 8 bits for X, 8 bits for Y and 8 bits for Z, and indexing directly on the position.  Wasteful for RAM, however very quick for lookups.
+This limits the scope of the solution my assuming all cubes occur within an 8 bit window (i.e. no axis is outside the range 0 .. 255).  It further limits this by adding on a small nominal value of 10 to each axis, the primary reason is to ensure no adjacent cubes during Part 2 will ever go negative.  In doing so, we can replace a pesky hash table with 2 Meg of RAM, allocated 8 bits for X, 8 bits for Y and 8 bits for Z, and indexing directly on the position.  Wasteful for RAM, however very quick for lookups.
