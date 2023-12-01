@@ -16,27 +16,28 @@ def main() :
     for kLine in kLines :
 
         # Part 1
+        # Extract digits and add to sum
         kDigits = [k for k in kLine if k.isdigit()]
         kCalibrationValuesPartOne += int(kDigits[0] + kDigits[-1])
 
         # Part 2
-        i = 0
+
+        # Substitute digit words with digits
         kPartTwoLine = ""
         for i in range(len(kLine)) :
             kPositions = [kLine[i:].find(k) for k in DIGIT_WORDS]
             if 0 in kPositions :
-                nIndex = kPositions.index(0)
-                kPartTwoLine += str(nIndex + 1)
+                kPartTwoLine += str(kPositions.index(0) + 1)
             else :
                 kPartTwoLine += kLine[i]
             #end
         #end
 
+        # Extract digits and add to sum
         kDigits = [k for k in kPartTwoLine if k.isdigit()]
         kCalibrationValuesPartTwo += int(kDigits[0] + kDigits[-1])
 
     #end
-
 
     print(f"Part 1: {kCalibrationValuesPartOne}")
     print(f"Part 2: {kCalibrationValuesPartTwo}")
