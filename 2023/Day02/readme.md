@@ -151,3 +151,20 @@ TBD - I'm prioritising Python/C for my first pass of this year.
 This takes the shortcut my solution ignored.  At no point do we need all of the sub-games, all we ever need is the maximum values, as for Part One, if a game is possible, it means the *maximum* values for each Cube Colour were all below 12/13/14 respectively, and Part Two uses this in a more obvious direct way.
 
 This means we never really need to store the games at all, just per game, calculate the maximum number of cubes of each colour.  If it's valid, incrememnt the Game Total by the Game Id.  And irrespective of validity, increment the Game Power by the product of the maximum number of cubes.
+
+It is possible to go one step further, this takes something of a lazy route and reads text into a dynamic string buffer per line, it's perfectly possible to not do this and process the file one character at a time.
+
+For example, the first space will always be followed by a number, followed by a colon.  Then after this, because all we care about is maximums, we can make some big assumptions about consistent input formatting.  Consider:
+
+    red
+    green
+    blue
+
+The starting letter is unique, so we have a consistent pattern we can follow:
+
+    1. Find a space.
+    2. Process the number until we hit the next space.
+    3. Determine the colour from the first letter.
+    4. Keep going until we reach the end of the line.
+
+This means we can ignore commas and semi-colons completely.
