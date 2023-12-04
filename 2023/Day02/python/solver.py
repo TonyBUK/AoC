@@ -61,7 +61,7 @@ def main() :
     #end
 
     kCubes = []
-    with open("input.txt", "r") as inputFile:
+    with open("../input.txt", "r") as inputFile:
         kCubes = {k : v for k, v in (extractCubeSet(kLine) for kLine in inputFile.readlines())}
     #end
 
