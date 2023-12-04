@@ -66,7 +66,7 @@ def main() :
     #end
 
     print(f"Part 1: {sum([nGameId for nGameId, kCubeSets in kCubes.items() if possibleGame(12, 13, 14, kCubeSets)])}")
-    print(f"Part 1: {sum([cubePower(kCubeSets) for kCubeSets in kCubes.values()])}")
+    print(f"Part 2: {sum([cubePower(kCubeSets) for kCubeSets in kCubes.values()])}")
 
 #end
 
