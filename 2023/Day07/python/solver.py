@@ -133,8 +133,8 @@ def main() :
         # Create a list of Hands/Bets
         kHands = [(k, int(v)) for line in inputFile.readlines() for k, v in [line.split()]]
 
-        print(f"Part 1 : {sum([(i+1) * k[1] for i,k in enumerate(rankHands(kHands, False))])}")
-        print(f"Part 2 : {sum([(i+1) * k[1] for i,k in enumerate(rankHands(kHands, True))])}")
+        print(f"Part 1: {sum([(i+1) * k[1] for i,k in enumerate(rankHands(kHands, False))])}")
+        print(f"Part 2: {sum([(i+1) * k[1] for i,k in enumerate(rankHands(kHands, True))])}")
 
 #end
  
