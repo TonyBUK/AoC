@@ -65,11 +65,7 @@ def main() :
     [(nProduct := nProduct * findWinnersSearch(x)) for x in kRacesPartOne]
  
     print(f"Part 1: {nProduct}")
-    
-    nProduct = 1
-    [(nProduct := nProduct * findWinnersSearch(x)) for x in [kRacesPartTwo]]
- 
-    print(f"Part 2: {nProduct}")
+    print(f"Part 2: {findWinnersSearch(kRacesPartTwo)}")
  
 #end
  
