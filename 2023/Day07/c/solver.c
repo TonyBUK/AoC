@@ -148,6 +148,7 @@ void processHand(char* kRawHand, tHand* pHand, const unsigned bJoker)
     char     kProcessed[6]    = {'\0'};
     char     kCurrent[2]      = {'\0', '\0'};
     char     kPlayedHandBuffer[6];
+    char     kPotentialHand[5][6];
     char*    kPlayedHand      = kRawHand;
     size_t   kRepitions[2]    = {0, 0};
     size_t   nPeakRepetitions = 0;
@@ -160,8 +161,9 @@ void processHand(char* kRawHand, tHand* pHand, const unsigned bJoker)
     {
         if (strstr(kRawHand, "J"))
         {
-            char kPotentialHand[6] = {'\0', '\0', '\0', '\0', '\0', '\0'};
+            memset(kPotentialHand, 0, sizeof(kPotentialHand));
             kPlayedHand = kPlayedHandBuffer;
+
             for (i = 0; i < 5; ++i)
             {
                 size_t j;
@@ -180,7 +182,7 @@ void processHand(char* kRawHand, tHand* pHand, const unsigned bJoker)
                 {
                     if (kRawHand[j] == 'J')
                     {
-                        kPotentialHand[j] = kRawHand[i];
+                        kPotentialHand[i][j] = kRawHand[i];
                     }
                     else
                     {
@@ -188,17 +190,23 @@ void processHand(char* kRawHand, tHand* pHand, const unsigned bJoker)
                         {
                             ++nRepetitions;
                         }
-                        kPotentialHand[j] = kRawHand[j];
+                        kPotentialHand[i][j] = kRawHand[j];
                     }
                 }
 
                 if (nRepetitions > nPeakRepetitions)
                 {
+                    kPotentialHand[i][5] = '\0';
                     nPeakRepetitions = nRepetitions;
-                    strcpy(kPlayedHand, kPotentialHand);
+                    kPlayedHand = kPotentialHand[i];
                 }
 
                 strcat(kProcessed, kCurrent);
+            }
+
+            if (0 == nPeakRepetitions)
+            {
+                kPlayedHand = kRawHand;
             }
         }
     }
