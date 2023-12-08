@@ -9,7 +9,7 @@
 
 typedef struct tHand
 {
-    int64_t  nHandStrength;
+    int64_t  nHandStrength; /* Signed makes compareHands simpler... */
     uint64_t nBet;
 } tHand;
 
@@ -142,12 +142,13 @@ size_t getRepetition(const char* kRawHand, char kCard)
     return nCount;
 }
 
-void processHand(const char* kRawHand, tHand* pHand, const unsigned bJoker)
+void processHand(char* kRawHand, tHand* pHand, const unsigned bJoker)
 {
     size_t   i;
     char     kProcessed[6]    = {'\0'};
     char     kCurrent[2]      = {'\0', '\0'};
-    char     kPlayedHand[6];
+    char     kPlayedHandBuffer[6];
+    char*    kPlayedHand      = kRawHand;
     size_t   kRepitions[2]    = {0, 0};
     size_t   nPeakRepetitions = 0;
     uint64_t nStrength;
@@ -160,6 +161,7 @@ void processHand(const char* kRawHand, tHand* pHand, const unsigned bJoker)
         if (strstr(kRawHand, "J"))
         {
             char kPotentialHand[6] = {'\0', '\0', '\0', '\0', '\0', '\0'};
+            kPlayedHand = kPlayedHandBuffer;
             for (i = 0; i < 5; ++i)
             {
                 size_t j;
@@ -199,10 +201,6 @@ void processHand(const char* kRawHand, tHand* pHand, const unsigned bJoker)
                 strcat(kProcessed, kCurrent);
             }
         }
-    }
-    else
-    {
-        strcpy(kPlayedHand, kRawHand);
     }
 
     /* Calculate the Top 2 Repetition Counts for the Hand, which is enough to uniquely
@@ -284,6 +282,7 @@ int main(int argc, char** argv)
 
         /* Read the whole file into an easier to process 2D Buffer */
         readLines(&pData, &kBuffer, &kLines, &nLineCount, NULL);
+        fclose(pData);
 
         kHandsPartOne = (tHand*)malloc(nLineCount * sizeof(tHand));
         kHandsPartTwo = (tHand*)malloc(nLineCount * sizeof(tHand));
