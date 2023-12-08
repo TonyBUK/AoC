@@ -54,6 +54,8 @@ One thing to be wary of, the solutions I've uploaded work for my particular envi
 - My input works for you, but yours does not, which implies my solution is incomplete.
 - My input doesn't work for you, which implies my solution is not portable.
 
+I'm afraid I can't share my inputs publically, due to Advent of Code guidelines, but if you have any issues, you can contact me and we can find a way to privately determine what's really going on.
+
 **General comments on Python**
 
 The Python version targetted is in the 3.x range.  The aim isn't to constantly refresh to the latest and greatest, but acknowledgement that the fragmentation issues with Python versions utterly pales to that of C/C++ compiler versions (see below).  If anyone does find compatability issues with my Python code and some widely used variant of Python 3.X, I'd be happy to take a look to try and resolve it.  For example, how's MicroPython compatability?
