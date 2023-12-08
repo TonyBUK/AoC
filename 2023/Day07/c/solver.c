@@ -161,7 +161,6 @@ void processHand(char* kRawHand, tHand* pHand, const unsigned bJoker)
     {
         if (strstr(kRawHand, "J"))
         {
-            memset(kPotentialHand, 0, sizeof(kPotentialHand));
             kPlayedHand = kPlayedHandBuffer;
 
             for (i = 0; i < 5; ++i)
