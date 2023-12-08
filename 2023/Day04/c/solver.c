@@ -88,6 +88,7 @@ int main(int argc, char** argv)
 
         /* Read the whole file into an easier to process 2D Buffer */
         readLines(&pData, &kBuffer, &kLines, &nLineCount, &nFileLength);
+        fclose(pData);
 
         /* Allocate the Card Buffer */
         kWinningCount = (tWinningCount*)malloc(nLineCount * sizeof(tWinningCount));

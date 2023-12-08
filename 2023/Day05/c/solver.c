@@ -166,6 +166,7 @@ int main(int argc, char** argv)
 
         /* Read the whole file into an easier to process 2D Buffer */
         readLines(&pData, &kBuffer, &kLines, &nLineCount, NULL);
+        fclose(pData);
 
         /* Count how many Maps there are.
          *

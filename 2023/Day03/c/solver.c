@@ -88,6 +88,7 @@ int main(int argc, char** argv)
 
         /* Read the whole file into an easier to process 2D Buffer */
         readLines(&pData, &kBuffer, &kLines, &nLineCount, &nFileLength);
+        fclose(pData);
 
         /* Cruedly create the Mechanism by which we flag each number as unique */
         kNumericIndex  = (int*)malloc(nFileLength * sizeof(int));
