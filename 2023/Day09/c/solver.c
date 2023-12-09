@@ -185,8 +185,8 @@ int main(int argc, char** argv)
             nPartTwoResult += nLeftColumnExtrapolation;
         }
 
-        printf("Part One Result: %lld\n", nPartOneResult);
-        printf("Part Two Result: %lld\n", nPartTwoResult);
+        printf("Part 1: %lld\n", nPartOneResult);
+        printf("Part 2: %lld\n", nPartTwoResult);
 
         /* Free any Allocated Memory */
         free(kBuffer);
