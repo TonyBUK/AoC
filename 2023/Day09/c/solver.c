@@ -7,6 +7,8 @@
 #define AOC_TRUE  (1u)
 #define AOC_FALSE (0u)
 
+#define ABS(x) ((x) < 0 ? (-(x)) : (x))
+
 /* Boilerplate code to read an entire file into a 1D buffer and give 2D entries per line.
  * This uses the EOL \n to act as a delimiter for each line.
  */
@@ -71,14 +73,13 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     }
 }
 
-void getNextSample(const char* kBuffer, int64_t* kValueBuffer, int64_t* kLeftValueBuffer, int64_t* kRightValueBuffer, const size_t nValueBufferSize, int64_t* pnLeftColumnExtrapolation, int64_t* pnRightColumnExtrapolation)
+void getNextSample(const char* kBuffer, int64_t* kValueBuffer, const size_t nValueBufferSize, int64_t* pnLeftColumnExtrapolation, int64_t* pnRightColumnExtrapolation)
 {
     int64_t*    kValues1                = kValueBuffer;
     int64_t*    kValues2                = kValueBuffer + nValueBufferSize;
     int64_t*    kTemp;
     size_t      nDepthCount             = 0;
     size_t      nElementCount           = 0;
-
     int64_t     kExtrapolatedValues[2]  = {0, 0};
 
     const char* pBuffer                 = kBuffer;
@@ -93,6 +94,18 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, int64_t* kLeftVal
 
         ++nElementCount;
     }
+
+    /* We can calculate this as we go...
+     * This is effectively the cubic sequence shown here:
+     *
+     * https://mmerevise.co.uk/gcse-maths-revision/cambridge-igcse/quadratic-cubic-and-harder-sequences/
+     *
+     * For the Right Hand Side (Part 1), Sum the right most column
+     * For the Left Hand Side (Part 2), Add Even rows from the leftmost column, subtract odd rows from the leftmost column
+     */
+    
+    kExtrapolatedValues[0] = kValues1[0];
+    kExtrapolatedValues[1] = kValues1[nElementCount - 1];
 
     /* Keep going until we calculate the next layer down */
     while (1)
@@ -113,9 +126,7 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, int64_t* kLeftVal
             }
         }
 
-        /* Store the Left/Right Columns for Later */
-        kLeftValueBuffer[nDepthCount]  = kValues1[0];
-        kRightValueBuffer[nDepthCount] = kValues1[nElementCount - 1];
+        /* Increment the Depth Count */
         ++nDepthCount;
 
         if (bAllZeroes)
@@ -128,15 +139,19 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, int64_t* kLeftVal
         kTemp    = kValues1;
         kValues1 = kValues2;
         kValues2 = kTemp;
-    }
 
-    kExtrapolatedValues[0] = kLeftValueBuffer[nDepthCount - 1];
-    kExtrapolatedValues[1] = kRightValueBuffer[nDepthCount - 1];
+        /* Left Side: Add evens, subtract odds... */
+        if ((nDepthCount % 2) == 0)
+        {
+            kExtrapolatedValues[0] += kValues1[0];
+        }
+        else
+        {
+            kExtrapolatedValues[0] -= kValues1[0];
+        }
 
-    for (nElementCount = nDepthCount - 1; nElementCount > 0; --nElementCount)
-    {
-        kExtrapolatedValues[0] = kLeftValueBuffer[nElementCount - 1]  - kExtrapolatedValues[0];
-        kExtrapolatedValues[1] = kRightValueBuffer[nElementCount - 1] + kExtrapolatedValues[1];
+        /* Right side, add always... */
+        kExtrapolatedValues[1] += kValues1[nElementCount - 1];
     }
 
     *pnLeftColumnExtrapolation  = kExtrapolatedValues[0];
@@ -161,9 +176,6 @@ int main(int argc, char** argv)
          * kRightValueBuffer will store the rights column.
          */
         int64_t*                kValueBuffer;
-        int64_t*                kLeftValueBuffer;
-        int64_t*                kRightValueBuffer;
-
         int64_t                 nPartOneResult      = 0;
         int64_t                 nPartTwoResult      = 0;
 
@@ -173,15 +185,13 @@ int main(int argc, char** argv)
 
         /* Allocate the Buffers */
         kValueBuffer       = (int64_t*)malloc(nMaxLineLength * 2 * sizeof(int64_t));
-        kLeftValueBuffer   = (int64_t*)malloc(nMaxLineLength * sizeof(int64_t));
-        kRightValueBuffer  = (int64_t*)malloc(nMaxLineLength * sizeof(int64_t));
 
         for (nLine = 0; nLine < nLineCount; ++nLine)
         {
             int64_t nLeftColumnExtrapolation  = 0;
             int64_t nRightColumnExtrapolation = 0;
 
-            getNextSample(kLines[nLine], kValueBuffer, kLeftValueBuffer, kRightValueBuffer, nMaxLineLength, &nLeftColumnExtrapolation, &nRightColumnExtrapolation);
+            getNextSample(kLines[nLine], kValueBuffer, nMaxLineLength, &nLeftColumnExtrapolation, &nRightColumnExtrapolation);
 
             nPartOneResult += nRightColumnExtrapolation;
             nPartTwoResult += nLeftColumnExtrapolation;
@@ -194,8 +204,6 @@ int main(int argc, char** argv)
         free(kBuffer);
         free(kLines);
         free(kValueBuffer);
-        free(kLeftValueBuffer);
-        free(kRightValueBuffer);
     }
  
     return 0;
