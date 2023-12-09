@@ -7,8 +7,6 @@
 #define AOC_TRUE  (1u)
 #define AOC_FALSE (0u)
 
-#define ABS(x) ((x) < 0 ? (-(x)) : (x))
-
 /* Boilerplate code to read an entire file into a 1D buffer and give 2D entries per line.
  * This uses the EOL \n to act as a delimiter for each line.
  */
@@ -171,8 +169,6 @@ int main(int argc, char** argv)
 
         /* These are buffers that will be used by getNextSample.
          * kValueBuffer will store the current/next line being proccesed.
-         * kLeftValueBuffer will store the left column.
-         * kRightValueBuffer will store the rights column.
          */
         int64_t*                kValueBuffer;
         int64_t                 nPartOneResult      = 0;
