@@ -94,9 +94,6 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, const size_t nVal
     }
 
     /* We can calculate this as we go...
-     * This is effectively the cubic sequence shown here:
-     *
-     * https://mmerevise.co.uk/gcse-maths-revision/cambridge-igcse/quadratic-cubic-and-harder-sequences/
      *
      * For the Right Hand Side (Part 1), Sum the right most column
      * For the Left Hand Side (Part 2), Add Even rows from the leftmost column, subtract odd rows from the leftmost column
