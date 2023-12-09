@@ -102,6 +102,7 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, int64_t* kLeftVal
 
         assert(nElementCount > 0);
 
+        /* Calculate the Next Row */
         for (nElement = 0; nElement < nElementCount - 1; ++nElement)
         {
             kValues2[nElement] = kValues1[nElement + 1] - kValues1[nElement];
@@ -112,20 +113,21 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, int64_t* kLeftVal
             }
         }
 
+        /* Store the Left/Right Columns for Later */
         kLeftValueBuffer[nDepthCount]  = kValues1[0];
         kRightValueBuffer[nDepthCount] = kValues1[nElementCount - 1];
         ++nDepthCount;
-
-        /* Decrement the Element Count, Swap the Buffers */
-        --nElementCount;
-        kTemp    = kValues1;
-        kValues1 = kValues2;
-        kValues2 = kTemp;
 
         if (bAllZeroes)
         {
             break;
         }
+
+        /* Decrement the Element Count, Swap the Buffers, effictively making the next row the current row */
+        --nElementCount;
+        kTemp    = kValues1;
+        kValues1 = kValues2;
+        kValues2 = kTemp;
     }
 
     kExtrapolatedValues[0] = kLeftValueBuffer[nDepthCount - 1];
