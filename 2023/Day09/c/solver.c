@@ -78,7 +78,7 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, const size_t nVal
     int64_t*    kValues1                = kValueBuffer;
     int64_t*    kValues2                = kValueBuffer + nValueBufferSize;
     int64_t*    kTemp;
-    size_t      nDepthCount             = 0;
+    unsigned    bEvenRow                = AOC_FALSE;
     size_t      nElementCount           = 0;
     int64_t     kExtrapolatedValues[2]  = {0, 0};
 
@@ -126,9 +126,6 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, const size_t nVal
             }
         }
 
-        /* Increment the Depth Count */
-        ++nDepthCount;
-
         if (bAllZeroes)
         {
             break;
@@ -141,13 +138,15 @@ void getNextSample(const char* kBuffer, int64_t* kValueBuffer, const size_t nVal
         kValues2 = kTemp;
 
         /* Left Side: Add evens, subtract odds... */
-        if ((nDepthCount % 2) == 0)
+        if (bEvenRow)
         {
             kExtrapolatedValues[0] += kValues1[0];
+            bEvenRow                = AOC_FALSE;
         }
         else
         {
             kExtrapolatedValues[0] -= kValues1[0];
+            bEvenRow                = AOC_TRUE;
         }
 
         /* Right side, add always... */
