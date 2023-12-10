@@ -16,7 +16,7 @@ def main() :
     NEIGHBOURS = set([(1,0), (-1,0), (0,1), (0,-1)])
 
     kRawMap = []
-    with open("input.txt", "r") as inputFile:
+    with open("../input.txt", "r") as inputFile:
         kRawMap = [list(k.replace("\n", "")) for k in inputFile.readlines()]
     #end
 
