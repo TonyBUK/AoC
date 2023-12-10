@@ -25,7 +25,7 @@ def main() :
 
     # First find the Start Node
     for y in range(len(kRawMap)) :
-        if "S"  in kRawMap[y] :
+        if "S" in kRawMap[y] :
             kStartNode = (y, kRawMap[y].index("S"))
             break
         #end
@@ -72,19 +72,20 @@ def main() :
     #end
 
     kMapNodes[kStartNode] = convertRelativeNeighboursToAbsoluteNeighbours(kStartNode, PIPES[kRawMap[kStartNode[0]][kStartNode[1]]])
-    kNodesToProcess = [[0, kStartNode]]
-    nMaxDistance    = 0
+    kNextNode       = kStartNode
+    nDistance       = 1
 
-    while len(kNodesToProcess) > 0 :
+    while kNextNode != None :
 
         # Get the Current Node
         # Note: Because it's a loop, we want to use a FIFO approach, as we'll be evenly processing in
         #       either direction, this way we sacrifice array performance for having to keep tabs for
         #       revisited nodes with shorter paths.
-        kNode = kNodesToProcess.pop(0)
+        kNode     = kNextNode
+        kNextNode = None
 
         # Get the Node Neighbours
-        for kNeighbour in kMapNodes[kNode[1]] :
+        for kNeighbour in kMapNodes[kNode] :
 
             if kNeighbour in kMapNodes : continue
 
@@ -92,16 +93,16 @@ def main() :
             kMapNodes[kNeighbour] = convertRelativeNeighboursToAbsoluteNeighbours(kNeighbour, PIPES[kRawMap[kNeighbour[0]][kNeighbour[1]]])
 
             # Add the Neighbour to the list of Nodes to Process
-            kNodesToProcess.append([kNode[0] + 1, kNeighbour])
-            if kNode[0] + 1 > nMaxDistance :
-                nMaxDistance = kNode[0] + 1
-            #end
+            kNextNode = kNeighbour
+            nDistance += 1
+
+            break
 
         #end
 
     #end
 
-    print(f"Part 1: {nMaxDistance}")
+    print(f"Part 1: {nDistance // 2}")
 
     # Part 2: Count the Number of Tiles enclosed within the loop
     # This will be a fill pattern approach.  Use the circumference
@@ -117,43 +118,35 @@ def main() :
     # Anything that's got an East exit gets padded with a "-" to the right
     # Anything that's got a South exit gets padded with a "|" below
     # Diagonals are assumed to be dots
-    kEnlargedMap = []
+    kEnlargedMap = [[] for _ in range(len(kRawMap) * 2)]
     for y in range(len(kRawMap)) :
 
-        kEnlargedMap.append([])
-
-        # Extend Eastwards
         for x in range(len(kRawMap[0])) :
 
-            kEnlargedMap[-1].append(kRawMap[y][x])
+            # Extend Eastwards
+            kEnlargedMap[y*2].append(kRawMap[y][x])
 
             if kRawMap[y][x] not in PIPES :
-                kEnlargedMap[-1].append(kRawMap[y][x])
+                kEnlargedMap[y*2].append(kRawMap[y][x])
             else :
                 if (0,1) in PIPES[kRawMap[y][x]] :
-                    kEnlargedMap[-1].append("-")
+                    kEnlargedMap[y*2].append("-")
                 else :
-                    kEnlargedMap[-1].append(".")
+                    kEnlargedMap[y*2].append(".")
                 #end
             #end
-
-        #end
-
-        # Extend Southwards
-        kEnlargedMap.append([])
-        for x in range(len(kRawMap[0])) :
 
             if kRawMap[y][x] not in PIPES :
-                kEnlargedMap[-1].append(kRawMap[y][x])
+                kEnlargedMap[(y*2)+1].append(kRawMap[y][x])
             else :
                 if (1,0) in PIPES[kRawMap[y][x]] :
-                    kEnlargedMap[-1].append("|")
+                    kEnlargedMap[(y*2)+1].append("|")
                 else :
-                    kEnlargedMap[-1].append(".")
+                    kEnlargedMap[(y*2)+1].append(".")
                 #end
             #end
 
-            kEnlargedMap[-1].append(".")
+            kEnlargedMap[(y*2)+1].append(".")
 
         #end
 
@@ -191,12 +184,13 @@ def main() :
             Y = kNode[0] + kNeighbour[0]
             X = kNode[1] + kNeighbour[1]
 
+            if (Y, X) in kFillSet : continue
+
             # Note: Part 2 made me a liar...
             if Y >= 0 and Y < len(kEnlargedMap) :
 
                 if X >= 0 and X < len(kEnlargedMap[Y])  :
 
-                    if (Y, X) in kFillSet        : continue
                     if kEnlargedMap[Y][X] != "." : continue
 
                     kEnlargedMap[Y][X] = "#"
