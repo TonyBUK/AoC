@@ -9,9 +9,9 @@
 #define AOC_TRUE  (1u)
 #define AOC_FALSE (0u)
 
-#define SIZE_GEAR_COUNT    (8)
-#define SIZE_GEAR_INDEX    (8)
-#define SIZE_PATTERN_INDEX (8)
+#define SIZE_GEAR_COUNT    (7)
+#define SIZE_GEAR_INDEX    (7)
+#define SIZE_PATTERN_INDEX (7)
 
 #define MAX_GEAR_COUNT    (1 << SIZE_GEAR_COUNT)
 #define MAX_GEAR_INDEX    (1 << SIZE_GEAR_INDEX)
