@@ -4,7 +4,7 @@ import sys
 def main() :
 
     kSpringData = []
-    with open("input.txt", "r") as inputFile:
+    with open("../input.txt", "r") as inputFile:
         kSpringData = [[k.split()[0], [int(num) for num in k.split()[1].split(',')]] for k in inputFile.readlines() if k]
     #end
 
