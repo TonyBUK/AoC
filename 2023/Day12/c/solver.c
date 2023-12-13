@@ -123,7 +123,6 @@ uint64_t getPermutationCount(const char* kRecordStatus, const size_t nRecordStat
 
     size_t   nKey;
     uint64_t nResult;
-    char     kLookup[2] = {'\0', '\0'};
 
     /* Initialise the Cache */
     if (bFirst)
@@ -152,10 +151,9 @@ uint64_t getPermutationCount(const char* kRecordStatus, const size_t nRecordStat
 
     /* Result for this state since we couldn't use the cache */
     nResult = 0;
-    kLookup[0] = kRecordStatus[nRecordStatusIndex];
 
     /* Process the Hash / Hash Substitution */
-    if (strstr(kHashSubstitution, kLookup))
+    if ((kHashSubstitution[0] == kRecordStatus[nRecordStatusIndex]) || (kHashSubstitution[1] == kRecordStatus[nRecordStatusIndex]))
     {
         /* For a Hash case we incrememnt the number of damaged gears we've seen and then process the next character. */
         if (nDamagedGearsIndex < nDamagedGearsSize)
@@ -187,7 +185,7 @@ uint64_t getPermutationCount(const char* kRecordStatus, const size_t nRecordStat
     }
 
     /* Process the Dot / Dot Substitution */
-    if (strstr(kDotSubstitution, kLookup))
+    if ((kDotSubstitution[0] == kRecordStatus[nRecordStatusIndex]) || (kDotSubstitution[1] == kRecordStatus[nRecordStatusIndex]))
     {
         /* For a Dot or Dot substitution there's really only two things we care about.
          *
