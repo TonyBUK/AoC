@@ -3,158 +3,129 @@ import sys
 
 def main() :
 
-   kDish = []
-   with open("../input.txt", "r") as inputFile:
-       kDish = [list(k.replace("\n", "")) for k in inputFile.readlines()]
-   #end
+    kDish = []
+    with open("../input.txt", "r") as inputFile:
+        kDish = [list(k.replace("\n", "")) for k in inputFile.readlines()]
+    #end
 
-   # Convert the Dish into a list of Rock Positions, both Rounded and Cubed
-   kRoundedRocks = set()
-   kCubedRocks   = set()
-   for Y in range(len(kDish)) :
-       for X in range(len(kDish[Y])) :
-           if kDish[Y][X] == "#" :
-               kCubedRocks.add((Y,X))
-           elif kDish[Y][X] == "O" :
-               kRoundedRocks.add((Y,X))
-           elif kDish[Y][X] != "." :
-               assert(False)
-           #end
-       #end
-   #end
+    # Cardinal Direction Constants
+    NORTH = 0
+    EAST  = 1
+    SOUTH = 2
+    WEST  = 3
 
-   # Cardinal Direction Constants
-   NORTH = 0
-   EAST  = 1
-   SOUTH = 2
-   WEST  = 3
+    def tiltDish(kDirections, kDish, nDishWidth, nDishHeight) :
 
-   def tiltDish(kDirections, kRoundedRocks, kCubedRocks, nDishWidth, nDishHeight) :
+        kAxis = [nDishHeight, nDishWidth]
 
-       kAxis = [nDishHeight, nDishWidth]
+        PRIMARY_AXIS = {
+            NORTH : 0, # Y
+            EAST  : 1, # X
+            SOUTH : 0, # Y
+            WEST  : 1  # X
+        }
 
-       PRIMARY_AXIS = {
-           NORTH : 0, # Y
-           EAST  : 1, # X
-           SOUTH : 0, # Y
-           WEST  : 1  # X
-       }
+        DIRECTION_IN_AXIS = {
+            NORTH : -1,
+            EAST  : 1,
+            SOUTH : 1,
+            WEST  : -1
+        }
 
-       DIRECTION_IN_AXIS = {
-           NORTH : -1,
-           EAST  : 1,
-           SOUTH : 1,
-           WEST  : -1
-       }
+        for kDirection in kDirections :
+        
+            bReversed               = DIRECTION_IN_AXIS[kDirection] == 1
+            nPrimaryAxisReference   = PRIMARY_AXIS[kDirection]
+            nSecondaryAxisReference = 1 - nPrimaryAxisReference
+            nDirectionInAxis        = -DIRECTION_IN_AXIS[kDirection]
 
-       kOriginalRoundedRocksReference = kRoundedRocks
+            for nSecondaryAxis in range(kAxis[nSecondaryAxisReference]) :
 
-       # For Each Direction to Tilt
-       for kDirection in kDirections :
+                kPrimaryAxis = range(kAxis[nPrimaryAxisReference])
+                if bReversed :
+                    kPrimaryAxis = reversed(kPrimaryAxis)
+                #end
 
-           # Buffer all Data that will be constant for this tilt direction
-           nPrimaryAxis     = PRIMARY_AXIS[kDirection]
-           nDirectionInAxis = DIRECTION_IN_AXIS[kDirection]
-           nMaxSizeInAxis   = kAxis[nPrimaryAxis]
+                if bReversed :
+                    nLastUnobstructedPos = kAxis[nPrimaryAxisReference] - 1
+                else :
+                    nLastUnobstructedPos = 0
+                #end
 
-           # Keep cycling through all of the rocks until we can't move any more
-           bAnyRocksMoved   = True
-           while True == bAnyRocksMoved :
+                for nPrimaryAxis in kPrimaryAxis :
 
-               kProcessedRocks = set()
-               bAnyRocksMoved  = False
+                    kLocation = [0, 0]
+                    kLocation[nPrimaryAxisReference]   = nPrimaryAxis
+                    kLocation[nSecondaryAxisReference] = nSecondaryAxis
 
-               # Cycle through each rock
-               for kLocation in kRoundedRocks :
+                    if kDish[kLocation[0]][kLocation[1]] == "O" :
 
-                   # Buffer the Location
-                   kCheckedLocation  = list(kLocation)
-                   kPreviousLocation = kLocation
+                        if ((not bReversed and (nPrimaryAxis > nLastUnobstructedPos)) or
+                            (    bReversed and (nPrimaryAxis < nLastUnobstructedPos))) :
 
-                   # Keep moving the rock in the same direction until it collides
-                   while True :
+                            kLastUnobstructedLocation = [0, 0]
+                            kLastUnobstructedLocation[nPrimaryAxisReference]   = nLastUnobstructedPos
+                            kLastUnobstructedLocation[nSecondaryAxisReference] = nSecondaryAxis
 
-                       kCheckedLocation[nPrimaryAxis] += nDirectionInAxis
-                       kCheckedLocationTuple           = tuple(kCheckedLocation)
+                            kDish[kLastUnobstructedLocation[0]][kLastUnobstructedLocation[1]] = "O"
+                            kDish[kLocation[0]][kLocation[1]]                                 = "."
+ 
+                            nLastUnobstructedPos += nDirectionInAxis
 
-                       # Check for Edges
-                       if (kCheckedLocation[nPrimaryAxis]) < 0 or (kCheckedLocation[nPrimaryAxis] >= nMaxSizeInAxis) :
+                            continue
 
-                           kProcessedRocks.add(kPreviousLocation)
-                           break
+                        #end
+                    
+                    #end
 
-                       # Cubed Rocks
-                       elif kCheckedLocationTuple in kCubedRocks :
+                    if kDish[kLocation[0]][kLocation[1]] != "." :
 
-                           kProcessedRocks.add(kPreviousLocation)
-                           break
+                        nLastUnobstructedPos = kLocation[nPrimaryAxisReference] + nDirectionInAxis
 
-                       # Already Moved Rocks
-                       elif kCheckedLocationTuple in kProcessedRocks :
+                    #end
 
-                           kProcessedRocks.add(kPreviousLocation)
-                           break
+                #end
 
-                       # Unmoved Rocks
-                       elif not (kCheckedLocationTuple in kRoundedRocks) :
+            #end
 
-                           # Keep Moving until we can't
-                           bAnyRocksMoved    = True
+        #end
 
-                           # Buffer the Previous Location
-                           kPreviousLocation = kCheckedLocationTuple
+    #end
 
-                       #end
+    def calculateLoad(kDish, nDishHeight) :
+        return sum(nDishHeight - Y for Y in range(nDishHeight) for X in range(len(kDish[Y])) if kDish[Y][X] == "O")
+    #end
 
-                   #end
+    DISH_HEIGHT = len(kDish)
+    DISH_WIDTH  = len(kDish[0])
 
-               #end
+    kPartOneDish = [[kCol for kCol in kRow] for kRow in kDish]
+    tiltDish([NORTH], kPartOneDish, DISH_WIDTH, DISH_HEIGHT)
 
-               kRoundedRocks   = kProcessedRocks
+    print(f"Part 1: {calculateLoad(kPartOneDish, DISH_HEIGHT)}")
 
-           #end
+    TOTAL_CYCLES = 1000000000
+    kStates      = []
+    nCycle       = 0
+    nLoopLength  = None
+    bLoopFound   = False
 
-       #end
+    while nCycle < TOTAL_CYCLES :
 
-       kOriginalRoundedRocksReference.clear()
-       kOriginalRoundedRocksReference.update(kProcessedRocks)
+        tiltDish([NORTH, WEST, SOUTH, EAST], kDish, DISH_WIDTH, DISH_HEIGHT)
 
-   #end
+        if bLoopFound == False :
 
-   def calculateLoad(kRoundedRocks, nDishHeight) :
-       return sum([nDishHeight - k[0] for k in kRoundedRocks])
-   #end
-
-   DISH_HEIGHT = len(kDish)
-   DISH_WIDTH  = len(kDish[0])
-
-   kPartOneRoundedRocks = set(k for k in kRoundedRocks)
-   tiltDish([NORTH], kPartOneRoundedRocks, kCubedRocks, DISH_WIDTH, DISH_HEIGHT)
-
-   print(f"Part 1: {calculateLoad(kPartOneRoundedRocks, DISH_HEIGHT)}")
-
-   TOTAL_CYCLES = 1000000000
-   kStates      = []
-   nCycle       = 0
-   nLoopLength  = None
-   bLoopFound   = False
-
-   while nCycle < TOTAL_CYCLES :
-
-       tiltDish([NORTH, WEST, SOUTH, EAST], kRoundedRocks, kCubedRocks, DISH_WIDTH, DISH_HEIGHT)
-
-       if bLoopFound == False :
-
-           if kRoundedRocks in kStates :
+            if kDish in kStates :
 
                 # Calculate the Remaining Cycles
-                nLoopStart          = kStates.index(kRoundedRocks)
+                nLoopStart          = kStates.index(kDish)
                 nLoopLength         = nCycle - nLoopStart
                 nRemainingCycles    = (TOTAL_CYCLES - nCycle) % nLoopLength
 
                 # Should always be true, but better safe...
                 if (nLoopStart + nRemainingCycles - 1) < len(kStates) :
-                    kRoundedRocks = kStates[nLoopStart + nRemainingCycles - 1]
+                    kDish = kStates[nLoopStart + nRemainingCycles - 1]
                     break
                 #end
 
@@ -162,19 +133,19 @@ def main() :
                 bLoopFound       = True
                 nCycle           = TOTAL_CYCLES - nRemainingCycles
 
-           else :
+            else :
 
-               kStates.append(set(k for k in kRoundedRocks))
+                kStates.append([[kCol for kCol in kRow] for kRow in kDish])
 
-           #end
+            #end
 
-       #end
+        #end
 
-       nCycle += 1
+        nCycle += 1
 
-   #end
+    #end
 
-   print(f"Part 2: {calculateLoad(kRoundedRocks, DISH_HEIGHT)}")
+    print(f"Part 2: {calculateLoad(kDish, DISH_HEIGHT)}")
 
 #end
 if __name__ == "__main__" :
