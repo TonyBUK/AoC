@@ -4,7 +4,7 @@ import sys
 def main() :
 
    kDish = []
-   with open("input.txt", "r") as inputFile:
+   with open("../input.txt", "r") as inputFile:
        kDish = [list(k.replace("\n", "")) for k in inputFile.readlines()]
    #end
 
