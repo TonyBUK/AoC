@@ -251,8 +251,8 @@ int main(int argc, char** argv)
 
                 if (AOC_FALSE == kBoxes[nBox].kSlots[nSlot].bSlotUsed)
                 {
-                    kBoxes[nBox].kSlots[nSlot].bSlotUsed  = AOC_TRUE;
-                    kBoxes[nBox].kSlots[nSlot].kSlotLabel = (char*)malloc(nWorstCaseItemsPerBox * sizeof(char));
+                    kBoxes[nBox].kSlots[nSlot].bSlotUsed       = AOC_TRUE;
+                    kBoxes[nBox].kSlots[nSlot].kSlotLabel      = (char*)malloc(strlen(pEntry) + 1 * sizeof(char));
                     assert(kBoxes[nBox].kSlots[nSlot].kSlotLabel);
                     strcpy(kBoxes[nBox].kSlots[nSlot].kSlotLabel, pEntry);
                     ++kBoxes[nBox].nSlotCount;
