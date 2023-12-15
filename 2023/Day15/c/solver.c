@@ -7,10 +7,14 @@
 #define AOC_TRUE  (1u)
 #define AOC_FALSE (0u)
 
+#define HASH_VALUE_WIDTH     (5u)
+#define HASH_VALUE_SIZE      (1u << HASH_VALUE_WIDTH)
+#define HASH_VALUE_MAX_COUNT (6u)
+
 typedef struct tSlotType
 {
     unsigned bSlotUsed;
-    char*    kSlotLabel;
+    uint64_t nSlotLabel;
     int64_t  nSlotValue;
 } tSlotType;
 
@@ -165,7 +169,21 @@ uint8_t calculateHash(const char* pString)
     return (uint8_t)nHash;
 }
 
-size_t findSlot(const tBoxType* kSlots, const char* kLabel)
+uint64_t getLabelValue(const char* kString)
+{
+    uint64_t nValue = 0;
+    while (*kString)
+    {
+        assert((*kString >= 'a') && (*kString <= 'z'));
+        nValue = (nValue * HASH_VALUE_SIZE) + (*kString - 'a');
+        ++kString;
+    }
+
+    return nValue;
+
+}
+
+size_t findSlot(const tBoxType* kSlots, const uint64_t nLabel)
 {
     size_t nSlot           = 0;
 
@@ -173,7 +191,7 @@ size_t findSlot(const tBoxType* kSlots, const char* kLabel)
     {
         if (kSlots->kSlots[nSlot].bSlotUsed)
         {
-            if (0 == strcmp(kSlots->kSlots[nSlot].kSlotLabel, kLabel))
+            if (kSlots->kSlots[nSlot].nSlotLabel == nLabel)
             {
                 return nSlot;
             }
@@ -208,8 +226,8 @@ int main(int argc, char** argv)
 
         assert(nLineCount == 1);
 
-        /* a=1 - Single Letter Label, single digit value... */
-        nWorstCaseItemsPerBox = (nMaxLineLength / 3) + 1;
+        /* a=1, - Single Letter Label, single digit value... */
+        nWorstCaseItemsPerBox = (nMaxLineLength / 4) + 1;
 
         /* Allocate the Boxes */
         for (nBox = 0; nBox < (sizeof(kBoxes) / sizeof(kBoxes[0])); ++nBox)
@@ -228,8 +246,9 @@ int main(int argc, char** argv)
 
             if ((pType = strstr(pEntry, "=")))
             {
-                int64_t nValue;
-                size_t  nSlot;
+                int64_t  nValue;
+                size_t   nSlot;
+                uint64_t nSlotValue;
 
                 /* Make the Label Separately Hashable */
                 *pType = '\0';
@@ -240,8 +259,12 @@ int main(int argc, char** argv)
                 /* Calculate the Box Hash */
                 nBox = calculateHash(pEntry);
 
+                /* Calculate the Box Value for Internal Lookups */
+                assert(strlen(pEntry) <= HASH_VALUE_MAX_COUNT);
+                nSlotValue = getLabelValue(pEntry);
+
                 /* Determine if this already exists */
-                nSlot = findSlot(&kBoxes[nBox], pEntry);
+                nSlot = findSlot(&kBoxes[nBox], nSlotValue);
                 if (nSlot >= kBoxes[nBox].nSlotCapacity)
                 {
                     /* Reallocate the Box */
@@ -252,9 +275,7 @@ int main(int argc, char** argv)
                 if (AOC_FALSE == kBoxes[nBox].kSlots[nSlot].bSlotUsed)
                 {
                     kBoxes[nBox].kSlots[nSlot].bSlotUsed       = AOC_TRUE;
-                    kBoxes[nBox].kSlots[nSlot].kSlotLabel      = (char*)malloc(strlen(pEntry) + 1 * sizeof(char));
-                    assert(kBoxes[nBox].kSlots[nSlot].kSlotLabel);
-                    strcpy(kBoxes[nBox].kSlots[nSlot].kSlotLabel, pEntry);
+                    kBoxes[nBox].kSlots[nSlot].nSlotLabel      = nSlotValue;
                     ++kBoxes[nBox].nSlotCount;
                 }
 
@@ -262,7 +283,8 @@ int main(int argc, char** argv)
             }
             else if ((pType = strstr(pEntry, "-")))
             {
-                size_t  nSlot;
+                size_t   nSlot;
+                uint64_t nSlotValue;
 
                 /* Make the Label Separately Hashable */
                 *pType = '\0';
@@ -270,13 +292,16 @@ int main(int argc, char** argv)
                 /* Calculate the Box Hash */
                 nBox = calculateHash(pEntry);
 
+                /* Calculate the Box Value for Internal Lookups */
+                assert(strlen(pEntry) <= HASH_VALUE_MAX_COUNT);
+                nSlotValue = getLabelValue(pEntry);
+
                 /* Find the Slot */
-                nSlot = findSlot(&kBoxes[nBox], pEntry);
+                nSlot = findSlot(&kBoxes[nBox], nSlotValue);
 
                 if (kBoxes[nBox].kSlots[nSlot].bSlotUsed)
                 {
                     kBoxes[nBox].kSlots[nSlot].bSlotUsed = AOC_FALSE;
-                    free(kBoxes[nBox].kSlots[nSlot].kSlotLabel);
                 }
             }
             else
@@ -292,15 +317,14 @@ int main(int argc, char** argv)
         /* Free the Boxes and Calculate Part 2 */
         for (nBox = 0; nBox < (sizeof(kBoxes) / sizeof(kBoxes[0])); ++nBox)
         {
-            size_t nSlot       = 0;
             size_t nActualSlot = 0;
+            size_t nSlot;
+
             for (nSlot = 0; nSlot < kBoxes[nBox].nSlotCount; ++nSlot)
             {
                 if (kBoxes[nBox].kSlots[nSlot].bSlotUsed)
                 {
                     nPartTwoHash += ((uint64_t)nBox + 1) * ((uint64_t)nActualSlot + 1) * kBoxes[nBox].kSlots[nSlot].nSlotValue;
-                    free(kBoxes[nBox].kSlots[nSlot].kSlotLabel);
-
                     ++nActualSlot;
                 }
             }
