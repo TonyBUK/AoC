@@ -276,6 +276,7 @@ int main(int argc, char** argv)
                 if (kBoxes[nBox].kSlots[nSlot].bSlotUsed)
                 {
                     kBoxes[nBox].kSlots[nSlot].bSlotUsed = AOC_FALSE;
+                    free(kBoxes[nBox].kSlots[nSlot].kSlotLabel);
                 }
             }
             else
