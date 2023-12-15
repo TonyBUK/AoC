@@ -34,8 +34,6 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     size_t                  nReadCount;
     size_t                  nPadLine;
 
-    tGridLookup*            kGridLookup    = NULL;
- 
     /* Read the File to a string buffer and append a NULL Terminator */
     fseek(*pFile, 0, SEEK_END);
     nEndPos = ftell(*pFile);
