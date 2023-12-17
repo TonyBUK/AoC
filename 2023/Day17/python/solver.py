@@ -31,7 +31,7 @@ QUEUE_CONSECTUVIVE_MOVES = 3
 def main() :
 
     kHeatLossMap = []
-    with open("input.txt", "r") as inputFile:
+    with open("../input.txt", "r") as inputFile:
         kHeatLossMap = [[int(n) for n in k.replace("\n", "").strip()] for k in inputFile.readlines()]
     #end
 
