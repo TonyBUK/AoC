@@ -30,11 +30,7 @@ typedef enum EDirections
 typedef struct SCacheEntry
 {
     unsigned bInUse;
-    int32_t     nX;
-    int32_t     nY;
-    EDirections eDirection;
-    uint32_t    nCount;
-    uint32_t    nHeatTotal;
+    uint32_t nHeatTotal;
 } SCacheEntry;
 
 typedef struct SQueueEntry
@@ -259,26 +255,13 @@ uint32_t processCrucible(const char** kHeatMap, const size_t nHeatMapWidth, cons
             {
                 kCache[nCacheKey].bInUse     = AOC_TRUE;
                 kCache[nCacheKey].nHeatTotal = kCurrent->nHeatTotal;
-
-                kCache[nCacheKey].nX         = kCurrent->nX;
-                kCache[nCacheKey].nY         = kCurrent->nY;
-                kCache[nCacheKey].eDirection = kCurrent->eDirection;
-                kCache[nCacheKey].nCount     = kCurrent->nCount;
             }
             else if (kCache[nCacheKey].nHeatTotal > kCurrent->nHeatTotal)
             {
                 kCache[nCacheKey].nHeatTotal = kCurrent->nHeatTotal;
-                assert(kCache[nCacheKey].nX == kCurrent->nX);
-                assert(kCache[nCacheKey].nY == kCurrent->nY);
-                assert(kCache[nCacheKey].eDirection == kCurrent->eDirection);
-                assert(kCache[nCacheKey].nCount == kCurrent->nCount);
             }
             else
             {
-                assert(kCache[nCacheKey].nX == kCurrent->nX);
-                assert(kCache[nCacheKey].nY == kCurrent->nY);
-                assert(kCache[nCacheKey].eDirection == kCurrent->eDirection);
-                assert(kCache[nCacheKey].nCount == kCurrent->nCount);
                 break;
             }
 
