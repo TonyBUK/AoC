@@ -4,12 +4,6 @@
 #include <inttypes.h>
 #include <assert.h>
 
-typedef struct SPointType
-{
-    int64_t nX;
-    int64_t nY;
-} SPointType; 
-
 /* Boilerplate code to read an entire file into a 1D buffer and give 2D entries per line.
  * This uses the EOL \n to act as a delimiter for each line.
  *
@@ -140,53 +134,45 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     }
 }
 
-int64_t addPoint(const int64_t nPerimeter, const size_t nPoint, const char kDirection, const int64_t nDistance, SPointType* kPoints)
+void calculateNextPoint(const char kDirection, const int64_t nDistance, const int64_t nPrevX, const int64_t nPrevY, int64_t* nX, int64_t* nY, int64_t* nPerimiter)
 {
     switch(kDirection)
     {
         case 'R':
         {
-            kPoints[nPoint].nX = kPoints[nPoint-1].nX + nDistance;
-            kPoints[nPoint].nY = kPoints[nPoint-1].nY;
+            *nX = nPrevX + nDistance;
+            *nY = nPrevY;
             break;
         }
 
         case 'D':
         {
-            kPoints[nPoint].nX = kPoints[nPoint-1].nX;
-            kPoints[nPoint].nY = kPoints[nPoint-1].nY + nDistance;
+            *nX = nPrevX;
+            *nY = nPrevY + nDistance;
             break;
         }
 
         case 'L':
         {
-            kPoints[nPoint].nX = kPoints[nPoint-1].nX - nDistance;
-            kPoints[nPoint].nY = kPoints[nPoint-1].nY;
+            *nX = nPrevX - nDistance;
+            *nY = nPrevY;
             break;
         }
 
         case 'U':
         {
-            kPoints[nPoint].nX = kPoints[nPoint-1].nX;
-            kPoints[nPoint].nY = kPoints[nPoint-1].nY - nDistance;
+            *nX = nPrevX;
+            *nY = nPrevY - nDistance;
             break;
         }
     }
 
-    return nPerimeter + nDistance;
+    *nPerimiter += nDistance;
 }
 
-int64_t shoelaceTheorem(const size_t nPointCount, const SPointType* kPoints)
+int64_t partialShoelaceTheorem(const int64_t nPrevX, const int64_t nPrevY, const int64_t nX, const int64_t nY)
 {
-    int64_t nArea = 0;
-    size_t  nPoint;
-
-    for (nPoint = 1; nPoint < nPointCount; ++nPoint)
-    {
-        nArea += (kPoints[nPoint-1].nX * kPoints[nPoint].nY) - (kPoints[nPoint].nX * kPoints[nPoint-1].nY);
-    }
-
-    return nArea / 2;
+    return (nPrevX * nY) - (nX * nPrevY);
 }
 
 int main(int argc, char** argv)
@@ -202,25 +188,19 @@ int main(int argc, char** argv)
         size_t                  nLineCount;
         size_t                  nLine;
 
-        SPointType*             kPointsPartOne;
-        SPointType*             kPointsPartTwo;
         int64_t                 nPerimiterPartOne = 0;
         int64_t                 nPerimiterPartTwo = 0;
-        size_t                  nPointCount       = 1;
+        int64_t                 nAreaPartOne      = 0;
+        int64_t                 nAreaPartTwo      = 0;
+
+        int64_t                 nPrevXPartOne     = 0;
+        int64_t                 nPrevYPartOne     = 0;
+        int64_t                 nPrevXPartTwo     = 0;
+        int64_t                 nPrevYPartTwo     = 0;
 
         /* Read the whole file into an easier to process 2D Buffer */
         readLines(&pData, &kBuffer, &kLines, &nLineCount, NULL, NULL, 0);
         fclose(pData);
-
-        /* Allocate the Point Buffers */
-        kPointsPartOne = (SPointType*)malloc((nLineCount+1) * sizeof(SPointType));
-        kPointsPartTwo = (SPointType*)malloc((nLineCount+1) * sizeof(SPointType));
-
-        /* First Point */
-        kPointsPartOne[0].nX = 0;
-        kPointsPartOne[0].nY = 0;
-        kPointsPartTwo[0].nX = 0;
-        kPointsPartTwo[0].nY = 0;
 
         for (nLine = 0; nLine < nLineCount; ++nLine)
         {
@@ -229,24 +209,38 @@ int main(int argc, char** argv)
             const char      kDirectionPartTwo = kDirectionChars[kLines[nLine][nLineLength-2] - '0'];
             const int64_t   nDistancePartOne  = strtoll(&kLines[nLine][2], NULL, 10);
                   int64_t   nDistancePartTwo;
+                  int64_t   nXPartOne;
+                  int64_t   nYPartOne;
+                  int64_t   nXPartTwo;
+                  int64_t   nYPartTwo;
 
             kLines[nLine][nLineLength-2] = '\0';
             nDistancePartTwo             = strtoll(&kLines[nLine][nLineLength-7], NULL, 16);
 
-            nPerimiterPartOne = addPoint(nPerimiterPartOne, nPointCount, kDirectionPartOne, nDistancePartOne, kPointsPartOne);
-            nPerimiterPartTwo = addPoint(nPerimiterPartTwo, nPointCount, kDirectionPartTwo, nDistancePartTwo, kPointsPartTwo);
+            /* Calculate the Next Point / Perimiter Length based on Direction/Distance */
+            calculateNextPoint(kDirectionPartOne, nDistancePartOne, nPrevXPartOne, nPrevYPartOne, &nXPartOne, &nYPartOne, &nPerimiterPartOne);
+            calculateNextPoint(kDirectionPartTwo, nDistancePartTwo, nPrevXPartTwo, nPrevYPartTwo, &nXPartTwo, &nYPartTwo, &nPerimiterPartTwo);
 
-            ++nPointCount;
+            /* Calculate the next term in the Shoelace Theorem */
+            nAreaPartOne += partialShoelaceTheorem(nPrevXPartOne, nPrevYPartOne, nXPartOne, nYPartOne);
+            nAreaPartTwo += partialShoelaceTheorem(nPrevXPartTwo, nPrevYPartTwo, nXPartTwo, nYPartTwo);
+
+            /* Set all the Previous Positions */
+            nPrevXPartOne = nXPartOne;
+            nPrevYPartOne = nYPartOne;
+            nPrevXPartTwo = nXPartTwo;
+            nPrevYPartTwo = nYPartTwo;
         }
 
-        printf("Part 1: %lld\n", shoelaceTheorem(nPointCount, kPointsPartOne) + (nPerimiterPartOne / 2) + 1);
-        printf("Part 2: %lld\n", shoelaceTheorem(nPointCount, kPointsPartTwo) + (nPerimiterPartTwo / 2) + 1);
+        /* The final step for the Shoelace Theorem is divide by 2, then we need to add on half the perimiter as the integer
+         * coordinates count half the perimiter with this method.
+         */
+        printf("Part 1: %lld\n", (nAreaPartOne / 2) + (nPerimiterPartOne / 2) + 1);
+        printf("Part 2: %lld\n", (nAreaPartTwo / 2) + (nPerimiterPartTwo / 2) + 1);
 
         /* Free any Allocated Memory */
         free(kBuffer);
         free(kLines);
-        free(kPointsPartOne);
-        free(kPointsPartTwo);
     }
  
     return 0;
