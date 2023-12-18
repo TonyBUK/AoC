@@ -115,16 +115,19 @@ int main(int argc, char** argv)
 
                 switch (eState)
                 {
+                    /* Part 1 - Direction */
                     case eLineParsingState_DirectionOne:
                     {
                         kDirectionPartOne = kData;
                     } break;
 
+                    /* Part 1 - Distance (keep going until we reach a space) */
                     case eLineParsingState_DistanceOne:
                     {
                         nDistancePartOne = (nDistancePartOne * 10) + (kData - '0');
                     } break;
 
+                    /* Part 2 - Hexadecimal (5 chars) */
                     case eLineParsingState_DistanceTwo_0:
                     case eLineParsingState_DistanceTwo_1:
                     case eLineParsingState_DistanceTwo_2:
@@ -139,6 +142,7 @@ int main(int argc, char** argv)
                         }
                     } break;
 
+                    /* Part 2 - Direction */
                     case eLineParsingState_DirectionTwo:
                     {
                         kDirectionPartTwo = kDirectionChars[kData - '0'];
