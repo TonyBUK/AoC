@@ -492,6 +492,9 @@ int main(int argc, char** argv)
         SValidRangesType        kValidRanges;
         size_t                  nRange;
 
+        uint64_t*               kUniqueKeys;
+        size_t                  nUniqueKeyCount = 0;
+
         uint64_t                nPartOneResult = 0;
         int64_t                 nPartTwoResult = 0;
 
@@ -502,6 +505,7 @@ int main(int argc, char** argv)
         /* Allocate the Rule/Backtrace Cache */
         kRules      = (SRuleType*)malloc(RULE_CACHE_SIZE * sizeof(SRuleType));
         kBackTraces = (SBackTracesTypes*)calloc(RULE_CACHE_SIZE, sizeof(SBackTracesTypes));
+        kUniqueKeys = (uint64_t*)malloc(RULE_CACHE_SIZE * sizeof(uint64_t));
 
         /* Allocate the Valid Ranges */
         kValidRanges.nValidRangeCount   = 0;
@@ -524,6 +528,9 @@ int main(int argc, char** argv)
             /* Get the Key */
             nKey = getKey(&pItem);
             assert(nKey < RULE_CACHE_SIZE);
+
+            /* Store the Unique Keys */
+            kUniqueKeys[nUniqueKeyCount++] = nKey;
 
             /* Move past the brace*/
             assert(*pItem == '{');
@@ -591,6 +598,10 @@ int main(int argc, char** argv)
         kRules[RULE_ACCEPT].kOpcodes[0].eCommand    = ECOMMAND_ACCEPT;
         kRules[RULE_REJECT].nRuleCount              = 1;
         kRules[RULE_REJECT].kOpcodes[0].eCommand    = ECOMMAND_REJECT;
+
+        /* Store the Unique Keys */
+        kUniqueKeys[nUniqueKeyCount++] = RULE_ACCEPT;
+        kUniqueKeys[nUniqueKeyCount++] = RULE_REJECT;
 
         /* Anything left in the Line Count is now a Part */
         nPartCount = nLineCount - nLine;
@@ -660,11 +671,11 @@ int main(int argc, char** argv)
         printf("Part 2: %lld\n", nPartTwoResult);
 
         /* Free the Backtraces */
-        for (nLine = 0; nLine < RULE_CACHE_SIZE; ++nLine)
+        for (nLine = 0; nLine < nUniqueKeyCount; ++nLine)
         {
-            if (kBackTraces[nLine].nBackTraceCount > 0)
+            if (kBackTraces[kUniqueKeys[nLine]].nBackTraceCount > 0)
             {
-                free(kBackTraces[nLine].kBackTraces);
+                free(kBackTraces[kUniqueKeys[nLine]].kBackTraces);
             }
         }
 
@@ -675,6 +686,7 @@ int main(int argc, char** argv)
         free(kParts);
         free(kBackTraces);
         free(kValidRanges.kValidRanges);
+        free(kUniqueKeys);
     }
  
     return 0;
