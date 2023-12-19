@@ -504,8 +504,13 @@ int main(int argc, char** argv)
 
         /* Allocate the Rule/Backtrace Cache */
         kRules      = (SRuleType*)malloc(RULE_CACHE_SIZE * sizeof(SRuleType));
-        kBackTraces = (SBackTracesTypes*)calloc(RULE_CACHE_SIZE, sizeof(SBackTracesTypes));
+        kBackTraces = (SBackTracesTypes*)malloc(RULE_CACHE_SIZE * sizeof(SBackTracesTypes));
         kUniqueKeys = (uint64_t*)malloc(RULE_CACHE_SIZE * sizeof(uint64_t));
+
+        for (nLine = 0; nLine < RULE_CACHE_SIZE; ++nLine)
+        {
+            kBackTraces[nLine].nBackTraceCount = 0;
+        }
 
         /* Allocate the Valid Ranges */
         kValidRanges.nValidRangeCount   = 0;
