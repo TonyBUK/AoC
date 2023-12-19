@@ -143,9 +143,6 @@ def main() :
  
     #end
 
-    print(len(kJumpSources))
-    print(max([len(v) for v in kJumpSources.values()]))
-
     # Part 1 - Check the Part Totals for any Accepted Rule
     nAcceptedPartTotal = 0
     for kPart in kParts :
