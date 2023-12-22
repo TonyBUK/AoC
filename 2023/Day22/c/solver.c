@@ -372,8 +372,8 @@ int main(int argc, char** argv)
 
         /* Allocate the Bricks */
         kBricks = (SBrick3DType*)malloc(sizeof(SBrick3DType) * nLineCount);
-        kBricksAbove = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount * 100);
-        kBricksBelow = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount * 100);
+        kBricksAbove = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount);
+        kBricksBelow = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount);
         kBrickFilter = (unsigned*)malloc(sizeof(unsigned) * nLineCount);
 
         assert(kBricks);
