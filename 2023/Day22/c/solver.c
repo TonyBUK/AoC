@@ -311,8 +311,8 @@ uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks,
     size_t                  nBricksAbove;
     size_t                  nBricksBelow;
     size_t                  nBrickAbove;
-    SConnectedBricksType*   kBricksAbove;
-    SConnectedBricksType*   kBricksBelow;
+    size_t*                 kBricksAbove;
+    size_t*                 kBricksBelow;
 
     /* Filter the Current Brick */
     assert(AOC_FALSE   == kBrickFilter[kBricks[nBrickIndex].nIndex]);
@@ -321,8 +321,8 @@ uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks,
     kBrickFilter[kBricks[nBrickIndex].nIndex] = AOC_TRUE;
 
     /* Find any Above Neighbours for the Current Brick */
-    kBricksAbove = &kConnectedBricks[nBrickIndex];
-    nBricksAbove = kBricksAbove->nBricksAbove;
+    nBricksAbove = kConnectedBricks[nBrickIndex].nBricksAbove;
+    kBricksAbove = kConnectedBricks[nBrickIndex].kBricksAboveIndex;
 
     /* If they have no neighbours below (because we removed the brick of interest), they're unstable. */
     for (nBrickAbove = 0; nBrickAbove < nBricksAbove; ++nBrickAbove)
@@ -330,20 +330,21 @@ uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks,
         size_t   nBrickBelow;
         size_t   nBrickBelowCount   = 0;
 
-        if (kBrickFilter[kBricksAbove->kBricksAboveIndex[nBrickAbove]])
+        if (kBrickFilter[kBricksAbove[nBrickAbove]])
         {
             continue;
         }
 
         /* Find any Below Neighbours for the Current Above */
-        kBricksBelow = &kConnectedBricks[kBricksAbove->kBricksAboveIndex[nBrickAbove]];
-        nBricksBelow = kBricksBelow->nBricksBelow;
+        nBricksBelow = kConnectedBricks[kBricksAbove[nBrickAbove]].nBricksBelow;
+        kBricksBelow = kConnectedBricks[kBricksAbove[nBrickAbove]].kBricksBelowIndex;
 
         for (nBrickBelow = 0; nBrickBelow < nBricksBelow; ++nBrickBelow)
         {
-            if (AOC_FALSE == kBrickFilter[kBricksBelow->kBricksBelowIndex[nBrickBelow]])
+            if (AOC_FALSE == kBrickFilter[kBricksBelow[nBrickBelow]])
             {
                 ++nBrickBelowCount;
+                break;
             }
         }
 
@@ -351,7 +352,7 @@ uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks,
         if (0 == nBrickBelowCount)
         {
             /* Recursively calculate the chain length of the bricks above */
-            nChain += 1 + calculateChainReaction(kBricksAbove->kBricksAboveIndex[nBrickAbove], kBricks, kConnectedBricks, nCount, kBrickFilter);
+            nChain += 1 + calculateChainReaction(kBricksAbove[nBrickAbove], kBricks, kConnectedBricks, nCount, kBrickFilter);
         }
     }
 
