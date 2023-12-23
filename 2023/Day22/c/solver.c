@@ -21,6 +21,14 @@ typedef struct SBrick3DType
     SPoint3DType kEnd;
 } SBrick3DType;
 
+typedef struct SConnectedBricksType
+{
+    size_t         nBricksAbove;
+    size_t*        kBricksAboveIndex;
+    size_t         nBricksBelow;
+    size_t*        kBricksBelowIndex;
+} SConnectedBricksType;
+
 /* Boilerplate code to read an entire file into a 1D buffer and give 2D entries per line.
  * This uses the EOL \n to act as a delimiter for each line.
  *
@@ -297,12 +305,14 @@ void getNeighboursBelow(SBrick3DType* kBrick, SBrick3DType* kBricks, size_t nCou
     }
 }
 
-uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks, const size_t nCount, unsigned* kBrickFilter, SBrick3DType** kBricksAbove, SBrick3DType** kBricksBelow)
+uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks, SConnectedBricksType* kConnectedBricks, const size_t nCount, unsigned* kBrickFilter)
 {
-    uint64_t nChain = 0u;
-    size_t   nBricksAbove;
-    size_t   nBricksBelow;
-    size_t   nBrickAbove;
+    uint64_t                nChain = 0u;
+    size_t                  nBricksAbove;
+    size_t                  nBricksBelow;
+    size_t                  nBrickAbove;
+    SConnectedBricksType*   kBricksAbove;
+    SConnectedBricksType*   kBricksBelow;
 
     /* Filter the Current Brick */
     assert(AOC_FALSE   == kBrickFilter[kBricks[nBrickIndex].nIndex]);
@@ -311,7 +321,8 @@ uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks,
     kBrickFilter[kBricks[nBrickIndex].nIndex] = AOC_TRUE;
 
     /* Find any Above Neighbours for the Current Brick */
-    getNeighboursAbove(&kBricks[nBrickIndex], kBricks, nCount, kBricksAbove, &nBricksAbove);
+    kBricksAbove = &kConnectedBricks[nBrickIndex];
+    nBricksAbove = kBricksAbove->nBricksAbove;
 
     /* If they have no neighbours below (because we removed the brick of interest), they're unstable. */
     for (nBrickAbove = 0; nBrickAbove < nBricksAbove; ++nBrickAbove)
@@ -319,17 +330,18 @@ uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks,
         size_t   nBrickBelow;
         size_t   nBrickBelowCount   = 0;
 
-        if (kBrickFilter[(kBricksAbove[nBrickAbove])->nIndex])
+        if (kBrickFilter[kBricksAbove->kBricksAboveIndex[nBrickAbove]])
         {
             continue;
         }
 
         /* Find any Below Neighbours for the Current Above */
-        getNeighboursBelow((kBricksAbove[nBrickAbove]), kBricks, nCount, kBricksBelow, &nBricksBelow);
+        kBricksBelow = &kConnectedBricks[kBricksAbove->kBricksAboveIndex[nBrickAbove]];
+        nBricksBelow = kBricksBelow->nBricksBelow;
 
         for (nBrickBelow = 0; nBrickBelow < nBricksBelow; ++nBrickBelow)
         {
-            if (AOC_FALSE == kBrickFilter[kBricksBelow[nBrickBelow]->nIndex])
+            if (AOC_FALSE == kBrickFilter[kBricksBelow->kBricksBelowIndex[nBrickBelow]])
             {
                 ++nBrickBelowCount;
             }
@@ -339,7 +351,7 @@ uint64_t calculateChainReaction(const size_t nBrickIndex, SBrick3DType* kBricks,
         if (0 == nBrickBelowCount)
         {
             /* Recursively calculate the chain length of the bricks above */
-            nChain += 1 + calculateChainReaction(kBricksAbove[nBrickAbove]->nIndex, kBricks, nCount, kBrickFilter, &kBricksAbove[nBricksAbove], &kBricksBelow[nBricksBelow]);
+            nChain += 1 + calculateChainReaction(kBricksAbove->kBricksAboveIndex[nBrickAbove], kBricks, kConnectedBricks, nCount, kBrickFilter);
         }
     }
 
@@ -366,15 +378,18 @@ int main(int argc, char** argv)
         uint64_t                nDisintegratedBrickCount = 0;
         uint64_t                nChainReactionCount      = 0;
 
+        SConnectedBricksType*   kConnectedBricks;
+
         /* Read the whole file into an easier to process 2D Buffer */
         readLines(&pData, &kBuffer, &kLines, &nLineCount, NULL, NULL, 0);
         fclose(pData);
 
         /* Allocate the Bricks */
-        kBricks = (SBrick3DType*)malloc(sizeof(SBrick3DType) * nLineCount);
-        kBricksAbove = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount);
-        kBricksBelow = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount);
-        kBrickFilter = (unsigned*)malloc(sizeof(unsigned) * nLineCount);
+        kBricks          = (SBrick3DType*) malloc(sizeof(SBrick3DType) * nLineCount);
+        kBricksAbove     = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount);
+        kBricksBelow     = (SBrick3DType**)malloc(sizeof(SBrick3DType*) * nLineCount);
+        kBrickFilter     = (unsigned*)     malloc(sizeof(unsigned) * nLineCount);
+        kConnectedBricks = (SConnectedBricksType*)calloc(nLineCount, sizeof(SConnectedBricksType));
 
         assert(kBricks);
         assert(kBricksAbove);
@@ -428,8 +443,24 @@ int main(int argc, char** argv)
             size_t   nBrickAboveCount;
             size_t   nBrickBelowCount;
 
+            /* Part Two Specific... Store the Bricks Below */
+            getNeighboursBelow(&kBricks[nLine], kBricks, nLineCount, kBricksBelow, &nBrickBelowCount);
+
+            /* Assign the Bricks Above */
+            kConnectedBricks[nLine].nBricksBelow      = nBrickBelowCount;
+            if (nBrickBelowCount)
+            {
+                kConnectedBricks[nLine].kBricksBelowIndex = (size_t*)malloc(sizeof(size_t*) * nBrickBelowCount);
+                for (nNeighbour = 0; nNeighbour < nBrickBelowCount; ++nNeighbour)
+                {
+                    /* Store the Bricks Above */
+                    kConnectedBricks[nLine].kBricksBelowIndex[nNeighbour] = kBricksBelow[nNeighbour]->nIndex;
+                }
+            }
+
             /* Find any Above Neighbours for the Current Brick */
             getNeighboursAbove(&kBricks[nLine], kBricks, nLineCount, kBricksAbove, &nBrickAboveCount);
+            kConnectedBricks[nLine].nBricksAbove = nBrickAboveCount;
 
             if (0 == nBrickAboveCount)
             {
@@ -437,19 +468,24 @@ int main(int argc, char** argv)
                 continue;
             }
 
+            /* Assign the Bricks Above */
+            kConnectedBricks[nLine].kBricksAboveIndex = (size_t*)malloc(sizeof(size_t*) * nBrickAboveCount);
+
             bOtherwiseSupported = AOC_TRUE;
 
             for (nNeighbour = 0; nNeighbour < nBrickAboveCount; ++nNeighbour)
             {
+                /* Store the Bricks Above */
+                kConnectedBricks[nLine].kBricksAboveIndex[nNeighbour] = kBricksAbove[nNeighbour]->nIndex;
+
                 /* Check whether the Neighbour is Supported by another Brick */
                 getNeighboursBelow(kBricksAbove[nNeighbour], kBricks, nLineCount, kBricksBelow, &nBrickBelowCount);
 
                 if (nBrickBelowCount <= 1)
                 {
                     bOtherwiseSupported = AOC_FALSE;
-                    break;
                 }
-            }
+            }            
 
             if (bOtherwiseSupported)
             {
@@ -462,17 +498,30 @@ int main(int argc, char** argv)
         for (nLine = 0; nLine < nLineCount; ++nLine)
         {
             memset(kBrickFilter, 0u, sizeof(unsigned) * nLineCount);
-            nChainReactionCount += calculateChainReaction(nLine, kBricks, nLineCount, kBrickFilter, kBricksAbove, kBricksBelow);
+            nChainReactionCount += calculateChainReaction(nLine, kBricks, kConnectedBricks, nLineCount, kBrickFilter);
         }
         printf("Part 2: %llu\n", nChainReactionCount);
 
         /* Free any Allocated Memory */
+        for (nLine = 0; nLine < nLineCount; ++nLine)
+        {
+            if (kConnectedBricks[nLine].nBricksAbove)
+            {
+                free(kConnectedBricks[nLine].kBricksAboveIndex);
+            }
+
+            if (kConnectedBricks[nLine].nBricksBelow)
+            {
+                free(kConnectedBricks[nLine].kBricksBelowIndex);
+            }
+        }
         free(kBuffer);
         free(kLines);
         free(kBricks);
         free(kBricksAbove);
         free(kBricksBelow);
         free(kBrickFilter);
+        free(kConnectedBricks);
     }
 
     return 0;
