@@ -211,10 +211,10 @@ SBrick3DType* getClosestNeighbourBelow(SBrick3DType* kBrick, SBrick3DType* kBric
             continue;
         }
 
-        if ((0 > kBricks[nBrick].kEnd.nZ) ||
-            (kBrick->kEnd.nZ   < 0))
+        /* Early Termination Case */
+        if (kBricks[nBrick].kStart.nZ > kBrick->kEnd.nZ)
         {
-            continue;
+            break;
         }
 
         if ((kBrick->kStart.nX <= kBricks[nBrick].kEnd.nX)   &&
@@ -223,7 +223,7 @@ SBrick3DType* getClosestNeighbourBelow(SBrick3DType* kBrick, SBrick3DType* kBric
             (kBrick->kEnd.nY   >= kBricks[nBrick].kStart.nY))
         {
             const int64_t nDistance = kBrick->kStart.nZ - kBricks[nBrick].kEnd.nZ;
-            if (nDistance < 0) continue;
+
             if (AOC_FALSE == bFound)
             {
                 bFound           = AOC_TRUE;
@@ -244,6 +244,7 @@ SBrick3DType* getClosestNeighbourBelow(SBrick3DType* kBrick, SBrick3DType* kBric
     {
         return &kBricks[nClosestBrick];
     }
+
     return NULL;
 }
 
@@ -258,6 +259,12 @@ void getNeighboursAbove(SBrick3DType* kBrick, SBrick3DType* kBricks, size_t nCou
         if (kBrick == &kBricks[nBrick])
         {
             continue;
+        }
+
+        /* Early Termination Case */
+        if (((kBricks[nBrick].kStart.nZ) - kBrick->kEnd.nZ) > 1)
+        {
+            break;
         }
 
         if (kBricks[nBrick].kStart.nZ != (kBrick->kEnd.nZ + 1))
@@ -287,6 +294,12 @@ void getNeighboursBelow(SBrick3DType* kBrick, SBrick3DType* kBricks, size_t nCou
         if (kBrick == &kBricks[nBrick])
         {
             continue;
+        }
+
+        /* Early Termination Case */
+        if (kBricks[nBrick].kStart.nZ > kBrick->kStart.nZ)
+        {
+            break;
         }
 
         if ((kBricks[nBrick].kEnd.nZ + 1) != kBrick->kStart.nZ)
@@ -416,9 +429,6 @@ int main(int argc, char** argv)
         /* Move the Bricks Downwards, starting from the bottom... */
         for (nLine = 0; nLine < nLineCount; ++nLine)
         {
-            /* Correct the Index... Euurgh C... */
-            kBricks[nLine].nIndex = nLine;
-
             /* Find the Closest Brick Below */
             SBrick3DType* pBrickBelow = getClosestNeighbourBelow(&kBricks[nLine], kBricks, nLineCount);
 
@@ -435,6 +445,15 @@ int main(int argc, char** argv)
                 kBricks[nLine].kStart.nZ -= nDistance;
                 kBricks[nLine].kEnd.nZ   -= nDistance;
             }
+        }
+
+        /* Sort the Bricks by their Z Axis now they're on the Ground */
+        qsort(kBricks, nLineCount, sizeof(SBrick3DType), compareBricks);
+
+        for (nLine = 0; nLine < nLineCount; ++nLine)
+        {
+            /* Correct the Indexes... Euurgh C... */
+            kBricks[nLine].nIndex = nLine;
         }
 
         for (nLine = 0; nLine < nLineCount; ++nLine)
@@ -473,7 +492,6 @@ int main(int argc, char** argv)
             kConnectedBricks[nLine].kBricksAboveIndex = (size_t*)malloc(sizeof(size_t*) * nBrickAboveCount);
 
             bOtherwiseSupported = AOC_TRUE;
-
             for (nNeighbour = 0; nNeighbour < nBrickAboveCount; ++nNeighbour)
             {
                 /* Store the Bricks Above */
