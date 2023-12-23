@@ -4,20 +4,10 @@
 #include <inttypes.h>
 #include <assert.h>
 
-#define AOC_TRUE        (1u)
-#define AOC_FALSE       (0u)
+#define AOC_TRUE            (1u)
+#define AOC_FALSE           (0u)
 
-#define X_WIDTH         (8u)
-#define Y_WIDTH         (8u)
-
-#define X_SHIFT         (0u)
-#define Y_SHIFT         (X_SHIFT + X_WIDTH)
-
-#define KEY_SIZE        (1 << (X_WIDTH + Y_WIDTH))
-
-#define ENCODE_KEY(x, y)    (((x) << X_SHIFT) | ((y) << Y_SHIFT))
-#define DECODE_KEY_X(k)     (((k) >> X_SHIFT) & ((1 << X_WIDTH) - 1))
-#define DECODE_KEY_Y(k)     (((k) >> Y_SHIFT) & ((1 << Y_WIDTH) - 1))
+#define ENCODE_KEY(x, y, w) (((y) * (w)) + (x))
 
 typedef struct SValidDirectionsType
 {
@@ -184,7 +174,7 @@ void generateNodes(const char** kMaze, const size_t nWidth, const size_t nHeight
         int64_t nX;
         for (nX = 0; nX < (int64_t)nWidth; ++nX)
         {
-            const uint64_t              nPositionKey    = ENCODE_KEY(nX, nY);
+            const uint64_t              nPositionKey    = ENCODE_KEY(nX, nY, nWidth);
             const SValidDirectionsType* kDirection      = &kValidDirections[kMaze[nY][nX]];
             const size_t                nDirectionCount = kDirection->nValidDirectionsCount;
                   size_t                nDirection;
@@ -221,7 +211,7 @@ void generateNodes(const char** kMaze, const size_t nWidth, const size_t nHeight
 
                 /* Add the Node */
                 kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourCost   = 1;
-                kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourKey    = ENCODE_KEY(nCandidateX, nCandidateY);
+                kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourKey    = ENCODE_KEY(nCandidateX, nCandidateY, nWidth);
                 kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourPos[0] = nCandidateY;
                 kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourPos[1] = nCandidateX;
                 ++kNodes[nPositionKey].nNeighbourCount;
@@ -416,10 +406,10 @@ int main(int argc, char** argv)
         fclose(pData);
 
         /* Allocate the Node Memory */
-        kNodesPartOne   = (SNeighboursType*)calloc(KEY_SIZE, sizeof(SNeighboursType));
-        kNodesPartTwo   = (SNeighboursType*)calloc(KEY_SIZE, sizeof(SNeighboursType));
-        kVisitedPartOne = (unsigned*)calloc(KEY_SIZE, sizeof(unsigned));
-        kVisitedPartTwo = (unsigned*)calloc(KEY_SIZE, sizeof(unsigned));
+        kNodesPartOne   = (SNeighboursType*)calloc(nWidth * nHeight, sizeof(SNeighboursType));
+        kNodesPartTwo   = (SNeighboursType*)calloc(nWidth * nHeight, sizeof(SNeighboursType));
+        kVisitedPartOne = (unsigned*)calloc(nWidth * nHeight, sizeof(unsigned));
+        kVisitedPartTwo = (unsigned*)calloc(nWidth * nHeight, sizeof(unsigned));
         kCache          = (SNeighbourType*)malloc(nWidth * nHeight * sizeof(SNeighbourType));
 
         /* Assume Known Positions for Start/End */
@@ -432,11 +422,11 @@ int main(int argc, char** argv)
 
         /* Part 1 */
         generateNodes((const char**)kLines, nWidth, nHeight, kValidDirectionsPartOne, kNodesPartOne, kCache);
-        printf("Part 1: %llu\n", findLongestRoute(ENCODE_KEY(nStartX, nStartY), ENCODE_KEY(nEndX, nEndY), 0, 0, kNodesPartOne, kVisitedPartOne));
+        printf("Part 1: %llu\n", findLongestRoute(ENCODE_KEY(nStartX, nStartY, nWidth), ENCODE_KEY(nEndX, nEndY, nWidth), 0, 0, kNodesPartOne, kVisitedPartOne));
 
         /* Part 2 */
         generateNodes((const char**)kLines, nWidth, nHeight, kValidDirectionsPartTwo, kNodesPartTwo, kCache);
-        printf("Part 2: %llu\n", findLongestRoute(ENCODE_KEY(nStartX, nStartY), ENCODE_KEY(nEndX, nEndY), 0, 0, kNodesPartTwo, kVisitedPartTwo));
+        printf("Part 2: %llu\n", findLongestRoute(ENCODE_KEY(nStartX, nStartY, nWidth), ENCODE_KEY(nEndX, nEndY, nWidth), 0, 0, kNodesPartTwo, kVisitedPartTwo));
 
         /* Free any Allocated Memory */
         free(kBuffer);
