@@ -450,23 +450,24 @@ int main(int argc, char** argv)
         /* Sort the Bricks by their Z Axis now they're on the Ground */
         qsort(kBricks, nLineCount, sizeof(SBrick3DType), compareBricks);
 
+        /* Correct the Indexes... */
         for (nLine = 0; nLine < nLineCount; ++nLine)
         {
             /* Correct the Indexes... Euurgh C... */
             kBricks[nLine].nIndex = nLine;
         }
 
+        /* Build the Tree to Solve Parts 1/2 as quickly as possible */
         for (nLine = 0; nLine < nLineCount; ++nLine)
         {
-            unsigned bOtherwiseSupported;
             size_t   nNeighbour;
             size_t   nBrickAboveCount;
             size_t   nBrickBelowCount;
 
-            /* Part Two Specific... Store the Bricks Below */
+            /* Part Two Specific... Store the Bricks Above/Below */
             getNeighboursBelow(&kBricks[nLine], kBricks, nLineCount, kBricksBelow, &nBrickBelowCount);
 
-            /* Assign the Bricks Above */
+            /* Assign the Bricks Below */
             kConnectedBricks[nLine].nBricksBelow      = nBrickBelowCount;
             if (nBrickBelowCount)
             {
@@ -478,31 +479,45 @@ int main(int argc, char** argv)
                 }
             }
 
-            /* Find any Above Neighbours for the Current Brick */
+            /* Assign the Bricks Above */
             getNeighboursAbove(&kBricks[nLine], kBricks, nLineCount, kBricksAbove, &nBrickAboveCount);
             kConnectedBricks[nLine].nBricksAbove = nBrickAboveCount;
 
+            if (nBrickAboveCount)
+            {
+                kConnectedBricks[nLine].kBricksAboveIndex = (size_t*)malloc(sizeof(size_t*) * nBrickAboveCount);
+                for (nNeighbour = 0; nNeighbour < nBrickAboveCount; ++nNeighbour)
+                {
+                    /* Store the Bricks Above */
+                    kConnectedBricks[nLine].kBricksAboveIndex[nNeighbour] = kBricksAbove[nNeighbour]->nIndex;
+                }
+            }
+        }
+
+        for (nLine = 0; nLine < nLineCount; ++nLine)
+        {
+            unsigned bOtherwiseSupported;
+            size_t   nNeighbour;
+            size_t   nBrickAboveCount;
+            size_t   nBrickBelowCount;
+
+            nBrickAboveCount = kConnectedBricks[nLine].nBricksAbove;
             if (0 == nBrickAboveCount)
             {
                 ++nDisintegratedBrickCount;
                 continue;
             }
 
-            /* Assign the Bricks Above */
-            kConnectedBricks[nLine].kBricksAboveIndex = (size_t*)malloc(sizeof(size_t*) * nBrickAboveCount);
-
+            /* Check whether the Neighbour is Supported by another Brick */
             bOtherwiseSupported = AOC_TRUE;
             for (nNeighbour = 0; nNeighbour < nBrickAboveCount; ++nNeighbour)
             {
-                /* Store the Bricks Above */
-                kConnectedBricks[nLine].kBricksAboveIndex[nNeighbour] = kBricksAbove[nNeighbour]->nIndex;
-
-                /* Check whether the Neighbour is Supported by another Brick */
-                getNeighboursBelow(kBricksAbove[nNeighbour], kBricks, nLineCount, kBricksBelow, &nBrickBelowCount);
+                nBrickBelowCount = kConnectedBricks[kConnectedBricks[nLine].kBricksAboveIndex[nNeighbour]].nBricksBelow;
 
                 if (nBrickBelowCount <= 1)
                 {
                     bOtherwiseSupported = AOC_FALSE;
+                    break;
                 }
             }            
 
