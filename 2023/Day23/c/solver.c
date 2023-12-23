@@ -168,66 +168,74 @@ void generateNodes(const char** kMaze, const size_t nWidth, const size_t nHeight
           int64_t  nY;
           unsigned bNodesCulled;
 
-    /* Weirdly we store this twice, but I promise it'll make sense */
+    /* The cached values are used for easier iterating later on... */
     for (nY = 0; nY < (int64_t)nHeight; ++nY)
     {
         int64_t nX;
         for (nX = 0; nX < (int64_t)nWidth; ++nX)
         {
-            const uint64_t              nPositionKey    = ENCODE_KEY(nX, nY, nWidth);
             const SValidDirectionsType* kDirection      = &kValidDirections[kMaze[nY][nX]];
             const size_t                nDirectionCount = kDirection->nValidDirectionsCount;
                   size_t                nDirection;
 
+            /* We can abuse the Direction Count to detect if the Map Tile is useable */
             if (nDirectionCount > 0)
             {
+                const uint64_t  nPositionKey    = ENCODE_KEY(nX, nY, nWidth);
+
                 /* Add the Node to the Cache */
-                kCache[nCacheSize].kNeighbourCost = nCacheExists;
-                kCache[nCacheSize].kNeighbourKey  = nPositionKey;
+                kCache[nCacheSize].kNeighbourCost   = nCacheExists;
+                kCache[nCacheSize].kNeighbourKey    = nPositionKey;
                 kCache[nCacheSize].kNeighbourPos[0] = nY;
                 kCache[nCacheSize].kNeighbourPos[1] = nX;
                 ++nCacheSize;
-            }
 
-            for (nDirection = 0; nDirection < nDirectionCount; ++nDirection)
-            {
-                const int64_t nCandidateX = nX + kDirection->kValidDirections[nDirection][1];
-                const int64_t nCandidateY = nY + kDirection->kValidDirections[nDirection][0];
-
-                /* Are we in the Maze? */
-                if ((nCandidateX < 0)                ||
-                    (nCandidateX >= (int64_t)nWidth) ||
-                    (nCandidateY < 0)                ||
-                    (nCandidateY >= (int64_t)nHeight))
+                /* Iterate through the Directions */
+                for (nDirection = 0; nDirection < nDirectionCount; ++nDirection)
                 {
-                    continue;
-                }
+                    const int64_t nCandidateX = nX + kDirection->kValidDirections[nDirection][1];
+                    const int64_t nCandidateY = nY + kDirection->kValidDirections[nDirection][0];
 
-                /* Is this a Moveable Position */
-                if (kMaze[nCandidateY][nCandidateX] == '#')
-                {
-                    continue;
-                }
+                    /* Are we in the Maze? */
+                    if ((nCandidateX < 0)                ||
+                        (nCandidateX >= (int64_t)nWidth) ||
+                        (nCandidateY < 0)                ||
+                        (nCandidateY >= (int64_t)nHeight))
+                    {
+                        continue;
+                    }
 
-                /* Add the Node */
-                kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourCost   = 1;
-                kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourKey    = ENCODE_KEY(nCandidateX, nCandidateY, nWidth);
-                kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourPos[0] = nCandidateY;
-                kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourPos[1] = nCandidateX;
-                ++kNodes[nPositionKey].nNeighbourCount;
+                    /* Is this a Moveable Position */
+                    if (kMaze[nCandidateY][nCandidateX] == '#')
+                    {
+                        continue;
+                    }
+
+                    /* Add the Node */
+                    kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourCost   = 1;
+                    kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourKey    = ENCODE_KEY(nCandidateX, nCandidateY, nWidth);
+                    kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourPos[0] = nCandidateY;
+                    kNodes[nPositionKey].kNeighbours[kNodes[nPositionKey].nNeighbourCount].kNeighbourPos[1] = nCandidateX;
+                    ++kNodes[nPositionKey].nNeighbourCount;
+                }
             }
         }
     }
     
+    /* Repeatedly remove all entries with only 2 exits.  Ultimately this will leave us with
+     * only genuine intersections.
+     */
     do
     {
         size_t nCacheEntry;
         bNodesCulled = AOC_FALSE;
 
+        /* Iterate through the Cached Positions */
         for (nCacheEntry = 0; nCacheEntry < nCacheSize; ++nCacheEntry)
         {
             SNeighbourType*  kCacheEntry = &kCache[nCacheEntry];
 
+            /* Ignore Deleted Nodes */
             if (kCacheEntry->kNeighbourCost == nCacheDeleted)
             {
                 continue;
@@ -257,9 +265,10 @@ void generateNodes(const char** kMaze, const size_t nWidth, const size_t nHeight
                     }
                 }
 
-                /* Try and Cull the Neighbour */
+                /* If the Node was Bi-Directional */
                 if (2 == nValidNeighbourCount)
                 {
+                    /* Buffer the Positions / Keys */
                     const uint64_t kBufferedNeighbourCost[2] = {
                         kValidNeighbours[0]->kNeighbourCost,
                         kValidNeighbours[1]->kNeighbourCost
@@ -275,6 +284,7 @@ void generateNodes(const char** kMaze, const size_t nWidth, const size_t nHeight
                         kNodeToDelete->kNeighbours[1].kNeighbourKey
                     };
 
+                    /* Make sure we're Valid */
                     assert(kValidNeighbours[0]->kNeighbourKey == kCacheEntry->kNeighbourKey);
                     assert(kValidNeighbours[1]->kNeighbourKey == kCacheEntry->kNeighbourKey);
                     assert(kCacheEntry->kNeighbourCost == 1);
@@ -291,8 +301,15 @@ void generateNodes(const char** kMaze, const size_t nWidth, const size_t nHeight
                     kValidNeighbours[1]->kNeighbourPos[1] = kBufferedNeighbourPos[0][1];
                     kValidNeighbours[1]->kNeighbourKey    = kBufferedNeighbourKey[0];
 
+                    /* Note: We don't actually need to delete the Node itself from the original
+                     *       list.  As it will naturally be bypassed since intersections will
+                     *       only jump to other intersections / unidirectional nodes.
+                     */
+
+                    /* Delete the Cache Entry */
                     kCacheEntry->kNeighbourCost = nCacheDeleted;
 
+                    /* Indicate a Node has been Culled */
                     bNodesCulled = AOC_TRUE;
                 }
             }
@@ -322,13 +339,16 @@ uint64_t findLongestRoute(const uint64_t nPositionKey, const uint64_t nEndKey, c
     /* Buffer the Max Steps */
     nLocalMaxSteps = nMaxSteps;
 
+    /* Iterate through the Neighbours */
     for (nNeighbour = 0; nNeighbour < kNodes[nPositionKey].nNeighbourCount; ++nNeighbour)
     {
+        /* Ignore the Neighbour if we've seen it */
         if (bVisited[kNode->kNeighbours[nNeighbour].kNeighbourKey])
         {
             continue;
         }
 
+        /* Mark the Current Neighbour as Visited and Recurse */
         bVisited[kNode->kNeighbours[nNeighbour].kNeighbourKey] = AOC_TRUE;
         nLocalMaxSteps = findLongestRoute(kNode->kNeighbours[nNeighbour].kNeighbourKey, nEndKey, nLocalMaxSteps, nSteps + kNode->kNeighbours[nNeighbour].kNeighbourCost, kNodes, bVisited);
         bVisited[kNode->kNeighbours[nNeighbour].kNeighbourKey] = AOC_FALSE;
