@@ -7,7 +7,7 @@ def main() :
 
     # For timing purposes only (to ensure the random seed is the same)
     # Comment out to unleash Karger!
-#    random.seed(1)
+    random.seed(1)
 
     # Create the Wiring Nodes
     # To Simplify (or overcomplicate) the problem, we will create a graph of all the wiring nodes
