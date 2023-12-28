@@ -186,9 +186,10 @@ int main(int argc, char** argv)
                     bFoundGear = false;
                     while (kGearsOnRow.size() > 0)
                     {
-                        const SPosType kPos = kGearsOnRow.back();
+                        const SPosType  kPos   = kGearsOnRow.back();
+                        const SGearType kValue = { nGearValue, nGearId };
                         kGearsOnRow.pop_back();
-                        kPossiblePartNumbers[kPos] = SGearType({nGearValue, nGearId});
+                        kPossiblePartNumbers[kPos] = kValue;
                     }
                     ++nGearId;
                 }
