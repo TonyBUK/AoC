@@ -2,9 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <set>
 #include <array>
-#include <assert.h>
 
 struct SDigitsType
 {
