@@ -171,7 +171,12 @@ This let's us go the other way, and use a value to determine an index.  This is 
 
 **C++**
 
-TBD - I'm prioritising Python/C for my first pass of this year.
+This is conceptually the same as the Python version.  The main thing this uses ontop of other features is:
+
+- Iterators
+This is really a C++ way of walking through a collection of *things*, and not necessarily arrays.  This is very similar to Python but with a more verbose syntax.  More recent C++ versions tidy this up with auto loops, but as I target the lowest common denominator, it means you get the loops in all their glory.
+
+This also follows the Python approach to an extent, but does no string modification, and simply searches a string iteratively.  This does put it ahead speed wish compared to the Python version.
 
 **C**
 

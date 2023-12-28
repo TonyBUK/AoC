@@ -144,15 +144,15 @@ Personally, I think the sweet spot is the "medium" version for speed/readibility
 
 **C++**
 
-TBD - I'm prioritising Python/C for my first pass of this year.
-
-**C**
-
 This takes the shortcut my solution ignored.  At no point do we need all of the sub-games, all we ever need is the maximum values, as for Part One, if a game is possible, it means the *maximum* values for each Cube Colour were all below 12/13/14 respectively, and Part Two uses this in a more obvious direct way.
 
 This means we never really need to store the games at all, just per game, calculate the maximum number of cubes of each colour.  If it's valid, incrememnt the Game Total by the Game Id.  And irrespective of validity, increment the Game Power by the product of the maximum number of cubes.
 
-It is possible to go one step further, this takes something of a lazy route and reads text into a dynamic string buffer per line, it's perfectly possible to not do this and process the file one character at a time.
+We then just iterate the games, and store the answers as required.
+
+**C**
+
+It is possible to go one step further and perform all the calculations / parsing at the same time.  It would be simpler to store the entire line and tokenise it in the same way Python/C++ do, however, it's possible with a few simple rules to extract per line, the id and max stones per colour.
 
 For example, the first space will always be followed by a number, followed by a colon.  Then after this, because all we care about is maximums, we can make some big assumptions about consistent input formatting.  Consider:
 
