@@ -28,8 +28,9 @@ std::uint64_t countDigits(const std::string& kDigits, const std::vector<SDigitsT
         }
         nPos = nTestPos;
 
-        for (const auto& kDigit : kDigitsVector)
+        for (std::vector<SDigitsType>::const_iterator it = kDigitsVector.cbegin(); it != kDigitsVector.cend(); ++it)
         {
+            const SDigitsType& kDigit = *it;
             if (kDigits.find(kDigit.kDigit, nPos) == nPos)
             {
                 if (bFirst)
@@ -62,14 +63,16 @@ int main(int argc, char** argv)
     // Do a quick optimisation, we can derive sensible search areas by ignoring anything that
     // can't be any of the search terms.
     std::vector<char> kFirstOfPartOne;
-    for (const auto& kDigit : kDigitsVector)
+    for (std::vector<SDigitsType>::const_iterator it = kDigitsVector.cbegin(); it != kDigitsVector.cend(); ++it)
     {
+        const SDigitsType& kDigit = *it;
         kFirstOfPartOne.push_back(kDigit.kDigit[0]);
     }
 
     std::vector<char> kFirstOfPartTwo;
-    for (const auto& kDigit : kDigitsVectorWithWords)
+    for (std::vector<SDigitsType>::const_iterator it = kDigitsVectorWithWords.cbegin(); it != kDigitsVectorWithWords.cend(); ++it)
     {
+        const SDigitsType& kDigit = *it;
         kFirstOfPartTwo.push_back(kDigit.kDigit[0]);
     }
 
