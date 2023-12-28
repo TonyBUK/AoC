@@ -2,8 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <set>
-#include <array>
 #include <assert.h>
 
 class CCubeGame
