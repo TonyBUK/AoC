@@ -49,9 +49,10 @@ void CAlmanacEntry::AddRange(const SConversionRange& kRange)
 void CAlmanacEntry::MapRange(std::vector<SSeedRange>& kRanges) const
 {
     std::vector<SSeedRange> kRangesToProcess = kRanges;
-    std::vector<SSeedRange> kNewRanges;
     std::vector<SSeedRange> kSkippedRanges;
     bool                    bAny;
+
+    kRanges.clear();
 
     do
     {
@@ -87,7 +88,7 @@ void CAlmanacEntry::MapRange(std::vector<SSeedRange>& kRanges) const
 
                     // Middle
                     const SSeedRange kRange = { nStart - itConversion->nSourceStart + itConversion->nDestinationStart, nRange };
-                    kNewRanges.push_back(kRange);
+                    kRanges.push_back(kRange);
 
                     bAny         = true;
                     bAnyThisPass = true;
@@ -103,7 +104,7 @@ void CAlmanacEntry::MapRange(std::vector<SSeedRange>& kRanges) const
 
             if (!bAnyThisPass)
             {
-                kNewRanges.push_back(*itSeed);
+                kRanges.push_back(*itSeed);
             }
         }
 
@@ -118,7 +119,6 @@ void CAlmanacEntry::MapRange(std::vector<SSeedRange>& kRanges) const
         }
     } while (bAny);
 
-    kRanges = kNewRanges;
     kRanges.insert(kRanges.end(), kSkippedRanges.begin(), kSkippedRanges.end());
 }
 
