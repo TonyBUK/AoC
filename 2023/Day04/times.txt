@@ -1,0 +1,5 @@
+Language : Time      : Percentage of Best Time
+=========:===========:========================
+C        : 660us     : 100.00%
+C++      : 720us     : 109.07%
+Python   : 1650us    : 251.83%
