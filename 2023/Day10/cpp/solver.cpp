@@ -66,22 +66,22 @@ CPipeMap::CPipeMap() :
     m_kNeighbours.insert(std::make_pair('.', std::vector<SPosition>()));
     m_kNeighbours.insert(std::make_pair('S', std::vector<SPosition>()));
 
-    m_kNeighbours['|'].push_back(SPosition{  0, -1 });
-    m_kNeighbours['|'].push_back(SPosition{  0,  1 });
-    m_kNeighbours['-'].push_back(SPosition{ -1,  0 });
-    m_kNeighbours['-'].push_back(SPosition{  1,  0 });
-    m_kNeighbours['L'].push_back(SPosition{  1,  0 });
-    m_kNeighbours['L'].push_back(SPosition{  0, -1 });
-    m_kNeighbours['J'].push_back(SPosition{ -1,  0 });
-    m_kNeighbours['J'].push_back(SPosition{  0, -1 });
-    m_kNeighbours['7'].push_back(SPosition{ -1,  0 });
-    m_kNeighbours['7'].push_back(SPosition{  0,  1 });
-    m_kNeighbours['F'].push_back(SPosition{  1,  0 });
-    m_kNeighbours['F'].push_back(SPosition{  0,  1 });
-    m_kNeighbours['S'].push_back(SPosition{  0, -1 });
-    m_kNeighbours['S'].push_back(SPosition{  0,  1 });
-    m_kNeighbours['S'].push_back(SPosition{ -1,  0 });
-    m_kNeighbours['S'].push_back(SPosition{  1,  0 });
+    m_kNeighbours['|'].push_back((SPosition){  0, -1 });
+    m_kNeighbours['|'].push_back((SPosition){  0,  1 });
+    m_kNeighbours['-'].push_back((SPosition){ -1,  0 });
+    m_kNeighbours['-'].push_back((SPosition){  1,  0 });
+    m_kNeighbours['L'].push_back((SPosition){  1,  0 });
+    m_kNeighbours['L'].push_back((SPosition){  0, -1 });
+    m_kNeighbours['J'].push_back((SPosition){ -1,  0 });
+    m_kNeighbours['J'].push_back((SPosition){  0, -1 });
+    m_kNeighbours['7'].push_back((SPosition){ -1,  0 });
+    m_kNeighbours['7'].push_back((SPosition){  0,  1 });
+    m_kNeighbours['F'].push_back((SPosition){  1,  0 });
+    m_kNeighbours['F'].push_back((SPosition){  0,  1 });
+    m_kNeighbours['S'].push_back((SPosition){  0, -1 });
+    m_kNeighbours['S'].push_back((SPosition){  0,  1 });
+    m_kNeighbours['S'].push_back((SPosition){ -1,  0 });
+    m_kNeighbours['S'].push_back((SPosition){  1,  0 });
 }
 
 void CPipeMap::AddLine(const std::string& kLine, std::string::size_type& nXPosition)
