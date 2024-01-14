@@ -65,11 +65,14 @@ std::uint64_t CGalaxies::calculateManhattenDistance(const std::size_t nX1, const
 
 std::uint64_t CGalaxies::sumDistances(const std::uint64_t nDistanceScaling) const
 {
+    const std::uint64_t nWidth     = getWidth();
+    const std::uint64_t nHeight    = getHeight();
+
     // Cache the Columns for Speed on subsequent calls
     if (m_bRecalculateColumns)
     {
         m_kMapEmptyRows.clear();
-        for (std::size_t nY = 0; nY < getHeight(); ++nY)
+        for (std::size_t nY = 0; nY < nHeight; ++nY)
         {
             m_kMapEmptyRows.push_back((m_kMap[nY].find('#') == std::string::npos) ? 1 : 0);
         }
@@ -78,9 +81,13 @@ std::uint64_t CGalaxies::sumDistances(const std::uint64_t nDistanceScaling) cons
         for (std::size_t nX = 0; nX < getWidth(); ++nX)
         {
             bool bEmpty = true;
-            for (std::size_t nY = 0; bEmpty && (nY < getHeight()); ++nY)
+            for (std::size_t nY = 0; nY < nWidth; ++nY)
             {
-                bEmpty = bEmpty && (m_kMap[nY][nX] == '.');
+                if (m_kMap[nY][nX] != '.')
+                {
+                    bEmpty = false;
+                    break;
+                }
             }
             m_kMapEmptyColumns.push_back(bEmpty ? 1 : 0);
         }
@@ -89,8 +96,6 @@ std::uint64_t CGalaxies::sumDistances(const std::uint64_t nDistanceScaling) cons
 
     // Calculate the Expanded Galaxy Locations
     std::vector<SPosition> kGalaxyExpandedLocations;
-    const std::uint64_t nWidth     = getWidth();
-    const std::uint64_t nHeight    = getHeight();
     for (std::uint64_t nY = 0; nY < nHeight; ++nY)
     {
         for (std::uint64_t nX = 0; nX < nWidth; ++nX)
