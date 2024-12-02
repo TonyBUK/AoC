@@ -63,19 +63,21 @@ int main(int argc, char** argv)
             unsigned bSafe          = AOC_TRUE;
             unsigned bDampened      = AOC_FALSE;
 
-            // At any given time we need the last four values
-            // to determine direction and skipping without having
-            // to guess or store the entire list.
+            /*
+             * At any given time we need the last four values
+             * to determine direction and skipping without having
+             * to guess or store the entire list.
+             */
             uint32_t kValueBuffer[4];
             uint8_t  nBufferCount = 0u;
 
-            // Note: This does depend on there being at least 4 values...
+            /* Note: This does depend on there being at least 4 values... */
 
             do
             {            
                 const uint32_t nValue = GetNextValue(&pData, &bEOL);
 
-                // Append to the Buffer
+                /* Append to the Buffer */
                 if (nBufferCount < 4)
                 {
                     kValueBuffer[nBufferCount++] = nValue;
@@ -92,13 +94,13 @@ int main(int argc, char** argv)
                     kValueBuffer[3] = nValue;
                 }
 
-                // Determine the Direction is safe
+                /* Determine the Direction is safe */
                 const unsigned bDirection1 = kValueBuffer[0] < kValueBuffer[1];
                 const unsigned bDirection2 = kValueBuffer[1] < kValueBuffer[2];
                 const unsigned bDirection3 = kValueBuffer[2] < kValueBuffer[3];
                 bSafe = (bDirection1 == bDirection2) && (bDirection2 == bDirection3);
 
-                // Determine the Deltas are safe
+                /* Determine the Deltas are safe */
                 const uint32_t nDelta1 = ABSDIFF(kValueBuffer[0], kValueBuffer[1]);
                 const uint32_t nDelta2 = ABSDIFF(kValueBuffer[1], kValueBuffer[2]);
                 const uint32_t nDelta3 = ABSDIFF(kValueBuffer[2], kValueBuffer[3]);
@@ -109,7 +111,7 @@ int main(int argc, char** argv)
 
                 bSafePartOne &= bSafe;
 
-                // A mismatch has been detected, so try and find one item to remove that fixes this.
+                /* A mismatch has been detected, so try and find one item to remove that fixes this. */
                 if (bSafe != bSafePartTwo)
                 {
                     if (AOC_FALSE == bDampened)
@@ -118,14 +120,16 @@ int main(int argc, char** argv)
 
                         if ((bDirection1 != bDirection2) || !bDelta1)
                         {
-                            // Note: Because we've read ahead by 4, we can safely remove
-                            //       the first element without checking, since the only
-                            //       way this would be wrong is if we'd already shifted
-                            //       the array, however, for that to have happened, we'd
-                            //       have already evaluated it in the lookahead anyway.
+                            /*
+                             * Note: Because we've read ahead by 4, we can safely remove
+                             *       the first element without checking, since the only
+                             *       way this would be wrong is if we'd already shifted
+                             *       the array, however, for that to have happened, we'd
+                             *       have already evaluated it in the lookahead anyway.
+                             */
                             if ((bDirection2 == bDirection3) && bDelta2)
                             {
-                                // Problem is with the first element so just remove it
+                                /* Problem is with the first element so just remove it */
                                 kValueBuffer[0] = kValueBuffer[1];
                                 kValueBuffer[1] = kValueBuffer[2];
                                 kValueBuffer[2] = kValueBuffer[3];
@@ -140,7 +144,7 @@ int main(int argc, char** argv)
                         {
                             if ((bDirection1 == bDirection2) && bDelta2)
                             {
-                                // Problem is with the last element so just remove it
+                                /* Problem is with the last element so just remove it */
                                 --nBufferCount;
                             }
                             else
@@ -148,38 +152,40 @@ int main(int argc, char** argv)
                                 bMidPointTest = AOC_TRUE;
                             }
                         }
-                        else // !bDelta2
+                        else /* Non-Obvious end-point problem, so it's a mid-point problem... */
                         {
                             bMidPointTest = AOC_TRUE;
                         }
 
                         if (bMidPointTest)
                         {
-                            // This is a Mid-Point problem but we have two options
-                            // to choose from.
+                            /*
+                             * This is a Mid-Point problem but we have two options
+                             * to choose from.
+                             */
 
-                            // Option 1: Remove the Second Element
+                            /* Option 1: Remove the Second Element */
                             const uint32_t nSpeculativeDelta1 = ABSDIFF(kValueBuffer[0], kValueBuffer[2]);
                             const unsigned bSpeculativeDelta1 = (nSpeculativeDelta1 >= 1 && nSpeculativeDelta1 <= 3);
                             const unsigned bSpeculativeDirection1 = kValueBuffer[0] < kValueBuffer[2];
 
                             if ((bSpeculativeDirection1 == bDirection3) && bSpeculativeDelta1)
                             {
-                                // Remove the Second Element
+                                /* Remove the Second Element */
                                 kValueBuffer[1] = kValueBuffer[2];
                                 kValueBuffer[2] = kValueBuffer[3];
                                 --nBufferCount;
                             }
                             else
                             {
-                                // Option 2: Remove the Third Element
+                                /* Option 2: Remove the Third Element */
                                 const uint32_t nSpeculativeDelta2 = ABSDIFF(kValueBuffer[0], kValueBuffer[3]);
                                 const unsigned bSpeculativeDelta2 = (nSpeculativeDelta2 >= 1 && nSpeculativeDelta2 <= 3);
                                 const unsigned bSpeculativeDirection2 = kValueBuffer[1] < kValueBuffer[3];
 
                                 if ((bDirection1 == bSpeculativeDirection2) && bSpeculativeDelta2)
                                 {
-                                    // Remove the Third Element
+                                    /* Remove the Third Element */
                                     kValueBuffer[2] = kValueBuffer[3];
                                     --nBufferCount;
                                 }
@@ -194,7 +200,7 @@ int main(int argc, char** argv)
                     }
                     else
                     {
-                        // We've already dampened once, so this is not safe...
+                        /* We've already dampened once, so this is not safe... */
                         bSafePartTwo = AOC_FALSE;
                     }
                 }
