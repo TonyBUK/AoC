@@ -60,7 +60,7 @@ def main() :
     #end
  
     kLevels = []
-    with open("input.txt", "r") as inputFile:
+    with open("../input.txt", "r") as inputFile:
         kLevels = [[int(k) for k in kLine.strip().split(" ")] for kLine in inputFile]
     #end
 
