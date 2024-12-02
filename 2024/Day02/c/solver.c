@@ -150,24 +150,7 @@ int main(int argc, char** argv)
                         }
                         else // !bDelta2
                         {
-                            // This is a mid-point issue, so we have to conditionally check
-                            // whether removing the middle element will fix the issue.
-                            const uint32_t nSpeculativeDelta1 = nDelta1 + nDelta2;
-                            const uint32_t nSpeculativeDelta2 = nDelta2 + nDelta3;
-                            const unsigned bSpeculativeDelta1 = (nSpeculativeDelta1 >= 1 && nSpeculativeDelta1 <= 3);
-                            const unsigned bSpeculativeDelta2 = (nSpeculativeDelta2 >= 1 && nSpeculativeDelta2 <= 3);
-
-                            if (bSpeculativeDelta1 && bSpeculativeDelta2)
-                            {
-                                // Remove the Middle Element
-                                kValueBuffer[1] = kValueBuffer[2];
-                                kValueBuffer[2] = kValueBuffer[3];
-                                --nBufferCount;
-                            }
-                            else
-                            {
-                                bSafePartTwo = AOC_FALSE;
-                            }
+                            bMidPointTest = AOC_TRUE;
                         }
 
                         if (bMidPointTest)
