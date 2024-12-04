@@ -198,7 +198,9 @@ int main(int argc, char** argv)
                  * Only Search if this is the Start or End of XMAS
                  */
 
-                if ((kWordSearch[Y][X] == 'X') || (kWordSearch[Y][X] == 'S'))
+                const unsigned bForward = kWordSearch[Y][X] == 'X';
+                const unsigned bBackward = kWordSearch[Y][X] == 'S';
+                if (bForward || bBackward)
                 {
                     size_t nCurrentSearch;
 
@@ -209,7 +211,7 @@ int main(int argc, char** argv)
 
                         if (nSearchSize == 4)
                         {
-                            if ((strncmp(kFound, "XMAS", 4) == 0) || (strncmp(kFound, "SAMX", 4) == 0))
+                            if (bForward ? (strncmp(kFound, "XMAS", 4) == 0) : (strncmp(kFound, "SAMX", 4) == 0))
                             {
                                 ++nPartOne;
                             }
