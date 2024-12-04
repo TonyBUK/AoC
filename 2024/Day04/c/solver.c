@@ -5,6 +5,16 @@
 #include <assert.h>
 #include <time.h>
 
+#define AOC_TRUE  (1)
+#define AOC_FALSE (0)
+
+#define XMAS ("XMAS")
+#define SAMX ("SAMX")
+#define XMAS_SIZE (4)
+#define MS   ("MS")
+#define SM   ("SM")
+#define MS_SIZE (2)
+
 /* Boilerplate code to read an entire file into a 1D buffer and give 2D entries per line.
  * This uses the EOL \n to act as a delimiter for each line.
  *
@@ -13,9 +23,11 @@
 void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLineCount, size_t* pnFileLength, size_t* pnMaxLineLength, const size_t nPadLines)
 {
     const unsigned long     nStartPos      = ftell(*pFile);
+    const char*             kEOL           = "\n";
     unsigned long           nEndPos;
     unsigned long           nFileSize;
     unsigned                bProcessUnix   = 1;
+    size_t                  nEOLLength     = 1;
     char*                   pLine;
     size_t                  nLineCount     = 0;
     size_t                  nMaxLineLength = 0;
@@ -38,11 +50,15 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     assert(nReadCount > 0);
     assert(nReadCount <= nFileSize);
 
+    /* Detect whether this has a \r\n or \n EOL convention */
     if (strstr(*pkFileBuffer, "\r\n"))
     {
+        kEOL         = "\r\n";
         bProcessUnix = 0;
+        nEOLLength   = 2;
     }
 
+    /* Pad the File Buffer with a trailing new line (if needed) to simplify things later on */
     if ((*pkFileBuffer)[nReadCount] != '\n')
     {
         (*pkFileBuffer)[nReadCount]   = '\n';
@@ -60,61 +76,39 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
         }
     }
 
-    /* Find each line and store the result in the kLines Array */
-    /* Note: This specifically relies upon strtok overwriting new line characters with
-                NUL terminators. */
-    pLine = strtok(*pkFileBuffer, (bProcessUnix ? "\n" : "\r\n"));
-    while (pLine)
+    /*
+     * Convert the 1D string buffer into a 2D buffer delimited by EOL
+     *
+     * This effectively replaces all EOL's with NUL terminators.
+     */
+    pLine = *pkFileBuffer;
+    while (1)
     {
-        const size_t nLineLength = strlen(pLine);
-        char* pBufferedLine;
+        /* Find the next EOL */
+        char* pEOL = strstr(pLine, kEOL);
 
-        assert(pLine < &(*pkFileBuffer)[nReadCount]);
-
-        (*pkLines)[nLineCount] = pLine;
-        ++nLineCount;
-
-        pBufferedLine = pLine;
-
-        pLine = strtok(NULL, (bProcessUnix ? "\n" : "\r\n"));
-
-        /* Fix long standing bug where duplicate empty lines are skipped */
-        if (pLine)
+        /* Check whether we've reached the EOF */
+        if (NULL == pEOL)
         {
-            if((pLine - pBufferedLine) != nLineLength + 1)
-            {
-                if (bProcessUnix)
-                {
-                    char* pPreviousLine = pLine - 1;
-                    while (*pPreviousLine == '\n')
-                    {
-                        (*pkLines)[nLineCount] = pPreviousLine;
-                        ++nLineCount;
-
-                        *pPreviousLine = '\0';
-                        --pPreviousLine;
-                    }
-                }
-                else
-                {
-                    char* pPreviousLine = pLine - 2;
-                    while (*pPreviousLine == '\r')
-                    {
-                        (*pkLines)[nLineCount] = pPreviousLine;
-                        ++nLineCount;
-
-                        pPreviousLine[0] = '\0';
-                        pPreviousLine[1] = '\0';
-                        --pPreviousLine;
-                        --pPreviousLine;
-                    }
-                }
-            }
+            break;
         }
-
-        if (nLineLength > nMaxLineLength)
+        else
         {
-            nMaxLineLength = nLineLength;
+            const size_t nLineLength = pEOL - pLine;
+            if (nLineLength > nMaxLineLength)
+            {
+                nMaxLineLength = nLineLength;
+            }
+
+            assert(pLine < &(*pkFileBuffer)[nReadCount]);
+
+            (*pkLines)[nLineCount++] = pLine;
+
+            /* Replace the EOL with a NUL terminator */
+            *pEOL = '\0';
+
+            /* Move to the start of the next line... */
+            pLine = pEOL + nEOLLength;
         }
     }
 
@@ -135,23 +129,36 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     }
 }
 
-void getSearchArea(const char** kWordSearch, const size_t X, const size_t Y, const int kSearchArea[4][2], const size_t nSearchSize, const size_t nWidth, const size_t nHeight, char* kOutput, size_t* nOutputSize)
+typedef struct SearchStrideType
 {
-    size_t nOutputLength = 0;
-    for (size_t nCoordinate = 0; nCoordinate < nSearchSize; ++nCoordinate)
-    {
-        const int nX = (int)X + kSearchArea[nCoordinate][0];
-        const int nY = (int)Y + kSearchArea[nCoordinate][1];
+    int nXStride;
+    int nYStride;
+} SearchStrideType;
 
+void getSearchArea(const char** kWordSearch, const size_t X, const size_t Y, const SearchStrideType* kStride, const size_t nWidth, const size_t nHeight, char* kOutput, unsigned* bFound)
+{
+    int   nX      = (int)X;
+    int   nY      = (int)Y;
+    char* pOutput = kOutput;
+
+    size_t nOutputLength = 0;
+    for (size_t nCoordinate = 0; nCoordinate < XMAS_SIZE; ++nCoordinate)
+    {
+        /* We're only interested in full searches... */
         if ((nX < 0) || (nX >= (int)nWidth) || (nY < 0) || (nY >= (int)nHeight))
         {
-            continue;
+            *bFound = AOC_FALSE;
+            return;
         }
 
-        kOutput[nOutputLength++] = kWordSearch[nY][nX];
+        *(pOutput++) = kWordSearch[nY][nX];
+
+        /* Move the Pixels... */
+        nX += kStride->nXStride;
+        nY += kStride->nYStride;
     }
 
-    *nOutputSize = nOutputLength;
+    *bFound = AOC_TRUE;
 }
 
 int main(int argc, char** argv)
@@ -160,11 +167,11 @@ int main(int argc, char** argv)
 
     if (pData)
     {
-        const int SEARCH_AREAS[4][4][2] = {
-            {{ 0, 0}, { 1, 0}, { 2, 0}, { 3, 0}}, /* Across */
-            {{ 0, 0}, { 0, 1}, { 0, 2}, { 0, 3}}, /* Down */
-            {{ 0, 0}, {-1,-1}, {-2,-2}, {-3,-3}}, /* Diagonal Backward */
-            {{ 0, 0}, { 1,-1}, { 2,-2}, { 3,-3}}  /* Diagonal Forward */
+        const SearchStrideType SEARCH_STRIDES[4] = {
+            { 1, 0}, /* Across */
+            { 0, 1}, /* Down */
+            {-1,-1}, /* Diagonal Backward */
+            { 1,-1}  /* Diagonal Forward */
         };
 
         char*                       kBuffer;
@@ -174,18 +181,14 @@ int main(int argc, char** argv)
         size_t                      nLine       = 0;
         size_t                      X, Y;
 
-        char                        kFound[5]   = {'\0','\0','\0','\0','\0'};
+        char                        kFound[XMAS_SIZE+1]   = {'\0','\0','\0','\0','\0'};
 
         uint64_t                    nPartOne    = 0;
         uint64_t                    nPartTwo    = 0;
 
         /* Read the whole file into an easier to process 2D Buffer */
-        readLines(&pData, &kBuffer, &kWordSearch, &nHeight, NULL, NULL, 0);
+        readLines(&pData, &kBuffer, &kWordSearch, &nHeight, NULL, &nWidth, 0);
         fclose(pData);
-
-        /* Update the Width from any Arbitrary Line */
-        assert(nHeight > 0);
-        nWidth = strlen(kWordSearch[0]);
 
         for (Y = 0; Y < nHeight; ++Y)
         {
@@ -198,20 +201,20 @@ int main(int argc, char** argv)
                  * Only Search if this is the Start or End of XMAS
                  */
 
-                const unsigned bForward = kWordSearch[Y][X] == 'X';
-                const unsigned bBackward = kWordSearch[Y][X] == 'S';
-                if (bForward || bBackward)
+                /* Note: By caching forward, we can constrain the inner search space. */
+                const unsigned bForward  = kWordSearch[Y][X] == XMAS[0];
+                if (bForward || (kWordSearch[Y][X] == SAMX[0]))
                 {
                     size_t nCurrentSearch;
 
-                    for (nCurrentSearch = 0; nCurrentSearch < (sizeof(SEARCH_AREAS) / sizeof(SEARCH_AREAS[0])); ++nCurrentSearch)
+                    for (nCurrentSearch = 0; nCurrentSearch < (sizeof(SEARCH_STRIDES) / sizeof(SEARCH_STRIDES[0])); ++nCurrentSearch)
                     {
-                        size_t nSearchSize;
-                        getSearchArea((const char**)kWordSearch, X, Y, SEARCH_AREAS[nCurrentSearch], 4, nWidth, nHeight, kFound, &nSearchSize);
+                        unsigned bFound;
+                        getSearchArea((const char**)kWordSearch, X, Y, &SEARCH_STRIDES[nCurrentSearch], nWidth, nHeight, kFound, &bFound);
 
-                        if (nSearchSize == 4)
+                        if (bFound)
                         {
-                            if (bForward ? (strncmp(kFound, "XMAS", 4) == 0) : (strncmp(kFound, "SAMX", 4) == 0))
+                            if (bForward ? (strncmp(kFound, XMAS, XMAS_SIZE) == 0) : (strncmp(kFound, SAMX, XMAS_SIZE) == 0))
                             {
                                 ++nPartOne;
                             }
@@ -226,15 +229,15 @@ int main(int argc, char** argv)
                  * We can constrain the overall search range to guarentee no out of bounds reads
                  * since a valid "A" will never be on the edges.
                  */
-                if (Y > 0 && Y < nHeight - 1 && X > 0 && X < nWidth - 1)
+                if ((Y > 0) && (Y < (nHeight - 1)) && (X > 0) && (X < (nWidth - 1)))
                 {
                     if (kWordSearch[Y][X] == 'A')
                     {
                         const char kPairOne[3] = {kWordSearch[Y-1][X-1], kWordSearch[Y+1][X+1], '\0'};
                         const char kPairTwo[3] = {kWordSearch[Y-1][X+1], kWordSearch[Y+1][X-1], '\0'};
 
-                        if (((0 == strncmp(kPairOne, "MS", 2)) || (0 == strncmp(kPairOne, "SM", 2))) &&
-                            ((0 == strncmp(kPairTwo, "MS", 2)) || (0 == strncmp(kPairTwo, "SM", 2))))
+                        if (((0 == strncmp(kPairOne, MS, MS_SIZE)) || (0 == strncmp(kPairOne, SM, MS_SIZE))) &&
+                            ((0 == strncmp(kPairTwo, MS, MS_SIZE)) || (0 == strncmp(kPairTwo, SM, MS_SIZE))))
                         {
                             ++nPartTwo;
                         }
@@ -245,7 +248,7 @@ int main(int argc, char** argv)
 
         printf("Part 1: %" PRIu64 "\n", nPartOne);
         printf("Part 2: %" PRIu64 "\n", nPartTwo);
-
+#
         /* Free any Allocated Memory */
         free(kBuffer);
         free(kWordSearch);
