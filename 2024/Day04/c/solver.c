@@ -167,13 +167,6 @@ int main(int argc, char** argv)
             {{ 0, 0}, { 1,-1}, { 2,-2}, { 3,-3}}  /* Diagonal Forward */
         };
 
-        /* The space is the trick here... as all I need is anything in this string to
-         * be matched, though this does rely upon knowing that the input data will be
-         * "full of letters" , i.e. no spaces or other characters.
-         */
-        const char* kValidPermutationsPartOne = "XMAS SAMX";
-        const char* kValidPermutationsPartTwo = "MS SM"; 
-
         char*                       kBuffer;
         char**                      kWordSearch;
         size_t                      nHeight;
@@ -216,7 +209,7 @@ int main(int argc, char** argv)
 
                         if (nSearchSize == 4)
                         {
-                            if (strstr(kValidPermutationsPartOne, kFound))
+                            if ((strncmp(kFound, "XMAS", 4) == 0) || (strncmp(kFound, "SAMX", 4) == 0))
                             {
                                 ++nPartOne;
                             }
@@ -238,7 +231,8 @@ int main(int argc, char** argv)
                         const char kPairOne[3] = {kWordSearch[Y-1][X-1], kWordSearch[Y+1][X+1], '\0'};
                         const char kPairTwo[3] = {kWordSearch[Y-1][X+1], kWordSearch[Y+1][X-1], '\0'};
 
-                        if (!(!strstr(kValidPermutationsPartTwo, kPairOne) || !strstr(kValidPermutationsPartTwo, kPairTwo)))
+                        if (((0 == strncmp(kPairOne, "MS", 2)) || (0 == strncmp(kPairOne, "SM", 2))) &&
+                            ((0 == strncmp(kPairTwo, "MS", 2)) || (0 == strncmp(kPairTwo, "SM", 2))))
                         {
                             ++nPartTwo;
                         }
