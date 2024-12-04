@@ -166,7 +166,13 @@ int main(int argc, char** argv)
             {{ 0, 0}, {-1,-1}, {-2,-2}, {-3,-3}}, /* Diagonal Backward */
             {{ 0, 0}, { 1,-1}, { 2,-2}, { 3,-3}}  /* Diagonal Forward */
         };
-        const char* kValidPermutations = "MS SM"; /* The space is the trick here... */
+
+        /* The space is the trick here... as all I need is anything in this string to
+         * be matched, though this does rely upon knowing that the input data will be
+         * "full of letters" , i.e. no spaces or other characters.
+         */
+        const char* kValidPermutationsPartOne = "XMAS SAMX";
+        const char* kValidPermutationsPartTwo = "MS SM"; 
 
         char*                       kBuffer;
         char**                      kWordSearch;
@@ -210,7 +216,7 @@ int main(int argc, char** argv)
 
                         if (nSearchSize == 4)
                         {
-                            if ((strncmp(kFound, "XMAS", 4) == 0) || (strncmp(kFound, "SAMX", 4) == 0))
+                            if (strstr(kValidPermutationsPartOne, kFound))
                             {
                                 ++nPartOne;
                             }
@@ -232,7 +238,7 @@ int main(int argc, char** argv)
                         const char kPairOne[3] = {kWordSearch[Y-1][X-1], kWordSearch[Y+1][X+1], '\0'};
                         const char kPairTwo[3] = {kWordSearch[Y-1][X+1], kWordSearch[Y+1][X-1], '\0'};
 
-                        if (!(!strstr(kValidPermutations, kPairOne) || !strstr(kValidPermutations, kPairTwo)))
+                        if (!(!strstr(kValidPermutationsPartTwo, kPairOne) || !strstr(kValidPermutationsPartTwo, kPairTwo)))
                         {
                             ++nPartTwo;
                         }
