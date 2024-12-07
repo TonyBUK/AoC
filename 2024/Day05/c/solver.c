@@ -10,8 +10,9 @@
 
 typedef struct OrderingRules
 {
-    uint8_t kPageAfter[MAX_PAGES];
-    size_t  nNumRules;
+    uint8_t  kPageAfter[MAX_PAGES];
+    unsigned kPageAfterSet[MAX_PAGES];
+    size_t   nNumRules;
 } OrderingRules;
 
 OrderingRules* g_kRules;
@@ -173,13 +174,9 @@ int compare(const void *a, const void *b)
     }
     else
     {
-        size_t i;
-        for (i = 0; i < g_kRules[arg1].nNumRules; ++i)
+        if (g_kRules[arg1].kPageAfterSet[arg2])
         {
-            if (g_kRules[arg1].kPageAfter[i] == arg2)
-            {
-                return -1;
-            }
+            return -1;
         }
     } 
 
@@ -235,6 +232,7 @@ int main(int argc, char** argv)
                     assert(nPageAfter < MAX_PAGES);
 
                     g_kRules[nPageBefore].kPageAfter[g_kRules[nPageBefore].nNumRules++] = (uint8_t)nPageAfter;
+                    g_kRules[nPageBefore].kPageAfterSet[nPageAfter] = AOC_TRUE;
                 }
             }
             else
