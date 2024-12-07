@@ -6,7 +6,6 @@ from functools import cmp_to_key
 def main() :
  
     kPageOrderingRules         = {}
-    kReversedPageOrderingRules = {}
     kUpdates                   = []
  
     with open("../input.txt", "r") as inputFile:
@@ -23,14 +22,6 @@ def main() :
                 kPageOrderingRules[kPair[0]] = set([kPair[1]])
             else :
                 kPageOrderingRules[kPair[0]].add(kPair[1])
-            #end
- 
-            # For Part Two - Reversed Page Ordering Rules means pages that
-            # can't come before.
-            if kPair[1] not in kReversedPageOrderingRules :
-                kReversedPageOrderingRules[kPair[1]] = set([kPair[0]])
-            else :
-                kReversedPageOrderingRules[kPair[1]].add(kPair[0])
             #end
  
         #end
