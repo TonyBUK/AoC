@@ -4,9 +4,9 @@ import math
 
 def main() :
 
-    def equationSolveable(kEquation : list[int], nIndex : int = 1, nRunningTotal : int = 0, bPartTwo : bool = False) :
+    def equationSolveablePartOne(kEquation : list[int], nLength : int, nIndex : int = 1, nRunningTotal : int = 0, kPartOneProducts : list[int] = None) -> bool : 
 
-        if nIndex == len(kEquation) :
+        if nIndex == nLength :
             if nRunningTotal == kEquation[0] :
                 return True
             #end
@@ -17,23 +17,24 @@ def main() :
 
         # Perform the Concatenation first for Part Two since we know the solution
         # requires it.
-        if bPartTwo :
-            # Equivalent to int(f"{nRunningTotal}{kEquation[nIndex]}")
-            bFound = equationSolveable(kEquation, nIndex + 1, (nRunningTotal * (10 ** (1 + int(math.log10(kEquation[nIndex]))))) + kEquation[nIndex], bPartTwo=bPartTwo)
-            if bFound :
-                return True
+        if nRunningTotal > 0 :
+
+            # Quick Discard Case
+            # Multiplying the Data does not reach the appropriate order of magnitude
+            nWorstCaseProduct = nRunningTotal * kPartOneProducts[nIndex-1]
+            if nWorstCaseProduct < kEquation[0] :
+                return False
             #end
+
         #end
 
         # Add
-        bFound = equationSolveable(kEquation, nIndex + 1, nRunningTotal + kEquation[nIndex], bPartTwo=bPartTwo)
-        if bFound :
+        if equationSolveablePartOne(kEquation, nLength, nIndex + 1, nRunningTotal + kEquation[nIndex], kPartOneProducts=kPartOneProducts) :
             return True
         #end
 
         # Multiply
-        bFound = equationSolveable(kEquation, nIndex + 1, nRunningTotal * kEquation[nIndex], bPartTwo=bPartTwo)
-        if bFound :
+        if equationSolveablePartOne(kEquation, nLength, nIndex + 1, nRunningTotal * kEquation[nIndex], kPartOneProducts=kPartOneProducts) :
             return True
         #end
 
@@ -41,29 +42,99 @@ def main() :
 
     #end
 
-    kCalibrationEquations = []
+    def equationSolveablePartTwo(kEquation : list[int], nLength : int, nIndex : int = 1, nRunningTotal : int = 0, kPartTwoConcatenations : list[int] = None) -> bool : 
+
+        if nIndex == nLength :
+            if nRunningTotal == kEquation[0] :
+                return True
+            #end
+            return False
+        elif nRunningTotal > kEquation[0] :
+            return False
+        #end
+
+        # Perform the Concatenation first for Part Two since we know the solution
+        # requires it.
+
+        # Quick Discard Case
+        # Concatenating all remaining data does not reach the appropriate order of magnitude
+        nWorstCaseConcatenation = (nRunningTotal * (10 ** (1 + int(math.log10(kPartTwoConcatenations[nIndex-1]))))) + kPartTwoConcatenations[nIndex-1]
+        if nWorstCaseConcatenation < kEquation[0] :
+            return False
+        #end
+
+        # Equivalent to int(f"{nRunningTotal}{kEquation[nIndex]}")
+        if equationSolveablePartTwo(kEquation, nLength, nIndex + 1, (nRunningTotal * (10 ** (1 + int(math.log10(kEquation[nIndex]))))) + kEquation[nIndex], kPartTwoConcatenations=kPartTwoConcatenations) :
+            return True
+        #end
+
+        # Add
+        if equationSolveablePartTwo(kEquation, nLength, nIndex + 1, nRunningTotal + kEquation[nIndex], kPartTwoConcatenations=kPartTwoConcatenations) :
+            return True
+        #end
+
+        # Multiply
+        if equationSolveablePartTwo(kEquation, nLength, nIndex + 1, nRunningTotal * kEquation[nIndex], kPartTwoConcatenations=kPartTwoConcatenations) :
+            return True
+        #end
+
+        return False
+
+    #end
+
+    kCalibrationEquations  = []
+    kPartOneProducts       = []
+    kPartTwoConcatenations = []
+
     with open("../input.txt", "r") as inputFile:
 
-        kCalibrationEquations = [
-            [int(kTokens[0])] + [int(k) for k in kTokens[1].split(" ")]
-               for line in inputFile.readlines()
-                  for kTokens in [line.split(": ")]
-        ]
-#        for line in inputFile.readlines() :
-#            kTokens = line.split(": ")
-#            kCalibrationEquations.append([int(kTokens[0])] + [int(k) for k in kTokens[1].split(" ")])
-#        #end
+        for kLine in inputFile.readlines() :
+
+            kLine      = kLine.replace("\n", "")
+            kTokens    = kLine.split(": ")
+            kSubTokens = kTokens[1].split(" ")
+
+            # Equations for both parts
+            kCalibrationEquations.append([int(kTokens[0])] + [int(k) for k in kSubTokens])
+
+            # For the Part One Quick Case Discard, we can pre-compute the worst case magitudes
+            # Part Two adds a concatenation operator, we can precompute the worst case
+            # substrings for the quick discard cases.
+            kPartOneProducts.append([1] * len(kSubTokens))
+            kPartTwoConcatenations.append([])
+
+            for i in range(len(kSubTokens)) :
+
+                for j in range(i, len(kSubTokens)) :
+
+                    # Times Zero should be skipped, just incase
+                    if int(kSubTokens[j]) == 0 :
+                        continue
+                    # Times One is better as an Addition
+                    elif int(kSubTokens[j]) == 1 :
+                        kPartOneProducts[-1][i] += 1
+                    else :
+                        kPartOneProducts[-1][i] *= int(kSubTokens[j])
+                    #end
+
+                #end
+
+                kPartTwoConcatenations[-1].append(int("".join(kSubTokens[i:])))
+
+            #end
+
+        #end
 
     #end
 
     # Solve Part One (+ and * only)
-    kSolveableEquations = [equationSolveable(k) for k in kCalibrationEquations]
+    kSolveableEquations = [equationSolveablePartOne(k, len(k), kPartOneProducts=p) for k,p in zip(kCalibrationEquations, kPartOneProducts)]
     nPartOne            = sum([k[0] for b,k in zip(kSolveableEquations, kCalibrationEquations) if b])
     print(f"Part 1: {nPartOne}")
 
     # Solve Part Two (any unsolved from part one now allowing the concat operator)
-    kSolveableEquations = [equationSolveable(k, bPartTwo=True) if not b else True for b,k in zip(kSolveableEquations, kCalibrationEquations)]
-    nPartTwo            = sum([k[0] for b,k in zip(kSolveableEquations, kCalibrationEquations) if b])
+    kSolveableEquations = [equationSolveablePartTwo(k, len(k), kPartTwoConcatenations=c) if not b else True for b,k,c in zip(kSolveableEquations, kCalibrationEquations, kPartTwoConcatenations)]
+    nPartTwo            = sum([k[0] for b,k in zip(kSolveableEquations, kCalibrationEquations,) if b])
     print(f"Part 2: {nPartTwo}")
 
 #end
