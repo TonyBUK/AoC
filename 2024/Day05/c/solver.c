@@ -165,22 +165,7 @@ unsigned validPageOrdering(const uint8_t* kUpdates, const size_t nNumUpdates, ui
 
 int compare(const void *a, const void *b)
 {
-    const uint8_t arg1 = *(const uint8_t*)a;
-    const uint8_t arg2 = *(const uint8_t*)b;
-
-    if (g_kRules[arg1].nNumRules == 0)
-    {
-        return -1;
-    }
-    else
-    {
-        if (g_kRules[arg1].kPageAfterSet[arg2])
-        {
-            return -1;
-        }
-    } 
-
-    return 1;
+    return g_kRules[*(const uint8_t*)a].kPageAfterSet[*(const uint8_t*)b] ? 1 : -1;
 }
 
 int main(int argc, char** argv)
