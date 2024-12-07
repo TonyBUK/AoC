@@ -90,9 +90,9 @@ def main() :
 
         for kLine in inputFile.readlines() :
 
-            kLine      = kLine.replace("\n", "")
             kTokens    = kLine.split(": ")
-            kSubTokens = kTokens[1].split(" ")
+            kSubTokens = kTokens[1].replace("\n", "").split(" ")
+            nLength    = len(kSubTokens)
 
             # Equations for both parts
             kCalibrationEquations.append([int(kTokens[0])] + [int(k) for k in kSubTokens])
@@ -103,18 +103,20 @@ def main() :
             kPartOneProducts.append([1] * len(kSubTokens))
             kPartTwoConcatenations.append([])
 
-            for i in range(len(kSubTokens)) :
+            for i in range(nLength) :
 
-                for j in range(i, len(kSubTokens)) :
+                for j in range(i, nLength) :
 
-                    # Times Zero should be skipped, just incase
-                    if int(kSubTokens[j]) == 0 :
-                        continue
+                    nValue = int(kSubTokens[j])
+
+#                    # Times Zero should be skipped, just incase
+#                    if nValue == 0 :
+#                        continue
                     # Times One is better as an Addition
-                    elif int(kSubTokens[j]) == 1 :
+                    if nValue == 1 :
                         kPartOneProducts[-1][i] += 1
                     else :
-                        kPartOneProducts[-1][i] *= int(kSubTokens[j])
+                        kPartOneProducts[-1][i] *= nValue
                     #end
 
                 #end
