@@ -36,7 +36,7 @@ def main() :
     kMaze           = []
     kGuardPos       = None
 
-    with open("input.txt", "r") as inputFile:
+    with open("../input.txt", "r") as inputFile:
 
         kMaze      = [list(kInputLine.strip()) for kInputLine in inputFile.readlines()]
         kObstacles = set()

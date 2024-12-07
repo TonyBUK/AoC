@@ -240,7 +240,7 @@ uint32_t calculateGuardNode(const uint32_t* const kObstacleSet, const uint32_t k
     return TO_KEY_WITH_B(X_FROM_KEY(kCurrentGuardPos), Y_FROM_KEY(kCurrentGuardPos), TURN_RIGHT(eGuardDirection), bInBounds);
 }
 
-unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, const uint32_t* const kGuardCatchSet, const uint32_t* const kGuardMoveNodes, const uint32_t kGuardStartPos)
+unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, const uint32_t* const kGuardCatchSet, const uint32_t* const kGuardMoveNodes, const uint32_t kGuardStartPos, const size_t nWidth, const size_t nHeight)
 {
     const int nObstacleX = X_FROM_KEY(kNewObstaclePos);
     const int nObstacleY = Y_FROM_KEY(kNewObstaclePos);
@@ -311,7 +311,7 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
                 nNextPosX = X_FROM_KEY(kGuardPos) + DIRECTION_VECTORS[eNextDirection][0];
                 nNextPosY = Y_FROM_KEY(kGuardPos) + DIRECTION_VECTORS[eNextDirection][1];
 
-                if ((nNextPosX >= 0) && ((size_t)nNextPosX < X_DATA_MAX) && (nNextPosY >= 0) && ((size_t)nNextPosY < Y_DATA_MAX))
+                if ((nNextPosX >= 0) && ((size_t)nNextPosX < nWidth) && (nNextPosY >= 0) && ((size_t)nNextPosY < nHeight))
                 {
                     /* Is this a valid key... */
                     const uint32_t kNextGuardPos = TO_KEY(X_FROM_KEY(kGuardPos), Y_FROM_KEY(kGuardPos), eNextDirection);
@@ -475,7 +475,7 @@ int main(int argc, char** argv)
             const uint32_t kObstaclePos = kGuardVisit[nNode];
             if (kObstaclePos != kGuardPos)
             {
-                const unsigned bLoop = getLoop(kGuardFirstMovePos, kObstaclePos, kGuardCatchSet, kGuardMoveNodes, kGuardPos);
+                const unsigned bLoop = getLoop(kGuardFirstMovePos, kObstaclePos, kGuardCatchSet, kGuardMoveNodes, kGuardPos, nWidth, nHeight);
 
                 if (bLoop)
                 {
