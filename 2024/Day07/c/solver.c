@@ -118,23 +118,39 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     }
 }
 
-unsigned equationSolveable(const uint64_t nTarget, const uint64_t* kEquation, const size_t nEquationSize, const size_t nIndex, const uint64_t nRunningTotal, const unsigned bPartTwo)
+unsigned equationSolveable(const uint64_t* kEquation, const size_t nEquationSize, const int64_t nIndex, const int64_t nRunningTotal, const unsigned bPartTwo)
 {
-    unsigned bFound;
+    int64_t  nSubtractFromTotal;
 
-    if (nIndex == nEquationSize)
+    if (nIndex < 0)
     {
-        if (nRunningTotal == nTarget)
+        if (nRunningTotal == 0)
         {
             return AOC_TRUE;
         }
 
         return AOC_FALSE;
     }
-    else if (nRunningTotal > nTarget)
+    else if (nRunningTotal < 0)
     {
         return AOC_FALSE;
     }
+
+    /*
+     * Note: The core premise here is to actually work backwards through the equation, starting from the
+     *       target value and working back towards zero.
+     *
+     *       - Addition becomes subtraction.
+     *       - Multiplication becomes division (with a simple modulo check to determine if its valid or not).
+     *       - Concatenation becomes a base 10 shift (with a simple modulo check to determine if its valid or not).
+     *
+     *       What this allows is quicker discards for Multiply/Concatenation using modulo, as anywhere with a
+     *       remainder will never be valid, since when working forwards, it would have been impossible to
+     *       have a fractional value.
+     */
+
+    /* Shared between "Addition" and "Concatention" */
+    nSubtractFromTotal = nRunningTotal - kEquation[nIndex];
 
     /*
      * Perform the Concatenation first for Part Two since we know the solution
@@ -142,27 +158,41 @@ unsigned equationSolveable(const uint64_t nTarget, const uint64_t* kEquation, co
      */
     if (bPartTwo)
     {
-        char kBuffer[32];
-        sprintf(kBuffer, "%" PRIu64 "%" PRIu64, nRunningTotal, kEquation[nIndex]);
-        bFound = equationSolveable(nTarget, kEquation, nEquationSize, nIndex + 1, strtoull(kBuffer, NULL, 10), bPartTwo);
-        if (bFound)
+        /* I'm avoid the maths library as I don't want to work in floating point...
+         * so we can do a simple base 10 shift to determine the magnitude of the
+         * next value to understand how it would have impacted the running total
+         * if we were working left to right.
+         */
+        int64_t nDemoninator = 1;
+        int64_t nNextValue   = kEquation[nIndex];
+        while (nNextValue > 0)
         {
-            return AOC_TRUE;
+            nDemoninator *= 10;
+            nNextValue /= 10;
+        }
+
+        if (0 == (nSubtractFromTotal % nDemoninator))
+        {
+            if (equationSolveable(kEquation, nEquationSize, nIndex - 1, nSubtractFromTotal / nDemoninator, bPartTwo))
+            {
+                return AOC_TRUE;
+            }
         }
     }
 
     /* Add */
-    bFound = equationSolveable(nTarget, kEquation, nEquationSize, nIndex + 1, nRunningTotal + kEquation[nIndex], bPartTwo);
-    if (bFound)
+    if (equationSolveable(kEquation, nEquationSize, nIndex - 1, nSubtractFromTotal, bPartTwo))
     {
         return AOC_TRUE;
     }
 
     /* Multiply */
-    bFound = equationSolveable(nTarget, kEquation, nEquationSize, nIndex + 1, nRunningTotal * kEquation[nIndex], bPartTwo);
-    if (bFound)
+    if (0 == (nRunningTotal % kEquation[nIndex]))
     {
-        return AOC_TRUE;
+        if (equationSolveable(kEquation, nEquationSize, nIndex - 1, nRunningTotal / kEquation[nIndex], bPartTwo))
+        {
+            return AOC_TRUE;
+        }
     }
 
     return AOC_FALSE;
@@ -206,12 +236,12 @@ int main(int argc, char** argv)
                 pOperand = strstr(pOperand+1, " ");
             }
 
-            if (equationSolveable(nTarget, kEquationOperands, nEquationOperandCount, 0, 0, AOC_FALSE))
+            if (equationSolveable(kEquationOperands, nEquationOperandCount, nEquationOperandCount - 1, nTarget, AOC_FALSE))
             {
                 nPartOneSum += nTarget;
                 nPartTwoSum += nTarget;
             }
-            else if (equationSolveable(nTarget, kEquationOperands, nEquationOperandCount, 0, 0, AOC_TRUE))
+            else if (equationSolveable(kEquationOperands, nEquationOperandCount, nEquationOperandCount - 1, nTarget, AOC_TRUE))
             {
                 nPartTwoSum += nTarget;
             }
