@@ -243,10 +243,6 @@ int main(int argc, char** argv)
             for (nX = 0; nX < nWidth; ++nX)
             {
                 const size_t nAntennaType = (size_t)kAntennaBuffer[nY][nX];
-                if (78 == nAntennaType)
-                {
-                    int __i = 0;
-                }
                 if (isalnum(nAntennaType))
                 {
                     if (kAntennas[nAntennaType].nAntennaCount == 0)
