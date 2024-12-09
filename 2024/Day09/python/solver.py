@@ -1,16 +1,13 @@
 import time
 import sys
-import enum
 import math
 
 def main() :
 
-    class EFileState(enum.Enum) :
-        ID          = 0
-        SPACE       = 1
-    #end
-
     def compactPartOne(kFilesOriginal : dict[int, int], kFreeSpaceOriginal : list[int], nLeftMostFreeSpace : int) :
+
+        ID    = 0
+        SPACE = 1
 
         # Caclulate the Checksum on the Compressed Disk (stored as a list of id's)
         def checksumPartOne(kCompressedDisk : list[int]) -> int :
@@ -25,30 +22,30 @@ def main() :
         kFreeSpace = kFreeSpaceOriginal
 
         # We Know File One occupies the first space
-        kCompressedDisk = [kFiles[0][EFileState.ID]] * kFiles[0][EFileState.SPACE]
-        kFiles[0][EFileState.SPACE] = 0
-        nRightMostFile  = len(kFiles) - 1
+        kCompressedDisk  = [kFiles[0][ID]] * kFiles[0][SPACE]
+        kFiles[0][SPACE] = 0
+        nRightMostFile   = len(kFiles) - 1
 
         # Iterate until all files are moved
         while True :
 
-            nSpaceTopMove    = min(kFiles[nRightMostFile][EFileState.SPACE], kFreeSpace[nLeftMostFreeSpace])
-            kCompressedDisk += [kFiles[nRightMostFile][EFileState.ID]] * nSpaceTopMove
+            nSpaceTopMove    = min(kFiles[nRightMostFile][SPACE], kFreeSpace[nLeftMostFreeSpace])
+            kCompressedDisk += [kFiles[nRightMostFile][ID]] * nSpaceTopMove
 
-            kFreeSpace[nLeftMostFreeSpace]           -= nSpaceTopMove
-            kFiles[nRightMostFile][EFileState.SPACE] -= nSpaceTopMove
+            kFreeSpace[nLeftMostFreeSpace] -= nSpaceTopMove
+            kFiles[nRightMostFile][SPACE]  -= nSpaceTopMove
 
             while nLeftMostFreeSpace < len(kFreeSpace) and kFreeSpace[nLeftMostFreeSpace] == 0 :
                 nLeftMostFreeSpace += 1
-                kCompressedDisk += [kFiles[nLeftMostFreeSpace][EFileState.ID]] * kFiles[nLeftMostFreeSpace][EFileState.SPACE]
-                kFiles[nLeftMostFreeSpace][EFileState.SPACE] = 0
+                kCompressedDisk    += [kFiles[nLeftMostFreeSpace][ID]] * kFiles[nLeftMostFreeSpace][SPACE]
+                kFiles[nLeftMostFreeSpace][SPACE] = 0
             #end
 
-            while (nRightMostFile > 0) and (0 == kFiles[nRightMostFile][EFileState.SPACE]) :
+            while (nRightMostFile > 0) and (0 == kFiles[nRightMostFile][SPACE]) :
                 nRightMostFile -= 1
             #end
 
-            if 0 == kFiles[nRightMostFile][EFileState.SPACE] :
+            if 0 == kFiles[nRightMostFile][SPACE] :
                 break
             #end
 
@@ -81,16 +78,20 @@ def main() :
 
         #end
 
+        # For speed sake, we want to quickly get to the lowest free space of
+        # each magnitude, meaning we split the data by size, and sort by
+        # position.
         kFreeSpaceNodesBySize = [[] for _ in range(10)]
-
         for kFreeSpaceNode in sorted(kFreeSpaceNodes) :
             if kFreeSpaceNode[0] != 0 :
                 kFreeSpaceNodesBySize[kFreeSpaceNode[0]].append(kFreeSpaceNode)
             #end
         #end
 
+        # New File List we'll be construction
         kNewFileList = []
 
+        # Work backwards from the highest node to the lowest node
         for kNode in reversed(kNodes) :
 
             nSpaceNeeded = kNode[1]
@@ -99,6 +100,7 @@ def main() :
             nLowestNode = math.inf
             kLowestNode = None
 
+            # Find the lowest free space node that can fit the file
             for nNodeSize in range(nSpaceNeeded, 10) :
                 if len(kFreeSpaceNodesBySize[nNodeSize]) > 0 :
                     if -kFreeSpaceNodesBySize[nNodeSize][-1][1] < kNode[2] :
@@ -111,17 +113,29 @@ def main() :
                 #end
             #end
 
+            # Add the File to either the Lowest Free Node or in its existing
+            # location.
+            # Note: For the final sort, we push the position to the most
+            #       prominent position in the list to process data in disk
+            #       order.
             if not bFound :
+
+                # Existing Location
                 kNewFileList.append((kNode[2], kNode[0], kNode[1]))
+
             else :
 
+                # New Location
                 kNewFileList.append((-kLowestNode[1], kNode[0], kNode[1]))
 
+                # Remove the Free Space Node from its current size bracket÷÷÷
                 kFreeSpaceNodesBySize[kLowestNode[0]].pop()
 
+                # Update the Free Space Nodes
                 kLowestNode[0] -= nSpaceNeeded
                 kLowestNode[1] -= nSpaceNeeded
 
+                # Move the Free Space Node to its new size bracket (if non-zero)
                 if kLowestNode[0] > 0 :
                     kFreeSpaceNodesBySize[kLowestNode[0]].append(kLowestNode)
                     kFreeSpaceNodesBySize[kLowestNode[0]] = sorted(kFreeSpaceNodesBySize[kLowestNode[0]])
@@ -135,7 +149,7 @@ def main() :
 
     #end
 
-    with open("../input.txt", "r") as inputFile:
+    with open("input.txt", "r") as inputFile:
 
         for kLine in inputFile :
 
@@ -157,11 +171,7 @@ def main() :
                     nId = i // 2
 
                     # File
-                    kFilesPartOne[nId] = {
-                        EFileState.ID          : nId,
-                        EFileState.SPACE       : nSpace
-                    }
-
+                    kFilesPartOne[nId] = [nId, nSpace]
                     kFilesPartTwo.append((nId, nSpace, nPos))
                     nPos += nSpace
 
