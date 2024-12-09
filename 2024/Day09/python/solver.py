@@ -149,7 +149,7 @@ def main() :
 
     #end
 
-    with open("input.txt", "r") as inputFile:
+    with open("../input.txt", "r") as inputFile:
 
         for kLine in inputFile :
 
