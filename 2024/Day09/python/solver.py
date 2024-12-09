@@ -4,7 +4,7 @@ import math
 
 def main() :
 
-    def compactPartOne(kFilesOriginal : dict[int, int], kFreeSpaceOriginal : list[int], nLeftMostFreeSpace : int) :
+    def compactPartOne(kFiles : dict[int, int], kFreeSpace : list[int]) :
 
         ID    = 0
         SPACE = 1
@@ -18,13 +18,11 @@ def main() :
             return nChecksum
         #end
 
-        kFiles     = kFilesOriginal
-        kFreeSpace = kFreeSpaceOriginal
-
         # We Know File One occupies the first space
-        kCompressedDisk  = [kFiles[0][ID]] * kFiles[0][SPACE]
-        kFiles[0][SPACE] = 0
-        nRightMostFile   = len(kFiles) - 1
+        nLeftMostFreeSpace = 0
+        kCompressedDisk    = [kFiles[0][ID]] * kFiles[0][SPACE]
+        kFiles[0][SPACE]   = 0
+        nRightMostFile     = len(kFiles) - 1
 
         # Iterate until all files are moved
         while True :
@@ -156,10 +154,9 @@ def main() :
             kFilesPartOne      = {}
             kFreeSpacePartOne  = []
             kLine              = kLine.strip()
-            nLeftMostFreeSpace = None
             
-            kFilesPartTwo        = []
-            kFreeSpacePartTwo = []
+            kFilesPartTwo      = []
+            kFreeSpacePartTwo  = []
 
             nPos                 = 0
 
@@ -179,9 +176,6 @@ def main() :
 
                     # Free space
                     kFreeSpacePartOne.append(nSpace)
-                    if nLeftMostFreeSpace is None :
-                        nLeftMostFreeSpace = len(kFreeSpacePartOne) - 1
-                    #end
 
                     # Note: This is deliberately a list not a tuple as we want
                     #       Python to use shallow copying in order to allow both
@@ -195,9 +189,7 @@ def main() :
 
             #end
 
-            assert(nLeftMostFreeSpace is not None)
-
-            print(f"Part 1: {compactPartOne(kFilesPartOne, kFreeSpacePartOne, nLeftMostFreeSpace)}")
+            print(f"Part 1: {compactPartOne(kFilesPartOne, kFreeSpacePartOne)}")
             print(f"Part 2: {compactPartTwo(kFilesPartTwo, kFreeSpacePartTwo)}")
 
         #end
