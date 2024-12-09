@@ -171,6 +171,7 @@ uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileE
     size_t             nNewFileCount = 0u;
 
     FileEntryPartTwo** kFreeSpaceNodesBySize[10];
+    FileEntryPartTwo** kFreeSpaceNodesBySizeRoots[10];
     size_t             kFreeSpaceNodesBySizeCount[10];
 
     uint64_t           nChecksum;
@@ -181,6 +182,7 @@ uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileE
     for (i = 1; i < (sizeof(kFreeSpaceNodesBySize) / sizeof(kFreeSpaceNodesBySize[0])); ++i)
     {
         kFreeSpaceNodesBySize[i]       = (FileEntryPartTwo**)malloc(sizeof(FileEntryPartTwo*) * nFreeSpaceCount);
+        kFreeSpaceNodesBySizeRoots[i]  = kFreeSpaceNodesBySize[i];
         kFreeSpaceNodesBySizeCount[i] = 0u;
     }
 
@@ -259,8 +261,10 @@ uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileE
             kLowestNode->nSize     -= nSpaceNeeded;
             kLowestNode->nPosition += nSpaceNeeded;
 
-            /* Move the now defunct node to the end of the list and decrement the node count */
-            qsort(kFreeSpaceNodesBySize[nBufferedSize], kFreeSpaceNodesBySizeCount[nBufferedSize], sizeof(FileEntryPartTwo*), compareFreeSpaceNodes);
+            /*
+             * Delete the now defunct node, we achieve this by incrementing the start pointer.
+             */
+            ++kFreeSpaceNodesBySize[nBufferedSize];
             --kFreeSpaceNodesBySizeCount[nBufferedSize];
 
             /* Move the Free Space Node to its new size bracket (if non-zero) */
@@ -281,7 +285,8 @@ uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileE
 
     for (i = 1; i < (sizeof(kFreeSpaceNodesBySize) / sizeof(kFreeSpaceNodesBySize[0])); ++i)
     {
-        free(kFreeSpaceNodesBySize[i]);
+        /* Note: We free a copy of the original malloc since we've incremented the other copy over time */
+        free(kFreeSpaceNodesBySizeRoots[i]);
     }
 
     return nChecksum;
