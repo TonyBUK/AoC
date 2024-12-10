@@ -270,16 +270,9 @@ uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileE
                  * Doing this is preferable since it's more probable that the lowest position of
                  * one size will be close to the lowest position of another.
                  */
-                if (kLowestNode->nPosition < kFreeSpaceNodesBySize[kLowestNode->nSize][kFreeSpaceNodesBySizeCount[kLowestNode->nSize] / 2]->nPosition)
-                {
-                    --kFreeSpaceNodesBySize[kLowestNode->nSize];
-                    ++kFreeSpaceNodesBySizeCount[kLowestNode->nSize];
-                    kFreeSpaceNodesBySize[kLowestNode->nSize][0] = kLowestNode;
-                }
-                else
-                {
-                    kFreeSpaceNodesBySize[kLowestNode->nSize][kFreeSpaceNodesBySizeCount[kLowestNode->nSize]++] = kLowestNode;
-                }
+                --kFreeSpaceNodesBySize[kLowestNode->nSize];
+                ++kFreeSpaceNodesBySizeCount[kLowestNode->nSize];
+                kFreeSpaceNodesBySize[kLowestNode->nSize][0] = kLowestNode;
  
                 qsort(kFreeSpaceNodesBySize[kLowestNode->nSize], kFreeSpaceNodesBySizeCount[kLowestNode->nSize], sizeof(FileEntryPartTwo*), compareFreeSpaceNodes);
             }
