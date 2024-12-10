@@ -142,27 +142,16 @@ int compareFreeSpaceNodes(const void *a, const void *b)
     FileEntryPartTwo* kLeft  = *(FileEntryPartTwo**)a;
     FileEntryPartTwo* kRight = *(FileEntryPartTwo**)b;
 
-    if (kLeft->nSize < kRight->nSize)
-    {
-        return 1;
-    }
-    else if (kLeft->nSize > kRight->nSize)
+    if (kLeft->nPosition < kRight->nPosition)
     {
         return -1;
     }
-    else
+    else if (kLeft->nPosition > kRight->nPosition)
     {
-        if (kLeft->nPosition < kRight->nPosition)
-        {
-            return -1;
-        }
-        else if (kLeft->nPosition > kRight->nPosition)
-        {
-            return 1;
-        }
-
-        assert(0);
+        return 1;
     }
+
+    assert(0);
 }
 
 uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileEntryPartTwo* kFreeSpace, const size_t nFreeSpaceCount)
@@ -178,15 +167,20 @@ uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileE
 
     size_t             i;
 
+    /*
+     * Note: For zero cost insertions at the head of an array, we double allocate it, and point the start
+     *       of the array to the mid-point.  This means that popping the head of the array is incrementing
+     *       the pointer, and pushing to the head of the array is decrementing.
+     */
     kFreeSpaceNodesBySizeCount[0] = 0u;
     for (i = 1; i < (sizeof(kFreeSpaceNodesBySize) / sizeof(kFreeSpaceNodesBySize[0])); ++i)
     {
-        kFreeSpaceNodesBySize[i]       = (FileEntryPartTwo**)malloc(sizeof(FileEntryPartTwo*) * nFreeSpaceCount);
-        kFreeSpaceNodesBySizeRoots[i]  = kFreeSpaceNodesBySize[i];
+        kFreeSpaceNodesBySizeRoots[i]  = (FileEntryPartTwo**)malloc(sizeof(FileEntryPartTwo*) * nFreeSpaceCount * 2);
+        kFreeSpaceNodesBySize[i]       = kFreeSpaceNodesBySizeRoots[i] + nFreeSpaceCount;
         kFreeSpaceNodesBySizeCount[i] = 0u;
     }
-
-    /*
+ 
+     /*
      * For speed sake, we want to quickly get to the lowest free space of
      * each magnitude, meaning we split the data by size, and sort by
      * position.
@@ -270,10 +264,18 @@ uint64_t compactPartTwo(FileEntryPartTwo* kFiles, const size_t nFileCount, FileE
             /* Move the Free Space Node to its new size bracket (if non-zero) */
             if (kLowestNode->nSize > 0)
             {
-                kFreeSpaceNodesBySize[kLowestNode->nSize][kFreeSpaceNodesBySizeCount[kLowestNode->nSize]++] = kLowestNode;
+                /*
+                 * This is Equivalent to inserting at element 0, but with no real overhead.
+                 *
+                 * Doing this is preferable since it's more probable that the lowest position of
+                 * one size will be close to the lowest position of another.
+                 */
+                --kFreeSpaceNodesBySize[kLowestNode->nSize];
+                ++kFreeSpaceNodesBySizeCount[kLowestNode->nSize];
+                kFreeSpaceNodesBySize[kLowestNode->nSize][0] = kLowestNode;
+ 
                 qsort(kFreeSpaceNodesBySize[kLowestNode->nSize], kFreeSpaceNodesBySizeCount[kLowestNode->nSize], sizeof(FileEntryPartTwo*), compareFreeSpaceNodes);
-            }
-        }
+            }        }
     }
 
     /* Calculate the Checksum */
