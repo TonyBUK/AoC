@@ -269,7 +269,7 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
             return AOC_TRUE;
         }
         kSeen[kGuardPos] = AOC_TRUE;
-        kSeenCleanup[(nSeenCleanupSize)++] = kGuardPos;
+        kSeenCleanup[nSeenCleanupSize++] = kGuardPos;
 
         if (bFirstNode)
         {
