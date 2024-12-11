@@ -204,16 +204,14 @@ size_t getRoute(const uint32_t* const kObstaclesSet, const uint32_t kStartGuardP
 
 uint32_t calculateGuardNode(const uint32_t* const kObstacleSet, const uint32_t kGuardPos, const GuardDirection eGuardDirection, const size_t nWidth, const size_t nHeight)
 {
-    uint32_t kCurrentGuardPos = kGuardPos;
+    int      nCurrentGuardX   = X_FROM_KEY(kGuardPos, nWidth);
+    int      nCurrentGuardY   = Y_FROM_KEY(kGuardPos, nWidth);
     unsigned bInBounds        = AOC_TRUE;
-    uint32_t kGuardKey        = TO_KEY(X_FROM_KEY(kGuardPos, nWidth), Y_FROM_KEY(kGuardPos, nWidth), eGuardDirection, nWidth);
 
     while (1)
     {
-        const int nGuardX = X_FROM_KEY(kCurrentGuardPos, nWidth);
-        const int nGuardY = Y_FROM_KEY(kCurrentGuardPos, nWidth);
-        const int nNextX  = nGuardX + DIRECTION_VECTORS[eGuardDirection][0];
-        const int nNextY  = nGuardY + DIRECTION_VECTORS[eGuardDirection][1];
+        const int nNextX  = nCurrentGuardX + DIRECTION_VECTORS[eGuardDirection][0];
+        const int nNextY  = nCurrentGuardY + DIRECTION_VECTORS[eGuardDirection][1];
 
         if ((nNextX >= 0) && ((size_t)nNextX < nWidth) && (nNextY >= 0) && ((size_t)nNextY < nHeight))
         {
@@ -229,22 +227,26 @@ uint32_t calculateGuardNode(const uint32_t* const kObstacleSet, const uint32_t k
             break;
         }
 
-        kCurrentGuardPos = TO_KEY(nNextX, nNextY, 0, nWidth);
+        nCurrentGuardX = nNextX;
+        nCurrentGuardY = nNextY;
     }
 
-    return TO_KEY_WITH_B(X_FROM_KEY(kCurrentGuardPos, nWidth), Y_FROM_KEY(kCurrentGuardPos, nWidth), TURN_RIGHT(eGuardDirection), bInBounds, nWidth);
+    return TO_KEY_WITH_B(nCurrentGuardX, nCurrentGuardY, TURN_RIGHT(eGuardDirection), bInBounds, nWidth);
 }
 
-unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, const uint32_t* const kGuardCatchSet, const uint32_t* const kGuardMoveNodes, const uint32_t kGuardStartPos, const size_t nWidth, const size_t nHeight)
+unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, const uint32_t* const kGuardCatchSet, const uint32_t* const kGuardMoveNodes, const uint32_t kGuardStartPos, const size_t nWidth, const size_t nHeight, unsigned* kSeen)
 {
     const int nObstacleX = X_FROM_KEY(kNewObstaclePos, nWidth);
     const int nObstacleY = Y_FROM_KEY(kNewObstaclePos, nWidth);
 
     uint32_t  kGuardPos  = kGuardStartPos;
+    int       nGuardPosX, nGuardPosY;
     unsigned  bFirstNode = AOC_TRUE;
-    unsigned* kSeen      = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
 
     memset(kSeen, AOC_FALSE, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
+
+    nGuardPosX = X_FROM_KEY(kGuardPos, nWidth);
+    nGuardPosY = Y_FROM_KEY(kGuardPos, nWidth);
 
     while(1)
     {
@@ -252,18 +254,11 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
         GuardDirection eNextDirection;
         unsigned       bInBounds;
 
-        int            nGuardPosX, nGuardPosY;
-
         if (kSeen[kGuardPos])
         {
-            free(kSeen);
             return AOC_TRUE;
         }
-
         kSeen[kGuardPos] = AOC_TRUE;
-
-        nGuardPosX = X_FROM_KEY(kGuardPos, nWidth);
-        nGuardPosY = Y_FROM_KEY(kGuardPos, nWidth);
 
         if (bFirstNode)
         {
@@ -299,46 +294,49 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
             const GuardDirection eLastDirection = TURN_LEFT(eNextDirection);
 
             /* Set our position to adjacent to the new obstacle */
-            kGuardPos = TO_KEY(nObstacleX - DIRECTION_VECTORS[eLastDirection][0], nObstacleY - DIRECTION_VECTORS[eLastDirection][1], eLastDirection, nWidth);
+            nGuardPosX = nObstacleX - DIRECTION_VECTORS[eLastDirection][0];
+            nGuardPosY = nObstacleY - DIRECTION_VECTORS[eLastDirection][1];
 
             while(1)
             {
-                nNextPosX = X_FROM_KEY(kGuardPos, nWidth) + DIRECTION_VECTORS[eNextDirection][0];
-                nNextPosY = Y_FROM_KEY(kGuardPos, nWidth) + DIRECTION_VECTORS[eNextDirection][1];
+                nNextPosX = nGuardPosX + DIRECTION_VECTORS[eNextDirection][0];
+                nNextPosY = nGuardPosY + DIRECTION_VECTORS[eNextDirection][1];
 
                 if ((nNextPosX >= 0) && ((size_t)nNextPosX < nWidth) && (nNextPosY >= 0) && ((size_t)nNextPosY < nHeight))
                 {
                     /* Is this a valid key... */
-                    const uint32_t kNextGuardPos = TO_KEY(X_FROM_KEY(kGuardPos, nWidth), Y_FROM_KEY(kGuardPos, nWidth), eNextDirection, nWidth);
+                    const uint32_t kNextGuardPos = TO_KEY(nGuardPosX, nGuardPosY, eNextDirection, nWidth);
                     if (kGuardCatchSet[kNextGuardPos])
                     {
-                        nNextPosX = X_FROM_KEY(kGuardPos, nWidth);
-                        nNextPosY = Y_FROM_KEY(kGuardPos, nWidth);
+                        nNextPosX = nGuardPosX;
+                        nNextPosY = nGuardPosY;
                         break;
                     }
                 }
                 else
                 {
-                    free(kSeen);
                     return AOC_FALSE;
                 }
 
-                kGuardPos = TO_KEY(nNextPosX, nNextPosY, eNextDirection, nWidth);
+                nGuardPosX = nNextPosX;
+                nGuardPosY = nNextPosY;
             }
 
-            kGuardPos = TO_KEY(nNextPosX, nNextPosY, TURN_RIGHT(eNextDirection), nWidth);
+            nGuardPosX = nNextPosX;
+            nGuardPosY = nNextPosY;
+            kGuardPos  = TO_KEY(nNextPosX, nNextPosY, TURN_RIGHT(eNextDirection), nWidth);
 
             continue;
         }
 
         if (bInBounds == AOC_FALSE)
         {
-            free(kSeen);
             return AOC_FALSE;
         }
 
-
-        kGuardPos = TO_KEY(nNextPosX, nNextPosY, eNextDirection, nWidth);
+        nGuardPosX = nNextPosX;
+        nGuardPosY = nNextPosY;
+        kGuardPos  = TO_KEY(nNextPosX, nNextPosY, eNextDirection, nWidth);
     }
 
     assert(0);
@@ -365,6 +363,8 @@ int main(int argc, char** argv)
         unsigned*                   kGuardCatchSet;
         uint32_t*                   kGuardMoveNodes;
 
+        unsigned*                   kSeen;
+
         uint32_t                    kGuardPos;
         uint32_t                    kGuardFirstMovePos;
 
@@ -380,6 +380,7 @@ int main(int argc, char** argv)
         kGuardVisit      = (uint32_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
         kGuardCatchSet   = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
         kGuardMoveNodes  = (uint32_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
+        kSeen            = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
 
         /* We only initialise the nodes/sets */
         memset(kObstaclesSet, AOC_FALSE, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
@@ -464,7 +465,7 @@ int main(int argc, char** argv)
             const uint32_t kObstaclePos = kGuardVisit[nNode];
             if (kObstaclePos != kGuardPos)
             {
-                const unsigned bLoop = getLoop(kGuardFirstMovePos, kObstaclePos, kGuardCatchSet, kGuardMoveNodes, kGuardPos, nWidth, nHeight);
+                const unsigned bLoop = getLoop(kGuardFirstMovePos, kObstaclePos, kGuardCatchSet, kGuardMoveNodes, kGuardPos, nWidth, nHeight, kSeen);
 
                 if (bLoop)
                 {
@@ -477,6 +478,7 @@ int main(int argc, char** argv)
 
         /* Free any Allocated Memory */
         free(kObstacles);
+        free(kSeen);
     }
 
     return 0;
