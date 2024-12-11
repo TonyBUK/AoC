@@ -234,7 +234,17 @@ uint32_t calculateGuardNode(const uint32_t* const kObstacleSet, const uint32_t k
     return TO_KEY_WITH_B(nCurrentGuardX, nCurrentGuardY, TURN_RIGHT(eGuardDirection), bInBounds, nWidth);
 }
 
-unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, const uint32_t* const kGuardCatchSet, const uint32_t* const kGuardMoveNodes, const uint32_t kGuardStartPos, const size_t nWidth, const size_t nHeight, unsigned* kSeen)
+void cleanSeen(unsigned* kSeen, const size_t* kSeenCleanup, const size_t nSeenCount)
+{
+    size_t nSeen;
+
+    for (nSeen = 0; nSeen < nSeenCount; ++nSeen)
+    {
+        kSeen[kSeenCleanup[nSeen]] = AOC_FALSE;
+    }    
+}
+
+unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, const uint32_t* const kGuardCatchSet, const uint32_t* const kGuardMoveNodes, const uint32_t kGuardStartPos, const size_t nWidth, const size_t nHeight, unsigned* kSeen, size_t* kSeenCleanup)
 {
     const int nObstacleX = X_FROM_KEY(kNewObstaclePos, nWidth);
     const int nObstacleY = Y_FROM_KEY(kNewObstaclePos, nWidth);
@@ -242,8 +252,7 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
     uint32_t  kGuardPos  = kGuardStartPos;
     int       nGuardPosX, nGuardPosY;
     unsigned  bFirstNode = AOC_TRUE;
-
-    memset(kSeen, AOC_FALSE, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
+    size_t    nSeenCleanupSize = 0;
 
     nGuardPosX = X_FROM_KEY(kGuardPos, nWidth);
     nGuardPosY = Y_FROM_KEY(kGuardPos, nWidth);
@@ -256,9 +265,11 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
 
         if (kSeen[kGuardPos])
         {
+            cleanSeen(kSeen, kSeenCleanup, nSeenCleanupSize);
             return AOC_TRUE;
         }
         kSeen[kGuardPos] = AOC_TRUE;
+        kSeenCleanup[(nSeenCleanupSize)++] = kGuardPos;
 
         if (bFirstNode)
         {
@@ -315,6 +326,7 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
                 }
                 else
                 {
+                    cleanSeen(kSeen, kSeenCleanup, nSeenCleanupSize);
                     return AOC_FALSE;
                 }
 
@@ -331,6 +343,7 @@ unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, c
 
         if (bInBounds == AOC_FALSE)
         {
+            cleanSeen(kSeen, kSeenCleanup, nSeenCleanupSize);
             return AOC_FALSE;
         }
 
@@ -364,6 +377,7 @@ int main(int argc, char** argv)
         uint32_t*                   kGuardMoveNodes;
 
         unsigned*                   kSeen;
+        size_t*                     kSeenCleanup;
 
         uint32_t                    kGuardPos;
         uint32_t                    kGuardFirstMovePos;
@@ -381,11 +395,13 @@ int main(int argc, char** argv)
         kGuardCatchSet   = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
         kGuardMoveNodes  = (uint32_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
         kSeen            = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
+        kSeenCleanup     = (size_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(size_t));
 
         /* We only initialise the nodes/sets */
         memset(kObstaclesSet, AOC_FALSE, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
         memset(kGuardCatchSet, AOC_FALSE, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
         memset(kGuardMoveNodes, 0xFF, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
+        memset(kSeen, AOC_FALSE, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
 
         /* Parse the Original Grid */
         for (Y = 0; Y < nHeight; ++Y)
@@ -465,7 +481,7 @@ int main(int argc, char** argv)
             const uint32_t kObstaclePos = kGuardVisit[nNode];
             if (kObstaclePos != kGuardPos)
             {
-                const unsigned bLoop = getLoop(kGuardFirstMovePos, kObstaclePos, kGuardCatchSet, kGuardMoveNodes, kGuardPos, nWidth, nHeight, kSeen);
+                const unsigned bLoop = getLoop(kGuardFirstMovePos, kObstaclePos, kGuardCatchSet, kGuardMoveNodes, kGuardPos, nWidth, nHeight, kSeen, kSeenCleanup);
 
                 if (bLoop)
                 {
@@ -479,6 +495,7 @@ int main(int argc, char** argv)
         /* Free any Allocated Memory */
         free(kObstacles);
         free(kSeen);
+        free(kSeenCleanup);
     }
 
     return 0;
