@@ -13,9 +13,15 @@ typedef unsigned bool;
 #endif
  
 #include "hashmap/include/hashmap.h"
- 
+
+typedef struct HashmapActionType
+{
+    uint64_t nStoneNumber;
+    size_t   nCount;
+} HashmapActionType;
+
 typedef HASHMAP(uint64_t, size_t) stoneCountType;
- 
+
 /*
  * Use generic hash algorithm supplied by the hashmap library.
  */
@@ -28,8 +34,22 @@ int compare_uint64(const uint64_t *a, const uint64_t *b)
 {
     return memcmp(a, b, sizeof(uint64_t));
 }
+
+void AddToChangeList(HashmapActionType** kStoneMapChanges, size_t* nStoneMapChangeSize, size_t* nStoneMapChangeMaxSize, const uint64_t nStoneNumber, const size_t nCount)
+{
+    if (*nStoneMapChangeSize >= *nStoneMapChangeMaxSize)
+    {
+        *nStoneMapChangeMaxSize *= 2;
+        *kStoneMapChanges = (HashmapActionType*)realloc(*kStoneMapChanges, *nStoneMapChangeMaxSize * sizeof(HashmapActionType));
+    }
+
+    (*kStoneMapChanges)[*nStoneMapChangeSize].nStoneNumber = nStoneNumber;
+    (*kStoneMapChanges)[*nStoneMapChangeSize].nCount     = nCount;
+
+    *nStoneMapChangeSize += 1;
+}
  
-void putEntry(stoneCountType* kStoneMap, const uint64_t nStoneNumber, const size_t nCount)
+void addToEntry(stoneCountType* kStoneMap, const uint64_t nStoneNumber, const size_t nCount)
 {
     size_t* pExistingCount = hashmap_get(kStoneMap, &nStoneNumber);
     if (pExistingCount)
@@ -46,6 +66,15 @@ void putEntry(stoneCountType* kStoneMap, const uint64_t nStoneNumber, const size
     }
 }
  
+void removeFromEntry(stoneCountType* kStoneMap, const uint64_t nStoneNumber, const size_t nCount)
+{
+    size_t* pExistingCount = hashmap_get(kStoneMap, &nStoneNumber);
+    if (pExistingCount)
+    {
+        *pExistingCount -= nCount;
+    }
+}
+
 int main(int argc, char** argv)
 {
     FILE* pData = fopen("../input.txt", "r");
@@ -53,23 +82,33 @@ int main(int argc, char** argv)
     if (pData)
     {
         char*    kData     = NULL;
- 
+        HashmapActionType* kStoneMapAdditions;
+        size_t             nStoneMapAdditionMaxSize    = 16384u;
+        size_t             nStoneMapAdditionSize       = 0u;
+
+        HashmapActionType* kStoneMapSubtractions;
+        size_t             nStoneMapSubtractionMaxSize = 16384u;
+        size_t             nStoneMapSubtractionSize    = 0u;
+
+        kStoneMapAdditions    = (HashmapActionType*)malloc(nStoneMapAdditionMaxSize    * sizeof(HashmapActionType));
+        kStoneMapSubtractions = (HashmapActionType*)malloc(nStoneMapSubtractionMaxSize * sizeof(HashmapActionType));
+
         while (!feof(pData))
         {
             const uint64_t* pStoneNumberFree;
             const size_t*   pStoneCountFree;
             size_t nSize    = 0u;
             size_t nLength;
- 
+
             /* Solve both Parts... */
             while ((int64_t)(nLength = getline(&kData, &nSize, pData)) != -1)
             {
                 const uint64_t* pStoneNumber;
                 const size_t*   pStoneCount;
-                stoneCountType* kStonesMap = (stoneCountType*)malloc(sizeof(stoneCountType));
+                stoneCountType  kStonesMap;
                 size_t          i;
  
-                hashmap_init(kStonesMap, hash_uint64, compare_uint64);
+                hashmap_init(&kStonesMap, hash_uint64, compare_uint64);
  
                 /* Decode the Start List */
                 const char*    kEntry    = kData;
@@ -77,7 +116,7 @@ int main(int argc, char** argv)
                 {
                     const char*     kEndEntry = strstr(kEntry, " ");
  
-                    putEntry(kStonesMap, strtoull(kEntry, NULL, 10), 1);
+                    addToEntry(&kStonesMap, strtoull(kEntry, NULL, 10), 1);
  
                     if (NULL == kEndEntry)
                     {
@@ -91,15 +130,23 @@ int main(int argc, char** argv)
  
                 for (i = 1; i <= 75; ++i)
                 {
-                    stoneCountType* kNewStonesMap = (stoneCountType*)malloc(sizeof(stoneCountType));
-                    stoneCountType* kTempMap;
-                    hashmap_init(kNewStonesMap, hash_uint64, compare_uint64);
- 
-                    hashmap_foreach(pStoneNumber, pStoneCount, kStonesMap)
+                    size_t j;
+
+                    /* Initialise the Deltas */
+                    nStoneMapAdditionSize    = 0u;
+                    nStoneMapSubtractionSize = 0u;
+
+                    hashmap_foreach(pStoneNumber, pStoneCount, &kStonesMap)
                     {
+                        if (*pStoneCount == 0)
+                        {
+                            continue;
+                        }
+
                         if (*pStoneNumber == 0)
                         {
-                            putEntry(kNewStonesMap, 1, *pStoneCount);
+                            AddToChangeList(&kStoneMapSubtractions, &nStoneMapSubtractionSize, &nStoneMapSubtractionMaxSize, 0, *pStoneCount);
+                            AddToChangeList(&kStoneMapAdditions,    &nStoneMapAdditionSize,    &nStoneMapAdditionMaxSize,    1, *pStoneCount);
                         }
                         else
                         {
@@ -123,58 +170,56 @@ int main(int argc, char** argv)
                                     nLeft  = (10 * nLeft)  + kDigits[nDigits - nDigit - 1];
                                     nRight = (10 * nRight) + kDigits[nDigits - nDigit - 1 - nHalfDigits];
                                 }
- 
-                                putEntry(kNewStonesMap, nLeft,  *pStoneCount);
-                                putEntry(kNewStonesMap, nRight, *pStoneCount);
+
+                                AddToChangeList(&kStoneMapSubtractions, &nStoneMapSubtractionSize, &nStoneMapSubtractionMaxSize, *pStoneNumber, *pStoneCount);
+                                AddToChangeList(&kStoneMapAdditions,    &nStoneMapAdditionSize,    &nStoneMapAdditionMaxSize,    nLeft,         *pStoneCount);
+                                AddToChangeList(&kStoneMapAdditions,    &nStoneMapAdditionSize,    &nStoneMapAdditionMaxSize,    nRight,        *pStoneCount);
                             }
                             else
                             {
-                                putEntry(kNewStonesMap, *pStoneNumber * 2024,  *pStoneCount);
+                                AddToChangeList(&kStoneMapSubtractions, &nStoneMapSubtractionSize, &nStoneMapSubtractionMaxSize, *pStoneNumber,        *pStoneCount);
+                                AddToChangeList(&kStoneMapAdditions,    &nStoneMapAdditionSize,    &nStoneMapAdditionMaxSize,    *pStoneNumber * 2024, *pStoneCount);
                             }
                         }
                     }
- 
+
+                    /* Apply the Deltas to the Existing Hashmap */
+                    for (j = 0; j < nStoneMapAdditionSize; ++j)
+                    {
+                        addToEntry(&kStonesMap, kStoneMapAdditions[j].nStoneNumber, kStoneMapAdditions[j].nCount);
+                    }
+                    for (j = 0; j < nStoneMapSubtractionSize; ++j)
+                    {
+                        removeFromEntry(&kStonesMap, kStoneMapSubtractions[j].nStoneNumber, kStoneMapSubtractions[j].nCount);
+                    }
+
                     if ((25 == i) || (75 == i))
                     {
                         uint64_t nCount = 0;
  
-                        hashmap_foreach(pStoneNumber, pStoneCount, kNewStonesMap)
+                        hashmap_foreach(pStoneNumber, pStoneCount, &kStonesMap)
                         {
                             nCount += *pStoneCount;
                         }
  
                         printf("Part %s: %llu\n", (25 == i) ? "1" : "2", nCount);
                     }
- 
-                    /* Swap the Hash Maps */
-                    kTempMap      = kNewStonesMap;
-                    kNewStonesMap = kStonesMap;
-                    kStonesMap    = kTempMap;
- 
-                    hashmap_foreach(pStoneNumberFree, pStoneCountFree, kNewStonesMap)
-                    {
-                        free((uint64_t*)pStoneNumberFree);
-                        free((size_t*)pStoneCountFree);
-                    }
- 
-                    hashmap_cleanup(kNewStonesMap);
-                    free(kNewStonesMap);
- 
                 }
  
-                hashmap_foreach(pStoneNumberFree, pStoneCountFree, kStonesMap)
+                hashmap_foreach(pStoneNumberFree, pStoneCountFree, &kStonesMap)
                 {
                     free((uint64_t*)pStoneNumberFree);
                     free((size_t*)pStoneCountFree);
                 }
  
-                hashmap_cleanup(kStonesMap);
-                free(kStonesMap);
+                hashmap_cleanup(&kStonesMap);
             }
  
         }
         fclose(pData);
  
+        free(kStoneMapAdditions);
+        free(kStoneMapSubtractions);
         free(kData);
     }
  
