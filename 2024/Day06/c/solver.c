@@ -64,7 +64,6 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     size_t                  nReadCount;
     size_t                  nPadLine;
 
-
     /* Read the File to a string buffer and append a NULL Terminator */
     fseek(*pFile, 0, SEEK_END);
     nEndPos = ftell(*pFile);
@@ -73,7 +72,7 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
 
     nFileSize       = nEndPos - nStartPos;
 
-    *pkFileBuffer   = (char*) malloc((nFileSize+2)         * sizeof(char));
+    *pkFileBuffer   = (char*) malloc((nFileSize+3)         * sizeof(char));
     *pkLines        = (char**)malloc((nFileSize+nPadLines) * sizeof(char*));
 
     /* Handle weird EOL conventions whereby fread and fseek will handle EOL differently. */
@@ -89,20 +88,21 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     }
 
     /* Pad the File Buffer with a trailing new line (if needed) to simplify things later on */
-    if ((*pkFileBuffer)[nFileSize] != '\n')
+    if (0 == bProcessUnix)
     {
-        (*pkFileBuffer)[nFileSize]   = '\n';
-        (*pkFileBuffer)[nFileSize+1] = '\0';
-
-        if (0 == bProcessUnix)
+        if ((*pkFileBuffer)[nFileSize] != '\n')
         {
-            if (nFileSize >= 1)
-            {
-                if ((*pkFileBuffer)[nFileSize-1] != '\r')
-                {
-                    (*pkFileBuffer)[nFileSize-1]   = '\0';
-                }
-            }
+            (*pkFileBuffer)[nFileSize]   = '\r';
+            (*pkFileBuffer)[nFileSize+1] = '\n';
+            (*pkFileBuffer)[nFileSize+2] = '\0';
+        }
+    }
+    else
+    {
+        if ((*pkFileBuffer)[nFileSize] != '\n')
+        {
+            (*pkFileBuffer)[nFileSize]   = '\n';
+            (*pkFileBuffer)[nFileSize+1] = '\0';
         }
     }
 
