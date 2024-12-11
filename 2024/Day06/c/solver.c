@@ -156,23 +156,30 @@ void readLines(FILE** pFile, char** pkFileBuffer, char*** pkLines, size_t* pnLin
     }
 }
 
-size_t getRoute(const uint32_t* const kObstaclesSet, const uint32_t kStartGuardPos, const size_t nWidth, const size_t nHeight, uint32_t* kGuardVisit)
+void cleanSeen(unsigned* kSeen, const size_t* kSeenCleanup, const size_t nSeenCount)
 {
-    uint32_t       kGuardPos        = kStartGuardPos;
-    GuardDirection eGuardDirection  = D_FROM_KEY(kGuardPos);
-    size_t         nGuardVisitCount = 1;
-    unsigned*      kGuardVisitSet   = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
+    size_t nSeen;
 
-    memset(kGuardVisitSet, AOC_FALSE, KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
+    for (nSeen = 0; nSeen < nSeenCount; ++nSeen)
+    {
+        kSeen[kSeenCleanup[nSeen]] = AOC_FALSE;
+    }    
+}
 
-    kGuardVisitSet[kGuardPos] = AOC_TRUE;
+size_t getRoute(const uint32_t* const kObstaclesSet, const uint32_t kStartGuardPos, const size_t nWidth, const size_t nHeight, size_t* kGuardVisit, unsigned* kGuardVisitSet)
+{
+    int            nGuardX                = X_FROM_KEY(kStartGuardPos, nWidth);
+    int            nGuardY                = Y_FROM_KEY(kStartGuardPos, nWidth);
+    GuardDirection eGuardDirection        = D_FROM_KEY(kStartGuardPos);
+    size_t         nGuardVisitCount       = 1;
+
+    kGuardVisitSet[kStartGuardPos]               = AOC_TRUE;
+    kGuardVisit[0]                               = kStartGuardPos;
 
     while(1)
     {
-        const int            nGuardX           = X_FROM_KEY(kGuardPos, nWidth);
-        const int            nGuardY           = Y_FROM_KEY(kGuardPos, nWidth);
-        const int            nNextX            = nGuardX + DIRECTION_VECTORS[eGuardDirection][0];
-        const int            nNextY            = nGuardY + DIRECTION_VECTORS[eGuardDirection][1];
+        const int nNextX = nGuardX + DIRECTION_VECTORS[eGuardDirection][0];
+        const int nNextY = nGuardY + DIRECTION_VECTORS[eGuardDirection][1];
 
         if ((nNextX >= 0) && ((size_t)nNextX < nWidth) && (nNextY >= 0) && ((size_t)nNextY < nHeight))
         {
@@ -183,11 +190,12 @@ size_t getRoute(const uint32_t* const kObstaclesSet, const uint32_t kStartGuardP
             }
             else
             {
-                kGuardPos = kNextGuardPos;
-                if (AOC_FALSE == kGuardVisitSet[kGuardPos])
+                nGuardX   = nNextX;
+                nGuardY   = nNextY;
+                if (AOC_FALSE == kGuardVisitSet[kNextGuardPos])
                 {
-                    kGuardVisitSet[kGuardPos]       = AOC_TRUE;
-                    kGuardVisit[nGuardVisitCount++] = kGuardPos;
+                    kGuardVisitSet[kNextGuardPos]                = AOC_TRUE;
+                    kGuardVisit[nGuardVisitCount++]              = kNextGuardPos;
                 }
             }
         }
@@ -197,7 +205,7 @@ size_t getRoute(const uint32_t* const kObstaclesSet, const uint32_t kStartGuardP
         }
     }
 
-    free(kGuardVisitSet);
+    cleanSeen(kGuardVisitSet, kGuardVisit, nGuardVisitCount);
 
     return nGuardVisitCount;
 }
@@ -232,16 +240,6 @@ uint32_t calculateGuardNode(const uint32_t* const kObstacleSet, const uint32_t k
     }
 
     return TO_KEY_WITH_B(nCurrentGuardX, nCurrentGuardY, TURN_RIGHT(eGuardDirection), bInBounds, nWidth);
-}
-
-void cleanSeen(unsigned* kSeen, const size_t* kSeenCleanup, const size_t nSeenCount)
-{
-    size_t nSeen;
-
-    for (nSeen = 0; nSeen < nSeenCount; ++nSeen)
-    {
-        kSeen[kSeenCleanup[nSeen]] = AOC_FALSE;
-    }    
 }
 
 unsigned getLoop(const uint32_t kFirstMovePos, const uint32_t kNewObstaclePos, const uint32_t* const kGuardCatchSet, const uint32_t* const kGuardMoveNodes, const uint32_t kGuardStartPos, const size_t nWidth, const size_t nHeight, unsigned* kSeen, size_t* kSeenCleanup)
@@ -371,7 +369,7 @@ int main(int argc, char** argv)
         unsigned*                   kObstaclesSet;
         uint32_t*                   kObstacles;
         size_t                      nObstacleCount   = 0;
-        uint32_t*                   kGuardVisit;
+        size_t*                     kGuardVisit;
         size_t                      nGuardVisitCount;
         unsigned*                   kGuardCatchSet;
         uint32_t*                   kGuardMoveNodes;
@@ -391,7 +389,7 @@ int main(int argc, char** argv)
         /* Allocate the "hashmaps" and Arrays */
         kObstaclesSet    = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
         kObstacles       = (uint32_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
-        kGuardVisit      = (uint32_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
+        kGuardVisit      = (size_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(size_t));
         kGuardCatchSet   = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
         kGuardMoveNodes  = (uint32_t*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(uint32_t));
         kSeen            = (unsigned*)malloc(KEY_DATA_SIZE(nHeight, nWidth) * sizeof(unsigned));
@@ -427,7 +425,7 @@ int main(int argc, char** argv)
         free(kBuffer);
 
         /* Part One, get the Visited Nodes for the Guard */
-        nGuardVisitCount = getRoute(kObstaclesSet, kGuardPos, nWidth, nHeight, kGuardVisit);
+        nGuardVisitCount = getRoute(kObstaclesSet, kGuardPos, nWidth, nHeight, kGuardVisit, kSeen);
 
         printf("Part 1: %zu\n", nGuardVisitCount);
 
