@@ -138,11 +138,15 @@ int main(int argc, char** argv)
 
                     hashmap_foreach(pStoneNumber, pStoneCount, &kStonesMap)
                     {
+                        /* Ignore any Decimated Entries, these are left as Removing/Re-Adding is more expensive than ignoring */
                         if (*pStoneCount == 0)
                         {
                             continue;
                         }
 
+                        /* Construct the Deltas to apply to the Hash Map */
+
+                        /* 0 => 1 */
                         if (*pStoneNumber == 0)
                         {
                             AddToChangeList(&kStoneMapSubtractions, &nStoneMapSubtractionSize, &nStoneMapSubtractionMaxSize, 0, *pStoneCount);
@@ -150,6 +154,7 @@ int main(int argc, char** argv)
                         }
                         else
                         {
+                            /* Split if Digit Count is Even */
                             uint64_t kDigits[20];
                             uint64_t nBufferedValue = *pStoneNumber;
                             size_t nDigits        = 0;
@@ -175,6 +180,7 @@ int main(int argc, char** argv)
                                 AddToChangeList(&kStoneMapAdditions,    &nStoneMapAdditionSize,    &nStoneMapAdditionMaxSize,    nLeft,         *pStoneCount);
                                 AddToChangeList(&kStoneMapAdditions,    &nStoneMapAdditionSize,    &nStoneMapAdditionMaxSize,    nRight,        *pStoneCount);
                             }
+                            /* Multiply by 2024 Otherwise */
                             else
                             {
                                 AddToChangeList(&kStoneMapSubtractions, &nStoneMapSubtractionSize, &nStoneMapSubtractionMaxSize, *pStoneNumber,        *pStoneCount);
