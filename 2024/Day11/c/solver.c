@@ -25,14 +25,28 @@ typedef HASHMAP(uint64_t, size_t) stoneCountType;
 /*
  * Use generic hash algorithm supplied by the hashmap library.
  */
-size_t hash_uint64(const uint64_t *key)
+size_t hash_uint64(const uint64_t* key)
 {
     return hashmap_hash_default(key, sizeof(*key));
 }
  
-int compare_uint64(const uint64_t *a, const uint64_t *b)
+int compare_uint64(const uint64_t* a, const uint64_t* b)
 {
-    return memcmp(a, b, sizeof(uint64_t));
+    const uint64_t nLeft  = *a;
+    const uint64_t nRight = *b;
+
+    if (nLeft < nRight)
+    {
+        return -1;
+    }
+    else if (nLeft > nRight)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void AddToChangeList(HashmapActionType** kStoneMapChanges, size_t* nStoneMapChangeSize, size_t* nStoneMapChangeMaxSize, const uint64_t nStoneNumber, const size_t nCount)
