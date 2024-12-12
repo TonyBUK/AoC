@@ -155,26 +155,29 @@ int main(int argc, char** argv)
                         else
                         {
                             /* Split if Digit Count is Even */
-                            uint64_t kDigits[20];
-                            uint64_t nBufferedValue = *pStoneNumber;
+                            const uint64_t nBufferedValue = *pStoneNumber;
+                            uint64_t nBufferedValueCopy = nBufferedValue;
                             size_t nDigits        = 0;
-                            while (nBufferedValue > 0)
+                            while (nBufferedValueCopy > 0)
                             {
-                                kDigits[nDigits++] = nBufferedValue % 10;
-                                nBufferedValue /= 10;
+                                nBufferedValueCopy /= 10;
+                                ++nDigits;
                             }
  
                             if (0 == (nDigits % 2))
                             {
                                 const size_t nHalfDigits = nDigits / 2;
-                                uint64_t nLeft  = 0;
-                                uint64_t nRight = 0;
-                                size_t nDigit;
+                                uint64_t nLeft;
+                                uint64_t nRight;
+                                size_t   nDigit;
+                                size_t   nDivisor = 1;
                                 for (nDigit = 0; nDigit < nHalfDigits; ++nDigit)
                                 {
-                                    nLeft  = (10 * nLeft)  + kDigits[nDigits - nDigit - 1];
-                                    nRight = (10 * nRight) + kDigits[nDigits - nDigit - 1 - nHalfDigits];
+                                    nDivisor *= 10;
                                 }
+
+                                nLeft  = nBufferedValue / nDivisor;
+                                nRight = nBufferedValue % nDivisor;
 
                                 AddToChangeList(&kStoneMapSubtractions, &nStoneMapSubtractionSize, &nStoneMapSubtractionMaxSize, *pStoneNumber, *pStoneCount);
                                 AddToChangeList(&kStoneMapAdditions,    &nStoneMapAdditionSize,    &nStoneMapAdditionMaxSize,    nLeft,         *pStoneCount);
@@ -203,7 +206,7 @@ int main(int argc, char** argv)
                     {
                         uint64_t nCount = 0;
  
-                        hashmap_foreach(pStoneNumber, pStoneCount, &kStonesMap)
+                        hashmap_foreach_data(pStoneCount, &kStonesMap)
                         {
                             nCount += *pStoneCount;
                         }
