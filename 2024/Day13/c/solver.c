@@ -128,8 +128,8 @@ int main(int argc, char** argv)
             }
         }
 
-        printf("Part One: %" PRIu64 "\n", nRoundsPartOne);
-        printf("Part Two: %" PRIu64 "\n", nRoundsPartTwo);
+        printf("Part 1: %" PRIu64 "\n", nRoundsPartOne);
+        printf("Part 2: %" PRIu64 "\n", nRoundsPartTwo);
 
         free(kLine);
     }
