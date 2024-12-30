@@ -7,3 +7,6 @@
 [submodule "2024/Day11/c/hashmap"]
 	path = 2024/Day11/c/hashmap
 	url = https://github.com/DavidLeeds/hashmap
+[submodule "2024/Day19/c/hashmap"]
+	path = 2024/Day19/c/hashmap
+	url = https://github.com/DavidLeeds/hashmap
