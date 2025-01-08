@@ -573,7 +573,7 @@ int main(int argc, char** argv)
 
         size_t*                     kRenamedWires;
         size_t*                     kRenamedWiresArray;
-        size_t                      nNumRenamedWires;
+        size_t                      nNumRenamedWires    = 0;
 
         /* Read the whole file into an easier to process 2D Buffer */
         readLines(&pData, &kInputBuffer, &kInputLines, &nNumInputLines, NULL, NULL, 0);
