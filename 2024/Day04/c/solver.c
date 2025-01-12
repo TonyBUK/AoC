@@ -246,7 +246,7 @@ int main(int argc, char** argv)
 
         printf("Part 1: %" PRIu64 "\n", nPartOne);
         printf("Part 2: %" PRIu64 "\n", nPartTwo);
-#
+
         /* Free any Allocated Memory */
         free(kBuffer);
         free(kWordSearch);
