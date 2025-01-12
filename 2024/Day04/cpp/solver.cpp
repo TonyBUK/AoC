@@ -23,8 +23,9 @@ WordSearch::WordSearch(const std::vector<std::string>& kWordSearch) :
     m_nWidth  = 0;
     m_nHeight = 0;
 
-    for (const std::string& kLine : kWordSearch)
+    for (std::vector<std::string>::const_iterator it = kWordSearch.cbegin(); it != kWordSearch.cend(); ++it)
     {
+        const std::string& kLine = *it;
         m_nWidth  = std::max(m_nWidth, kLine.size());
         ++m_nHeight;
     }
@@ -143,10 +144,17 @@ class CrossMasWordSearch : public WordSearch
 
         CrossMasWordSearch(const std::vector<std::string>& kWordSearch);
         uint64_t count(const size_t X, const size_t Y) const;
+
+    private:
+
+    const std::string MS;
+    const std::string SM;
 };
 
 CrossMasWordSearch::CrossMasWordSearch(const std::vector<std::string>& kWordSearch) :
-    WordSearch(kWordSearch)
+    WordSearch(kWordSearch),
+    MS("MS"),
+    SM("SM")
 {
 }
 
@@ -160,12 +168,12 @@ uint64_t CrossMasWordSearch::count(const size_t X, const size_t Y) const
     {
         if (m_kWordSearch[Y][X] == 'A')
         {
-            const std::string kDiagonal1 = {m_kWordSearch[Y-1][X-1], m_kWordSearch[Y+1][X+1]};
-            const std::string kDiagonal2 = {m_kWordSearch[Y-1][X+1], m_kWordSearch[Y+1][X-1]};
+            const char kDiagonal1[] = {m_kWordSearch[Y-1][X-1], m_kWordSearch[Y+1][X+1], '\0'};
+            const char kDiagonal2[] = {m_kWordSearch[Y-1][X+1], m_kWordSearch[Y+1][X-1], '\0'};
 
-            if (kDiagonal1 == "MS" || kDiagonal1 == "SM")
+            if (kDiagonal1 == MS || kDiagonal1 == SM)
             {
-                if (kDiagonal2 == "MS" || kDiagonal2 == "SM")
+                if (kDiagonal2 == MS || kDiagonal2 == SM)
                 {
                     ++nCount;
                 }
